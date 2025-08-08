@@ -1,0 +1,58 @@
+{
+  "name": "@laststance/react-next-eslint-plugin",
+  "version": "1.0.0",
+  "description": "ESLint plugin for React and Next.js projects with no-jsx-without-return rule",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "lint",
+    "linter",
+    "react",
+    "nextjs",
+    "jsx"
+  ],
+  "author": "laststance",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laststance/react-next-eslint-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/laststance/react-next-eslint-plugin/issues"
+  },
+  "homepage": "https://github.com/laststance/react-next-eslint-plugin#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "mocha tests/**/*.test.js",
+    "test:watch": "npm test -- --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "npm test && npm run lint"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "mocha": "^10.0.0",
+    "prettier": "^3.0.0"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ],
+  "packageManager": "pnpm@10.12.1",
+  "volta": {
+    "node": "22.16.0"
+  }
+}

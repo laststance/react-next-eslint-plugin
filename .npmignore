@@ -1,0 +1,22 @@
+# Source files
+tests/
+docs/
+.github/
+
+# Development files
+.gitignore
+eslint.config.js
+plan.md
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
