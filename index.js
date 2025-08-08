@@ -12,6 +12,7 @@ const pkg = JSON.parse(
 
 // Import rules
 import noJsxWithoutReturn from './lib/rules/no-jsx-without-return.js';
+import allMemo from './lib/rules/all-memo.js';
 
 const plugin = {
   meta: {
@@ -22,6 +23,7 @@ const plugin = {
   configs: {},
   rules: {
     'no-jsx-without-return': noJsxWithoutReturn,
+    'all-memo': allMemo,
   },
 };
 
@@ -34,6 +36,7 @@ Object.assign(plugin.configs, {
       },
       rules: {
         'laststance/no-jsx-without-return': 'error',
+        'laststance/all-memo': 'warn',
       },
     },
   ],
@@ -44,6 +47,7 @@ Object.assign(plugin.configs, {
       },
       rules: {
         'laststance/no-jsx-without-return': 'error',
+        'laststance/all-memo': 'warn',
       },
     },
   ],
