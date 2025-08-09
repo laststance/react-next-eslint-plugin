@@ -14,6 +14,8 @@ const pkg = JSON.parse(
 import noJsxWithoutReturn from './lib/rules/no-jsx-without-return.js';
 import allMemo from './lib/rules/all-memo.js';
 import noUseEffect from './lib/rules/no-use-effect.js';
+import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js';
+import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js';
 
 const plugin = {
   meta: {
@@ -26,6 +28,8 @@ const plugin = {
     'no-jsx-without-return': noJsxWithoutReturn,
     'all-memo': allMemo,
     'no-use-effect': noUseEffect,
+    'no-set-state-prop-drilling': noSetStatePropDrilling,
+    'no-deopt-use-callback': noDeoptUseCallback,
   },
 };
 
@@ -40,6 +44,8 @@ Object.assign(plugin.configs, {
         'laststance/no-jsx-without-return': 'error',
         'laststance/all-memo': 'warn',
         'laststance/no-use-effect': 'warn',
+        'laststance/no-set-state-prop-drilling': 'warn',
+        'laststance/no-deopt-use-callback': 'warn',
       },
     },
   ],
@@ -52,6 +58,8 @@ Object.assign(plugin.configs, {
         'laststance/no-jsx-without-return': 'error',
         'laststance/all-memo': 'warn',
         'laststance/no-use-effect': 'warn',
+        'laststance/no-set-state-prop-drilling': 'warn',
+        'laststance/no-deopt-use-callback': 'warn',
       },
     },
   ],
