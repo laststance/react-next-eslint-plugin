@@ -16,6 +16,9 @@ import allMemo from './lib/rules/all-memo.js';
 import noUseEffect from './lib/rules/no-use-effect.js';
 import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js';
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js';
+import preferStableContextValue from './lib/rules/prefer-stable-context-value.js';
+import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js';
+import noClientFetchInServerComponents from './lib/rules/no-client-fetch-in-server-components.js';
 
 const plugin = {
   meta: {
@@ -23,46 +26,16 @@ const plugin = {
     version: pkg.version,
     namespace: 'laststance',
   },
-  configs: {},
   rules: {
     'no-jsx-without-return': noJsxWithoutReturn,
     'all-memo': allMemo,
     'no-use-effect': noUseEffect,
     'no-set-state-prop-drilling': noSetStatePropDrilling,
     'no-deopt-use-callback': noDeoptUseCallback,
+    'prefer-stable-context-value': preferStableContextValue,
+    'no-unstable-classname-prop': noUnstableClassnameProp,
+    'no-client-fetch-in-server-components': noClientFetchInServerComponents,
   },
 };
-
-// Define configurations
-Object.assign(plugin.configs, {
-  recommended: [
-    {
-      plugins: {
-        'laststance': plugin,
-      },
-      rules: {
-        'laststance/no-jsx-without-return': 'error',
-        'laststance/all-memo': 'warn',
-        'laststance/no-use-effect': 'warn',
-        'laststance/no-set-state-prop-drilling': 'warn',
-        'laststance/no-deopt-use-callback': 'warn',
-      },
-    },
-  ],
-  all: [
-    {
-      plugins: {
-        'laststance': plugin,
-      },
-      rules: {
-        'laststance/no-jsx-without-return': 'error',
-        'laststance/all-memo': 'warn',
-        'laststance/no-use-effect': 'warn',
-        'laststance/no-set-state-prop-drilling': 'warn',
-        'laststance/no-deopt-use-callback': 'warn',
-      },
-    },
-  ],
-});
 
 export default plugin;
