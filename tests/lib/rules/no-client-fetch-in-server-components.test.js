@@ -1,12 +1,12 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/no-client-fetch-in-server-components.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/no-client-fetch-in-server-components.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-});
+})
 
 ruleTester.run('no-client-fetch-in-server-components', rule, {
   valid: [
@@ -47,4 +47,4 @@ ruleTester.run('no-client-fetch-in-server-components', rule, {
       errors: [{ messageId: 'noClientFetch' }],
     },
   ],
-});
+})

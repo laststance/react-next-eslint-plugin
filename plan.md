@@ -1,11 +1,13 @@
 # ESLint Plugin npm Package Implementation Plan
 
 ## Overview
+
 This document outlines a comprehensive plan for creating a professional ESLint plugin npm package by porting an existing project's specific ESLint rule. The plan follows ESLint's official documentation and best practices from successful plugins like `eslint-plugin-unicorn`.
 
 ## Phase 1: Project Setup and Structure
 
 ### 1.1 Initialize Project Structure
+
 ```
 eslint-plugin-[name]/
 ├── package.json
@@ -31,6 +33,7 @@ eslint-plugin-[name]/
 ```
 
 ### 1.2 Package.json Configuration
+
 ```json
 {
   "name": "eslint-plugin-[name]",
@@ -77,32 +80,27 @@ eslint-plugin-[name]/
     "prettier": "^3.0.0",
     "np": "^10.0.0"
   },
-  "files": [
-    "index.js",
-    "lib/",
-    "docs/",
-    "README.md",
-    "LICENSE"
-  ]
+  "files": ["index.js", "lib/", "docs/", "README.md", "LICENSE"]
 }
 ```
 
 ### 1.3 Plugin Entry Point (index.js)
-```javascript
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+```javascript
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Read package.json for meta information
 const pkg = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')
-);
+  fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'),
+)
 
 // Import rules
-import ruleName from './lib/rules/rule-name.js';
+import ruleName from './lib/rules/rule-name.js'
 
 const plugin = {
   meta: {
@@ -114,7 +112,7 @@ const plugin = {
   rules: {
     '[rule-name]': ruleName,
   },
-};
+}
 
 // Define configurations
 Object.assign(plugin.configs, {
@@ -138,20 +136,22 @@ Object.assign(plugin.configs, {
       },
     },
   ],
-});
+})
 
-export default plugin;
+export default plugin
 ```
 
 ## Phase 2: Rule Development
 
 ### 2.1 Port Existing Rule
+
 - **Extract rule logic** from existing project
 - **Analyze AST patterns** the rule targets
 - **Identify dependencies** and utilities needed
 - **Map existing configuration options** to new plugin structure
 
 ### 2.2 Rule Structure (lib/rules/[rule-name].js)
+
 ```javascript
 export default {
   meta: {
@@ -180,14 +180,14 @@ export default {
       customMessage: 'Custom message with {{placeholder}}',
     },
   },
-  
+
   create(context) {
-    const options = context.options[0] || {};
-    const sourceCode = context.sourceCode;
-    
+    const options = context.options[0] || {}
+    const sourceCode = context.sourceCode
+
     return {
       // AST visitor methods
-      'NodeType'(node) {
+      NodeType(node) {
         // Rule logic here
         if (conditionMet) {
           context.report({
@@ -198,26 +198,27 @@ export default {
             },
             fix(fixer) {
               // Auto-fix logic if applicable
-              return fixer.replaceText(node, 'replacement');
+              return fixer.replaceText(node, 'replacement')
             },
             suggest: [
               // Suggestions if applicable
               {
                 messageId: 'customMessage',
                 fix(fixer) {
-                  return fixer.replaceText(node, 'suggestion');
+                  return fixer.replaceText(node, 'suggestion')
                 },
               },
             ],
-          });
+          })
         }
       },
-    };
+    }
   },
-};
+}
 ```
 
 ### 2.3 Rule Options and Configuration
+
 - **Define schema** for rule options validation
 - **Implement default values** for options
 - **Add option validation** and error handling
@@ -226,16 +227,17 @@ export default {
 ## Phase 3: Testing Strategy
 
 ### 3.1 Unit Tests (tests/lib/rules/[rule-name].test.js)
+
 ```javascript
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/rule-name.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/rule-name.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-});
+})
 
 ruleTester.run('rule-name', rule, {
   valid: [
@@ -289,12 +291,13 @@ ruleTester.run('rule-name', rule, {
       ],
     },
   ],
-});
+})
 ```
 
 ### 3.2 Test Coverage Requirements
+
 - **Valid cases**: Test all valid code patterns
-- **Invalid cases**: Test all invalid code patterns  
+- **Invalid cases**: Test all invalid code patterns
 - **Options testing**: Test all configuration options
 - **Edge cases**: Test boundary conditions
 - **Autofix testing**: Test fix functionality
@@ -302,6 +305,7 @@ ruleTester.run('rule-name', rule, {
 - **Error messages**: Verify correct error messages
 
 ### 3.3 Integration Tests
+
 - Test plugin integration with ESLint
 - Test with different ESLint configurations
 - Test with other plugins for compatibility
@@ -309,7 +313,8 @@ ruleTester.run('rule-name', rule, {
 ## Phase 4: Documentation
 
 ### 4.1 Rule Documentation (docs/rules/[rule-name].md)
-```markdown
+
+````markdown
 # rule-name
 
 > Description of what the rule does
@@ -325,6 +330,7 @@ This rule aims to [description].
 ```javascript
 // Bad code examples
 ```
+````
 
 ### ✅ Correct
 
@@ -349,11 +355,12 @@ Explain when this rule should be disabled.
 ## Further Reading
 
 - [Related documentation](link)
-```
+
+````
 
 ### 4.2 README.md
 - **Installation instructions**
-- **Usage examples**  
+- **Usage examples**
 - **Configuration options**
 - **Rule documentation links**
 - **Contributing guidelines**
@@ -382,14 +389,16 @@ export default [
     },
   },
 ];
-```
+````
 
 ### 5.2 Code Formatting
+
 - **Prettier configuration**
 - **EditorConfig setup**
 - **Consistent code style**
 
 ### 5.3 CI/CD Pipeline (.github/workflows/ci.yml)
+
 ```yaml
 name: CI
 
@@ -420,6 +429,7 @@ jobs:
 ## Phase 6: Publishing Preparation
 
 ### 6.1 Pre-publish Checklist
+
 - [ ] All tests passing
 - [ ] Linting passes
 - [ ] Documentation complete
@@ -429,12 +439,14 @@ jobs:
 - [ ] Examples tested
 
 ### 6.2 npm Package Configuration
+
 - **Configure .npmignore**
 - **Set up package.json files field**
 - **Verify package size**
 - **Test npm pack output**
 
 ### 6.3 Semantic Versioning
+
 - **Major**: Breaking changes
 - **Minor**: New features (backward compatible)
 - **Patch**: Bug fixes (backward compatible)
@@ -442,6 +454,7 @@ jobs:
 ## Phase 7: Release and Maintenance
 
 ### 7.1 Publishing Process
+
 ```bash
 # Test package locally first
 npm pack
@@ -456,12 +469,14 @@ npm publish
 ```
 
 ### 7.2 Post-Release
+
 - **Create GitHub release**
 - **Update documentation**
 - **Announce on relevant platforms**
 - **Monitor for issues**
 
 ### 7.3 Maintenance Strategy
+
 - **Issue triage process**
 - **Security updates**
 - **ESLint compatibility updates**
@@ -470,16 +485,19 @@ npm publish
 ## Phase 8: Advanced Features
 
 ### 8.1 Multiple Rules Support
+
 - **Expand rule set** if needed
 - **Organized rule categories**
 - **Preset configurations**
 
 ### 8.2 Performance Optimization
+
 - **Rule performance testing**
 - **Memory usage optimization**
 - **AST traversal efficiency**
 
 ### 8.3 Developer Experience
+
 - **TypeScript support**
 - **IDE integration guides**
 - **Debug configuration**
@@ -487,6 +505,7 @@ npm publish
 ## Best Practices Summary
 
 ### Rule Development
+
 1. **Follow ESLint conventions** for rule structure
 2. **Use messageId** instead of direct messages
 3. **Provide comprehensive options** with validation
@@ -494,18 +513,21 @@ npm publish
 5. **Add suggestions** for complex fixes
 
 ### Testing
+
 1. **Comprehensive test coverage** (>95%)
 2. **Test edge cases** thoroughly
 3. **Validate error messages** and positions
 4. **Test with real-world code** examples
 
 ### Documentation
+
 1. **Clear rule descriptions** with examples
 2. **Document all options** with defaults
 3. **Provide migration guides** if needed
 4. **Keep README updated** with latest features
 
 ### Maintenance
+
 1. **Semantic versioning** strictly followed
 2. **Responsive issue handling**
 3. **Regular dependency updates**
@@ -514,6 +536,7 @@ npm publish
 ## Sequential Implementation Steps
 
 ### Step 1: Project Initialization (Day 1)
+
 1. Create directory structure
 2. Initialize npm project with `npm init`
 3. Set up package.json with proper configuration
@@ -521,12 +544,14 @@ npm publish
 5. Initialize Git repository
 
 ### Step 2: Core Plugin Structure (Day 1-2)
+
 1. Create plugin entry point (index.js)
 2. Set up meta information with package.json reading
 3. Create basic rule structure template
 4. Configure ESM exports
 
 ### Step 3: Rule Porting (Day 2-3)
+
 1. Analyze existing rule's AST patterns
 2. Extract rule logic and port to new structure
 3. Implement meta information (type, docs, schema)
@@ -534,6 +559,7 @@ npm publish
 5. Port configuration options with validation
 
 ### Step 4: Testing Implementation (Day 3-4)
+
 1. Set up RuleTester framework
 2. Create comprehensive test cases
 3. Test valid and invalid scenarios
@@ -541,6 +567,7 @@ npm publish
 5. Verify autofix functionality
 
 ### Step 5: Documentation (Day 4-5)
+
 1. Write detailed rule documentation
 2. Create usage examples
 3. Document configuration options
@@ -548,6 +575,7 @@ npm publish
 5. Add contributing guidelines
 
 ### Step 6: Quality Assurance (Day 5-6)
+
 1. Set up ESLint configuration for the plugin itself
 2. Add Prettier for code formatting
 3. Configure CI/CD pipeline
@@ -555,6 +583,7 @@ npm publish
 5. Performance optimization
 
 ### Step 7: Publishing Preparation (Day 6-7)
+
 1. Configure .npmignore and package files
 2. Test package locally with `npm pack`
 3. Verify functionality in test project
@@ -562,6 +591,7 @@ npm publish
 5. Set up semantic versioning
 
 ### Step 8: Release and Post-Release (Day 7)
+
 1. Publish to npm registry
 2. Create GitHub release
 3. Update documentation
@@ -571,6 +601,7 @@ npm publish
 ## Tools and Resources
 
 ### Essential Development Tools
+
 - **ESLint**: Core linting engine (>=9.0.0)
 - **RuleTester**: Official rule testing utility
 - **AST Explorer**: For understanding AST structure
@@ -578,12 +609,14 @@ npm publish
 - **Prettier**: Code formatting
 
 ### Development Workflow Tools
+
 - **np**: Automated release management
 - **GitHub Actions**: CI/CD automation
 - **semantic-release**: Version management
 - **Codecov**: Test coverage reporting
 
 ### Documentation and Communication
+
 - **Markdown**: Documentation format
 - **GitHub Pages**: Documentation hosting
 - **Shields.io**: Status badges
@@ -592,24 +625,28 @@ npm publish
 ## Key Implementation Considerations
 
 ### ESLint Compatibility
+
 - Support ESLint 9.x flat configuration format
 - Maintain backward compatibility when possible
 - Follow ESLint's plugin development guidelines
 - Use official ESLint APIs and utilities
 
 ### Modern JavaScript Features
+
 - Use ES modules (ESM) for plugin structure
 - Leverage async/await for asynchronous operations
 - Implement proper error handling
 - Use modern Node.js features (>=18.0.0)
 
 ### Performance Optimization
+
 - Minimize AST traversal overhead
 - Use selective node visiting patterns
 - Cache expensive computations
 - Profile rule performance regularly
 
 ### User Experience
+
 - Clear, actionable error messages
 - Comprehensive autofix capabilities
 - Intuitive configuration options
@@ -618,12 +655,14 @@ npm publish
 ## Success Metrics
 
 ### Technical Metrics
+
 - **Test Coverage**: >95%
 - **Performance**: <10ms per rule execution
 - **Compatibility**: ESLint 9.x+ support
 - **Bundle Size**: <100KB total
 
 ### Community Metrics
+
 - **Downloads**: Track npm download statistics
 - **Issues**: Response time <48 hours
 - **Stars**: GitHub repository engagement
@@ -641,4 +680,4 @@ npm publish
 **Total Initial Development**: 7 days
 **Ongoing Maintenance**: 2-4 hours per month
 
-This plan provides a structured, sequential approach to creating a professional ESLint plugin npm package that follows industry best practices and official ESLint guidelines. 
+This plan provides a structured, sequential approach to creating a professional ESLint plugin npm package that follows industry best practices and official ESLint guidelines.

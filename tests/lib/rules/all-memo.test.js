@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/all-memo.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/all-memo.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('all-memo', rule, {
   valid: [
@@ -106,4 +106,4 @@ ruleTester.run('all-memo', rule, {
       errors: [{ messageId: 'notMemoized' }],
     },
   ],
-});
+})

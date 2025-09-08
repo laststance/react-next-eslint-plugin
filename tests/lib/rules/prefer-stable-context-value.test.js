@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/prefer-stable-context-value.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/prefer-stable-context-value.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('prefer-stable-context-value', rule, {
   valid: [
@@ -56,4 +56,4 @@ ruleTester.run('prefer-stable-context-value', rule, {
       errors: [{ messageId: 'preferStable' }],
     },
   ],
-});
+})

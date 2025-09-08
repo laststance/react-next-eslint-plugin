@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/no-set-state-prop-drilling.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/no-set-state-prop-drilling.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('no-set-state-prop-drilling', rule, {
   valid: [
@@ -91,4 +91,4 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
       errors: [{ messageId: 'noPropDrillSetter' }],
     },
   ],
-});
+})

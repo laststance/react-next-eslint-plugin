@@ -7,6 +7,7 @@
 This rule aims to prevent JSX elements that are not properly returned or assigned, which typically indicates a missing `return` statement or improper JSX usage in React components.
 
 JSX elements should either be:
+
 - Returned from a function
 - Assigned to a variable
 - Wrapped in a block statement
@@ -18,25 +19,23 @@ JSX elements should either be:
 ```javascript
 function Component() {
   // JSX expression statement without return
-  <div>Hello World</div>;
+  ;<div>Hello World</div>
 }
 
 function Component() {
   // JSX fragment without return
-  <>Hello World</>;
+  ;<>Hello World</>
 }
 
 function Component() {
   // JSX in if statement without return or block
-  if (condition)
-    <div>Hello</div>;
+  if (condition) <div>Hello</div>
 }
 
 function Component() {
   if (condition) {
-    return <div>Hello</div>;
-  } else
-    <div>Goodbye</div>; // Missing return or block
+    return <div>Hello</div>
+  } else <div>Goodbye</div> // Missing return or block
 }
 ```
 
@@ -45,42 +44,42 @@ function Component() {
 ```javascript
 function Component() {
   // JSX returned from function
-  return <div>Hello World</div>;
+  return <div>Hello World</div>
 }
 
 function Component() {
   // JSX assigned to variable
-  const element = <div>Hello World</div>;
-  return element;
+  const element = <div>Hello World</div>
+  return element
 }
 
 function Component() {
   // JSX fragment returned
-  return <>Hello World</>;
+  return <>Hello World</>
 }
 
 function Component() {
   // JSX in if statement with return
   if (condition) {
-    return <div>Hello</div>;
+    return <div>Hello</div>
   }
 }
 
 function Component() {
   // JSX in if statement wrapped in block
   if (condition) {
-    const element = <div>Hello</div>;
-    doSomething(element);
-    return element;
+    const element = <div>Hello</div>
+    doSomething(element)
+    return element
   }
 }
 
 function Component() {
   // Proper if-else with returns
   if (condition) {
-    return <div>Hello</div>;
+    return <div>Hello</div>
   } else {
-    return <div>Goodbye</div>;
+    return <div>Goodbye</div>
   }
 }
 ```

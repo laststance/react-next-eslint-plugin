@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/no-jsx-without-return.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/no-jsx-without-return.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('no-jsx-without-return', rule, {
   valid: [
@@ -23,7 +23,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: JSX assigned to variable
     {
       code: `
@@ -33,7 +33,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: JSX fragment returned
     {
       code: `
@@ -42,7 +42,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: JSX in if statement with return
     {
       code: `
@@ -53,7 +53,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: JSX in if statement wrapped in block
     {
       code: `
@@ -65,7 +65,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: JSX in else statement with return
     {
       code: `
@@ -78,7 +78,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: Nested if-else with proper returns
     {
       code: `
@@ -91,7 +91,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
-    
+
     // Valid: Non-JSX expression statement
     {
       code: `
@@ -119,7 +119,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
-    
+
     // Invalid: JSX fragment expression
     {
       code: `
@@ -135,7 +135,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
-    
+
     // Invalid: JSX in if statement without return or block
     {
       code: `
@@ -152,7 +152,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
-    
+
     // Invalid: JSX in else statement without return or block
     {
       code: `
@@ -171,7 +171,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
-    
+
     // Invalid: Multiple JSX expression statements
     {
       code: `
@@ -193,7 +193,7 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
-    
+
     // Invalid: JSX in both if and else without proper handling
     {
       code: `
@@ -218,4 +218,4 @@ ruleTester.run('no-jsx-without-return', rule, {
       ],
     },
   ],
-});
+})

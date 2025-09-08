@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/no-deopt-use-callback.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/no-deopt-use-callback.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('no-deopt-use-callback', rule, {
   valid: [
@@ -88,4 +88,4 @@ ruleTester.run('no-deopt-use-callback', rule, {
       errors: [{ messageId: 'calledInsideInline' }],
     },
   ],
-});
+})

@@ -1,5 +1,5 @@
-import { RuleTester } from 'eslint';
-import rule from '../../../lib/rules/no-use-effect.js';
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/no-use-effect.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
       },
     },
   },
-});
+})
 
 ruleTester.run('no-use-effect', rule, {
   valid: [
@@ -94,4 +94,4 @@ ruleTester.run('no-use-effect', rule, {
       errors: [{ messageId: 'avoidUseEffect' }],
     },
   ],
-});
+})
