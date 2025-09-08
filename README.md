@@ -26,34 +26,35 @@ import lastStancePlugin from '@laststance/react-next-eslint-plugin';
 export default [
   {
     plugins: {
-      'laststance': lastStancePlugin,
+      laststance: lastStancePlugin,
     },
     rules: {
+      // Opt-in per rule
       'laststance/no-jsx-without-return': 'error',
+      'laststance/all-memo': 'warn',
+      'laststance/no-use-effect': 'warn',
+      'laststance/no-set-state-prop-drilling': 'warn',
+      'laststance/no-deopt-use-callback': 'warn',
+      'laststance/prefer-stable-context-value': 'warn',
+      'laststance/no-unstable-classname-prop': 'warn',
+      'laststance/no-client-fetch-in-server-components': 'error',
     },
   },
 ];
 ```
 
-### Using Recommended Configuration
-
-```javascript
-import lastStancePlugin from '@laststance/react-next-eslint-plugin';
-
-export default [
-  ...lastStancePlugin.configs.recommended,
-];
-```
-
 ## Rules
 
-<!-- begin auto-generated rules list -->
+These rules are provided by the plugin. Enable only those you need.
 
-| Rule | Description | Recommended |
-| ---- | ----------- | ----------- |
-| [no-jsx-without-return](docs/rules/no-jsx-without-return.md) | Disallow JSX elements not returned or assigned | ✅ |
-
-<!-- end auto-generated rules list -->
+- `laststance/no-jsx-without-return`: Disallow JSX elements not returned or assigned
+- `laststance/all-memo`: Enforce wrapping React function components with `React.memo`
+- `laststance/no-use-effect`: Discourage using `useEffect` directly in components; prefer semantic custom hooks
+- `laststance/no-set-state-prop-drilling`: Disallow passing `useState` setters via props; prefer semantic handlers or state management
+- `laststance/no-deopt-use-callback`: Flag meaningless `useCallback` usage with intrinsic elements or inline calls
+- `laststance/prefer-stable-context-value`: Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
+- `laststance/no-unstable-classname-prop`: Avoid unstable `className` expressions that change identity every render
+- `laststance/no-client-fetch-in-server-components`: Disallow client-only fetch libraries in Next.js Server Components
 
 ## Rule Details
 
@@ -77,15 +78,7 @@ function Component() {
 
 ## Configuration
 
-### Recommended Configuration
-
-The recommended configuration enables the `no-jsx-without-return` rule with error level.
-
-```javascript
-{
-  "laststance/no-jsx-without-return": "error"
-}
-```
+This plugin intentionally does not ship a bundled recommended config. Opt-in the rules that fit your codebase.
 
 ## Contributing
 
