@@ -1,0 +1,98 @@
+---
+globs: docs/**/*.md,README.md
+---
+
+# Documentation Standards
+
+When writing documentation in [docs/rules/](mdc:docs/rules/) or updating [README.md](mdc:README.md), follow these established documentation patterns.
+
+## 📖 Rule Documentation Template
+
+Each rule document should follow this structure (see [no-jsx-without-return.md](mdc:docs/rules/no-jsx-without-return.md) example):
+
+```markdown
+# rule-name
+
+Brief description of what the rule does and why it's important.
+
+## Rule Details
+
+Detailed explanation of the rule's purpose and behavior.
+
+## Examples
+
+### ❌ Incorrect
+
+```javascript
+// Bad example with explanation comment
+function Component() {
+  <div>Missing return</div> // This will trigger the rule
+}
+```
+
+### ✅ Correct  
+
+```javascript
+// Good example with explanation comment
+function Component() {
+  return <div>Proper return statement</div>
+}
+```
+
+## When Not To Use
+
+Optional section explaining scenarios where this rule might not be appropriate.
+
+## Configuration
+
+If the rule has options, document them here.
+```
+
+## 📋 README.md Structure
+
+The main README follows this pattern:
+
+1. **Header** - Package name, description, badges
+2. **Installation** - npm/yarn/pnpm commands
+3. **Usage** - Flat config examples (ESLint 9+)
+4. **Rules List** - All available rules with brief descriptions
+5. **Rule Details** - In-depth examples for each rule with ❌/✅ format
+6. **Configuration** - Usage guidelines and best practices
+7. **Contributing** - Development guidelines
+8. **License** - MIT license information
+
+## 🎨 Documentation Style Guidelines
+
+### Code Examples
+- Use **❌ Incorrect** and **✅ Correct** headers consistently
+- Include explanatory comments in code examples
+- Show realistic, practical examples from real-world usage
+- Group related examples together
+
+### Rule Descriptions  
+- Start with active voice explaining what the rule prevents/enforces
+- Explain the **why** (performance, bugs, best practices)
+- Use consistent terminology across all rules
+
+### Formatting Conventions
+- Use emoji headers for visual organization (📖 📋 🎨 etc.)
+- Code blocks should specify language for syntax highlighting
+- Use inline `code` formatting for rule names, function names, etc.
+- Link to related rules when relevant
+
+## 🔗 Cross-References
+
+- Rule documentation should link to corresponding rule file in lib/rules/
+- README should link to individual rule documentation
+- Use relative paths for internal links
+- Include GitHub URLs in rule metadata for external references
+
+## ✅ Documentation Checklist
+
+Before publishing documentation:
+- [ ] All code examples are valid and tested
+- [ ] Rule description matches the rule's actual behavior  
+- [ ] Examples cover main use cases and edge cases
+- [ ] Grammar and spelling are correct
+- [ ] Links are working and point to correct locations
+- [ ] Formatting is consistent with other rule docs

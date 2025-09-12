@@ -1,0 +1,40 @@
+---
+alwaysApply: true
+---
+
+# @laststance/react-next-eslint-plugin Project Overview
+
+This is an ESLint plugin for React and Next.js projects that provides custom linting rules to improve code quality and catch common mistakes.
+
+## 🏗️ Project Structure
+
+- **Entry Point**: [index.js](mdc:index.js) - Main plugin file that exports all rules
+- **Rules Directory**: [lib/rules/](mdc:lib/rules/) - Contains all ESLint rule implementations
+- **Tests**: [tests/lib/rules/](mdc:tests/lib/rules/) - Corresponding tests for each rule
+- **Documentation**: [docs/rules/](mdc:docs/rules/) - Markdown documentation for rules
+- **Package Config**: [package.json](mdc:package.json) - Node.js ESM project with Volta/pnpm
+
+## 🔧 Available Rules
+
+The plugin provides 9 custom rules focusing on React performance and Next.js best practices:
+
+1. **`no-jsx-without-return`** - Prevents missing return statements in JSX components
+2. **`all-memo`** - Enforces React.memo usage for performance optimization  
+3. **`no-use-effect`** - Promotes custom hooks over direct useEffect usage
+4. **`no-use-reducer`** - Prefers Redux Toolkit over useReducer for state management
+5. **`no-set-state-prop-drilling`** - Prevents passing setState directly through props
+6. **`no-deopt-use-callback`** - Flags meaningless useCallback usage with intrinsic elements
+7. **`prefer-stable-context-value`** - Requires stable Context.Provider values
+8. **`no-unstable-classname-prop`** - Prevents unstable className expressions
+9. **`no-client-fetch-in-server-components`** - Disallows client-side fetch in Next.js Server Components
+
+## 🚀 Development Commands
+
+- `pnpm test` - Run all tests with Mocha
+- `pnpm lint` - ESLint check
+- `pnpm format` - Prettier formatting
+- Node.js 22.16.0 via Volta
+
+## 📦 Architecture
+
+This plugin follows ESLint's flat config format (v9+) and uses ES modules throughout. Each rule is a separate module that exports a rule definition with `meta` and `create` properties following ESLint's rule API.

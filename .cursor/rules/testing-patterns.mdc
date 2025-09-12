@@ -1,0 +1,108 @@
+---
+globs: tests/**/*.test.js
+---
+
+# ESLint Rule Testing Patterns
+
+When writing tests in [tests/lib/rules/](mdc:tests/lib/rules/), follow the established testing patterns used throughout the project.
+
+## 🧪 Test Structure Template
+
+Each test file should follow this Mocha-based structure:
+
+```javascript
+import { RuleTester } from 'eslint'
+import rule from '../../../lib/rules/rule-name.js'
+
+const ruleTester = new RuleTester({
+  languageOptions: {
+    ecmaVersion: 2024,
+    sourceType: 'module',
+    parserOptions: {
+      ecmaFeatures: {
+        jsx: true,
+      },
+    },
+  },
+})
+
+ruleTester.run('rule-name', rule, {
+  valid: [
+    // Valid code examples that should NOT trigger the rule
+  ],
+  invalid: [
+    // Invalid code examples that SHOULD trigger the rule
+  ],
+})
+```
+
+## ✅ Valid Test Cases
+
+Structure valid test cases to cover:
+
+```javascript
+valid: [
+  // Simple valid case
+  'const x = 1',
+  
+  // Valid case with React/JSX
+  'function Component() { return <div>Hello</div> }',
+  
+  // Edge cases that should be allowed
+  {
+    code: 'complex valid code example',
+    options: [/* rule options if needed */],
+  },
+]
+```
+
+## ❌ Invalid Test Cases
+
+Structure invalid test cases with expected errors:
+
+```javascript
+invalid: [
+  {
+    code: 'function Component() { <div>Missing return</div> }',
+    errors: [
+      {
+        messageId: 'jsxWithoutReturn', // Must match rule's messageId
+        line: 1,
+        column: 21, // Optional: specify exact error location
+      },
+    ],
+  },
+  
+  // Multiple errors in one test case
+  {
+    code: 'complex invalid code with multiple issues',
+    errors: [
+      { messageId: 'error1' },
+      { messageId: 'error2' },
+    ],
+  },
+]
+```
+
+## 🎯 Test Coverage Requirements
+
+Ensure comprehensive coverage:
+
+1. **Happy Path**: Valid usage patterns
+2. **Edge Cases**: Boundary conditions and unusual but valid syntax
+3. **Error Cases**: All possible ways the rule can be violated
+4. **React Specific**: JSX, hooks, components, and React patterns
+5. **Next.js Specific**: Server Components, client directives, API routes
+
+## 🚀 Running Tests
+
+- Run specific test: `pnpm test -- tests/lib/rules/rule-name.test.js`
+- Run all tests: `pnpm test`
+- Watch mode: `pnpm test:watch`
+
+## 📝 Test Organization
+
+- One test file per rule matching the rule filename
+- Group related test cases logically
+- Use descriptive test case names and comments
+- Test both TypeScript and JavaScript syntax when relevant

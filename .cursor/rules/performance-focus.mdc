@@ -1,0 +1,76 @@
+---
+description: Performance optimization patterns and anti-patterns
+---
+
+# Performance Optimization Focus
+
+This ESLint plugin specializes in React performance optimizations and Next.js best practices. Understanding these patterns is crucial for effective rule development.
+
+## 🚀 Core Performance Principles
+
+### 1. Referential Equality
+React's reconciliation relies heavily on referential equality for optimization:
+- **Stable references** prevent unnecessary re-renders
+- **Unstable references** (new objects/functions each render) break memoization
+- Rules like `prefer-stable-context-value` and `no-unstable-classname-prop` enforce this
+
+### 2. Memoization Strategy
+The plugin promotes comprehensive memoization:
+- **`all-memo`** - Wrap all components with React.memo
+- **`no-deopt-use-callback`** - Ensure useCallback serves a purpose
+- **Semantic handlers** over raw state setters (no-set-state-prop-drilling)
+
+### 3. Hook Organization
+Promote clean, semantic hook usage:
+- **`no-use-effect`** - Prefer custom hooks over inline useEffect
+- **`no-use-reducer`** - Prefer Redux Toolkit for predictable state management
+- Better testing, reusability, and maintainability
+
+## 🎯 Next.js Specific Optimizations
+
+### Server vs Client Boundaries
+- **`no-client-fetch-in-server-components`** - Prevent hydration issues
+- Proper separation of server and client concerns
+- Leverage Server Components for better performance
+
+### Runtime Optimization
+- Server Components run on server (faster initial load)
+- Client Components handle interactivity
+- Proper data fetching patterns prevent waterfalls
+
+## 🔍 Common Performance Anti-Patterns
+
+The rules target these frequent mistakes:
+
+1. **Missing Returns** (`no-jsx-without-return`)
+   - Leads to undefined renders and runtime errors
+   - Breaks component expectations
+
+2. **Unstable Props** (multiple rules)
+   - New objects/functions on every render
+   - Breaks React.memo and other optimizations
+   - Causes unnecessary child re-renders
+
+3. **Improper State Management**
+   - Direct setState prop drilling creates tight coupling
+   - useReducer complexity without benefits of Redux DevTools
+   - Missing semantic abstraction layers
+
+## 📊 Rule Priority Levels
+
+**Error Level** (critical for functionality):
+- `no-jsx-without-return` - Runtime errors
+- `no-client-fetch-in-server-components` - Hydration/SSR issues
+
+**Warning Level** (performance optimizations):
+- `all-memo`, `no-deopt-use-callback`, `prefer-stable-context-value`
+- `no-unstable-classname-prop`, `no-set-state-prop-drilling`
+- `no-use-effect`, `no-use-reducer`
+
+## 🛠️ Development Guidelines
+
+When creating new rules:
+1. **Focus on measurable impact** - Performance or DX improvements
+2. **Provide clear alternatives** - Don't just forbid, guide toward better patterns
+3. **Consider bundle size** - Some optimizations trade memory for CPU
+4. **Test with realistic codebases** - Ensure rules work in practice, not just theory

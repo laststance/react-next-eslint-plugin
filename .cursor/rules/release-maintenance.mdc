@@ -1,0 +1,84 @@
+---
+description: Release process and maintenance guidelines  
+---
+
+# Release and Maintenance Guidelines
+
+Guidelines for maintaining and releasing updates to the @laststance/react-next-eslint-plugin.
+
+## 📦 Release Process
+
+### Pre-Release Checklist
+Based on [package.json](mdc:package.json) `prepublishOnly` script:
+
+1. **Tests Pass** - `pnpm test` (all Mocha tests)
+2. **Linting Clean** - `pnpm lint` (ESLint validation)
+3. **Formatting Applied** - `pnpm format` (Prettier)
+4. **Documentation Updated** - [README.md](mdc:README.md) reflects all rule changes
+
+### Version Management
+- Follow **semantic versioning** (semver)
+- **Major**: Breaking changes to rule behavior or new required peer deps  
+- **Minor**: New rules or non-breaking enhancements
+- **Patch**: Bug fixes, documentation updates, test improvements
+
+### File Inclusion  
+The `files` array in package.json determines what gets published:
+- `index.js` - Main entry point
+- `lib/` - All rule implementations  
+- `docs/` - Rule documentation
+- `README.md`, `LICENSE` - Package metadata
+
+## 🔧 Maintenance Workflows
+
+### Adding New Rules
+1. **Create rule file** in [lib/rules/](mdc:lib/rules/)
+2. **Add test file** in [tests/lib/rules/](mdc:tests/lib/rules/)
+3. **Create documentation** in [docs/rules/](mdc:docs/rules/)
+4. **Update exports** in [index.js](mdc:index.js)
+5. **Update README** with rule description and examples
+6. **Test thoroughly** with real-world codebases
+
+### Updating Existing Rules
+1. **Maintain backward compatibility** when possible
+2. **Update tests** to reflect behavior changes
+3. **Update documentation** with new examples
+4. **Consider deprecation path** for breaking changes
+5. **Version appropriately** (patch vs minor vs major)
+
+## 🎯 Quality Standards
+
+### Rule Quality
+- **Clear, actionable error messages** with context
+- **Comprehensive test coverage** (valid/invalid cases)
+- **Performance optimized** (minimal AST traversal)
+- **Well-documented** with rationale and examples
+
+### Codebase Health
+- **ESLint 9+ flat config support** (primary target)
+- **ES modules throughout** (type: "module")
+- **Node.js 20+** support (engines requirement)
+- **Zero dependencies** in runtime (dev deps only)
+
+## 🚨 Breaking Changes
+
+Handle breaking changes carefully:
+- **Document migration path** clearly
+- **Provide codemods** when feasible  
+- **Give advance notice** in previous minor versions
+- **Follow major version semantics** strictly
+
+## 📊 Metrics and Monitoring
+
+Track these metrics for rule effectiveness:
+- **Adoption rates** (which rules are commonly used)
+- **False positive reports** (GitHub issues)
+- **Performance impact** (linting speed with rules enabled)
+- **Community feedback** (feature requests, bug reports)
+
+## 🤝 Community Engagement
+
+- **Respond promptly** to GitHub issues
+- **Consider feature requests** that align with plugin goals
+- **Accept quality PRs** with tests and documentation
+- **Maintain compatibility** with popular React/Next.js patterns
