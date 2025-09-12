@@ -34,15 +34,17 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepublishOnly": "npm test && npm run lint"
+    "push-release-commit": "npx push-release-commit"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0"
   },
   "devDependencies": {
+    "@laststance/npm-publish-tool": "^1.6.9",
     "eslint": "^9.0.0",
     "mocha": "^10.0.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "release-it": "^19.0.4"
   },
   "files": [
     "index.js",
