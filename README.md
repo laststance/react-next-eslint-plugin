@@ -37,7 +37,6 @@ export default [
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
       'laststance/no-unstable-classname-prop': 'warn',
-      'laststance/no-client-fetch-in-server-components': 'error',
     },
   },
 ]
@@ -54,7 +53,6 @@ These rules are provided by the plugin. Enable only those you need.
 - `laststance/no-deopt-use-callback`: Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - `laststance/prefer-stable-context-value`: Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - `laststance/no-unstable-classname-prop`: Avoid unstable `className` expressions that change identity every render
-- `laststance/no-client-fetch-in-server-components`: Disallow client-only fetch libraries in Next.js Server Components
 
 ## Rule Details
 
@@ -434,48 +432,6 @@ function Component({ isActive, theme }) {
 }
 ```
 
-### `no-client-fetch-in-server-components`
-
-This rule prevents using client-side fetch libraries (like `axios` or `$fetch`) in Next.js Server Components. Server Components should use the native Web Fetch API or move client-side data fetching to Client Components.
-
-**❌ Incorrect**
-
-```javascript
-import axios from 'axios'
-
-// Server Component (no "use client") using client-side library
-export default async function UserPage({ params }) {
-  const response = await axios.get(`/api/users/${params.id}`)
-  return <div>{response.data.name}</div>
-}
-```
-
-**✅ Correct**
-
-```javascript
-// Option 1: Use native fetch in Server Component
-export default async function UserPage({ params }) {
-  const response = await fetch(`${process.env.API_URL}/users/${params.id}`)
-  const user = await response.json()
-  return <div>{user.name}</div>
-}
-
-// Option 2: Move to Client Component for client-side libraries
-'use client'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-
-export default function UserPage({ params }) {
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    axios.get(`/api/users/${params.id}`)
-      .then(response => setUser(response.data))
-  }, [params.id])
-
-  return <div>{user?.name}</div>
-}
-```
 
 ## Configuration
 

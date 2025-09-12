@@ -16,7 +16,7 @@ This is an ESLint plugin for React and Next.js projects that provides custom lin
 
 ## 🔧 Available Rules
 
-The plugin provides 8 custom rules focusing on React performance and Next.js best practices:
+The plugin provides 7 custom rules focusing on React performance and Next.js best practices:
 
 1. **`no-jsx-without-return`** - Prevents missing return statements in JSX components
 2. **`all-memo`** - Enforces React.memo usage for performance optimization  
@@ -25,7 +25,6 @@ The plugin provides 8 custom rules focusing on React performance and Next.js bes
 5. **`no-deopt-use-callback`** - Flags meaningless useCallback usage with intrinsic elements
 6. **`prefer-stable-context-value`** - Requires stable Context.Provider values
 7. **`no-unstable-classname-prop`** - Prevents unstable className expressions
-8. **`no-client-fetch-in-server-components`** - Disallows client-side fetch in Next.js Server Components
 
 ## 🚀 Development Commands
 
