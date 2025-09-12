@@ -13,7 +13,6 @@ const pkg = JSON.parse(
 // Import rules
 import noJsxWithoutReturn from './lib/rules/no-jsx-without-return.js'
 import allMemo from './lib/rules/all-memo.js'
-import noUseEffect from './lib/rules/no-use-effect.js'
 import noUseReducer from './lib/rules/no-use-reducer.js'
 import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
@@ -30,7 +29,6 @@ const plugin = {
   rules: {
     'no-jsx-without-return': noJsxWithoutReturn,
     'all-memo': allMemo,
-    'no-use-effect': noUseEffect,
     'no-use-reducer': noUseReducer,
     'no-set-state-prop-drilling': noSetStatePropDrilling,
     'no-deopt-use-callback': noDeoptUseCallback,

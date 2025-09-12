@@ -32,7 +32,6 @@ export default [
       // Opt-in per rule
       'laststance/no-jsx-without-return': 'error',
       'laststance/all-memo': 'warn',
-      'laststance/no-use-effect': 'warn',
       'laststance/no-use-reducer': 'warn',
       'laststance/no-set-state-prop-drilling': 'warn',
       'laststance/no-deopt-use-callback': 'warn',
@@ -50,7 +49,6 @@ These rules are provided by the plugin. Enable only those you need.
 
 - `laststance/no-jsx-without-return`: Disallow JSX elements not returned or assigned
 - `laststance/all-memo`: Enforce wrapping React function components with `React.memo`
-- `laststance/no-use-effect`: Discourage using `useEffect` directly in components; prefer semantic custom hooks
 - `laststance/no-use-reducer`: Disallow `useReducer` hook in favor of Redux Toolkit to eliminate bugs
 - `laststance/no-set-state-prop-drilling`: Disallow passing `useState` setters via props; prefer semantic handlers or state management
 - `laststance/no-deopt-use-callback`: Flag meaningless `useCallback` usage with intrinsic elements or inline calls
@@ -166,52 +164,6 @@ function ProductItemBase({ title, price }) {
 const ProductItem = memo(ProductItemBase)
 ```
 
-### `no-use-effect`
-
-This rule discourages using `useEffect` directly inside React components and promotes creating semantic custom hooks instead. This improves code organization, reusability, and testability.
-
-**❌ Incorrect**
-
-```javascript
-import { useEffect, useState } from 'react'
-
-function UserProfile({ userId }) {
-  const [user, setUser] = useState(null)
-
-  // Direct useEffect usage in component
-  useEffect(() => {
-    fetch(`/api/users/${userId}`)
-      .then((res) => res.json())
-      .then(setUser)
-  }, [userId])
-
-  return <div>{user?.name}</div>
-}
-```
-
-**✅ Correct**
-
-```javascript
-import { useEffect, useState } from 'react'
-
-// Custom hook with semantic meaning
-function useUser(userId) {
-  const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    fetch(`/api/users/${userId}`)
-      .then((res) => res.json())
-      .then(setUser)
-  }, [userId])
-
-  return user
-}
-
-function UserProfile({ userId }) {
-  const user = useUser(userId) // Clean, semantic usage
-  return <div>{user?.name}</div>
-}
-```
 
 ### `no-use-reducer`
 
