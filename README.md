@@ -44,15 +44,15 @@ export default [
 
 ## Rules
 
-These rules are provided by the plugin. Enable only those you need.
+These rules are provided by the plugin. Enable only those you need. Click on each rule for detailed documentation.
 
-- `laststance/no-jsx-without-return`: Disallow JSX elements not returned or assigned
-- `laststance/all-memo`: Enforce wrapping React function components with `React.memo`
-- `laststance/no-use-reducer`: Disallow `useReducer` hook in favor of Redux Toolkit to eliminate bugs
-- `laststance/no-set-state-prop-drilling`: Disallow passing `useState` setters via props; prefer semantic handlers or state management
-- `laststance/no-deopt-use-callback`: Flag meaningless `useCallback` usage with intrinsic elements or inline calls
-- `laststance/prefer-stable-context-value`: Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
-- `laststance/no-unstable-classname-prop`: Avoid unstable `className` expressions that change identity every render
+- [`laststance/no-jsx-without-return`](docs/rules/no-jsx-without-return.md): Disallow JSX elements not returned or assigned
+- [`laststance/all-memo`](docs/rules/all-memo.md): Enforce wrapping React function components with `React.memo`
+- [`laststance/no-use-reducer`](docs/rules/no-use-reducer.md): Disallow `useReducer` hook in favor of Redux Toolkit to eliminate bugs
+- [`laststance/no-set-state-prop-drilling`](docs/rules/no-set-state-prop-drilling.md): Disallow passing `useState` setters via props; prefer semantic handlers or state management
+- [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
+- [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
+- [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
 
 ## Rule Details
 
