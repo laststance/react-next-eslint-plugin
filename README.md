@@ -5,15 +5,15 @@ ESLint plugin for React and Next.js projects with rules to improve code quality 
 ## Installation
 
 ```bash
-npm install --save-dev @laststance/react-next-eslint-plugin
+npm install --save-dev @laststance/react-next-eslint-plugin@latest
 ```
 
 ```bash
-yarn add --dev @laststance/react-next-eslint-plugin
+yarn add --dev @laststance/react-next-eslint-plugin@latest
 ```
 
 ```bash
-pnpm add --save-dev @laststance/react-next-eslint-plugin
+pnpm add --save-dev @laststance/react-next-eslint-plugin@latest
 ```
 
 ## Usage
