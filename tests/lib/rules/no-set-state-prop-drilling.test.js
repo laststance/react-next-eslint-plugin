@@ -78,6 +78,24 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
         }
       `,
     },
+    // Memoizing semantic actions object keeps props stable
+    {
+      code: `
+        import React, { useMemo, useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          const actions = useMemo(
+            () => ({
+              increment() {
+                setCount((c) => c + 1);
+              },
+            }),
+            [setCount],
+          );
+          return <Child actions={actions} />;
+        }
+      `,
+    },
   ],
   invalid: [
     // Direct prop drilling of setter in JSX
@@ -153,6 +171,41 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
         function Parent() {
           const [count, setCount] = useState(0);
           return createElement(Child, { dispatcher: setCount });
+        }
+      `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Multiple setters drilled through JSX each warn
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Dashboard() {
+          const [count, setCount] = useState(0);
+          const [open, setOpen] = useState(false);
+          return (
+            <>
+              <Counter onIncrement={setCount} />
+              <Modal onDismiss={setOpen} />
+            </>
+          );
+        }
+      `,
+      errors: [
+        { messageId: 'noPropDrillSetter' },
+        { messageId: 'noPropDrillSetter' },
+      ],
+    },
+    // React.createElement props that include multiple setters are rejected
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          const [open, setOpen] = useState(false);
+          return React.createElement(Child, {
+            onIncrement: setCount,
+            onToggle: setOpen,
+          });
         }
       `,
       errors: [{ messageId: 'noPropDrillSetter' }],

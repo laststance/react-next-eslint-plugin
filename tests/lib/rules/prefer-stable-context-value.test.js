@@ -42,6 +42,40 @@ ruleTester.run('prefer-stable-context-value', rule, {
         }
       `,
     },
+    {
+      code: `
+        import React, { useMemo } from 'react';
+        const ThemeCtx = React.createContext(null);
+        const LocaleCtx = React.createContext(null);
+        function Shell({ theme, locale }) {
+          const themeValue = useMemo(() => ({ theme }), [theme]);
+          const localeValue = useMemo(() => ({ locale }), [locale]);
+          return (
+            <ThemeCtx.Provider value={themeValue}>
+              <LocaleCtx.Provider value={localeValue}>
+                <div />
+              </LocaleCtx.Provider>
+            </ThemeCtx.Provider>
+          );
+        }
+      `,
+    },
+    {
+      code: `
+        import React, { useMemo } from 'react';
+        const SettingsCtx = React.createContext(null);
+        function App({ base, accent }) {
+          const stable = useMemo(
+            () => ({
+              ...base,
+              accent,
+            }),
+            [base, accent],
+          );
+          return <SettingsCtx.Provider value={stable}><div /></SettingsCtx.Provider>;
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -78,6 +112,34 @@ ruleTester.run('prefer-stable-context-value', rule, {
         const Ctx = React.createContext(null);
         function App() {
           return <Ctx.Provider value={{ ...base, theme: 'dark' }}><div/></Ctx.Provider>;
+        }
+      `,
+      errors: [{ messageId: 'preferStable' }],
+    },
+    {
+      code: `
+        const ThemeCtx = React.createContext(null);
+        const LocaleCtx = React.createContext(null);
+        function Shell() {
+          return (
+            <ThemeCtx.Provider value={{ palette: 'blue' }}>
+              <LocaleCtx.Provider value={['en', 'US']}>
+                <div />
+              </LocaleCtx.Provider>
+            </ThemeCtx.Provider>
+          );
+        }
+      `,
+      errors: [
+        { messageId: 'preferStable' },
+        { messageId: 'preferStable' },
+      ],
+    },
+    {
+      code: `
+        const ConfigCtx = React.createContext(null);
+        function App() {
+          return <ConfigCtx.Provider value={() => ({ retries: 1 })}><div/></ConfigCtx.Provider>;
         }
       `,
       errors: [{ messageId: 'preferStable' }],

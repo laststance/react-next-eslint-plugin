@@ -87,6 +87,33 @@ ruleTester.run('all-memo', rule, {
         export { Wrapped as Renamed };
       `,
     },
+    // React.forwardRef wrapped by memo stays valid
+    {
+      code: `
+        import React, { memo } from 'react';
+        const InputField = memo(
+          React.forwardRef(function InputField(props, ref) {
+            return <input ref={ref} {...props} />;
+          }),
+        );
+        export default InputField;
+      `,
+    },
+    // Memoized component with additional metadata stays valid
+    {
+      code: `
+        import { memo } from 'react';
+        const Toolbar = memo(function Toolbar() {
+          return (
+            <header>
+              <div />
+            </header>
+          );
+        });
+        Toolbar.displayName = 'AppToolbar';
+        export default Toolbar;
+      `,
+    },
   ],
   invalid: [
     // Variable arrow component not memoized
@@ -147,6 +174,22 @@ ruleTester.run('all-memo', rule, {
         export default Hello;
       `,
       errors: [{ messageId: 'notMemoized' }],
+    },
+    // Components with nested declarations still need memoization
+    {
+      code: `
+        const Layout = () => {
+          function Sidebar() {
+            return <aside />;
+          }
+          return <Sidebar />;
+        };
+        export default Layout;
+      `,
+      errors: [
+        { messageId: 'notMemoized' },
+        { messageId: 'notMemoized' },
+      ],
     },
   ],
 })

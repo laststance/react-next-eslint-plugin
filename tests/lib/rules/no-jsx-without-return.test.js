@@ -101,6 +101,41 @@ ruleTester.run('no-jsx-without-return', rule, {
         }
       `,
     },
+    // Valid: Switch statement returns JSX per branch
+    {
+      code: `
+        function Component(kind) {
+          switch (kind) {
+            case 'a':
+              return <span>A</span>;
+            case 'b':
+              return <span>B</span>;
+            default:
+              return null;
+          }
+        }
+      `,
+    },
+    // Valid: Try/catch ensures JSX is returned explicitly
+    {
+      code: `
+        function Component() {
+          try {
+            return <div>ok</div>;
+          } catch (error) {
+            return <div role="alert">fail</div>;
+          }
+        }
+      `,
+    },
+    // Valid: Array.map immediately returns JSX elements
+    {
+      code: `
+        function List({ items }) {
+          return items.map((item) => <li key={item.id}>{item.label}</li>);
+        }
+      `,
+    },
   ],
 
   invalid: [
@@ -245,6 +280,59 @@ ruleTester.run('no-jsx-without-return', rule, {
       errors: [
         {
           messageId: 'jsxInIfWithoutReturn',
+        },
+      ],
+    },
+    // Invalid: Switch case with bare JSX expression
+    {
+      code: `
+        function Component(kind) {
+          switch (kind) {
+            case 'danger':
+              <div>Watch out</div>;
+              break;
+            default:
+              return null;
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'jsxWithoutReturn',
+        },
+      ],
+    },
+    // Invalid: Try block body containing JSX expression without return
+    {
+      code: `
+        function Component() {
+          try {
+            <div>noop</div>;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'jsxWithoutReturn',
+        },
+      ],
+    },
+    // Invalid: Loop body with bare JSX expression
+    {
+      code: `
+        function Component() {
+          let count = 0;
+          while (count < 1) {
+            <div>loop</div>;
+            count++;
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'jsxWithoutReturn',
         },
       ],
     },

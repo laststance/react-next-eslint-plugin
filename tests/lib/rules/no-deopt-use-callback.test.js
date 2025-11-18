@@ -65,6 +65,34 @@ ruleTester.run('no-deopt-use-callback', rule, {
         }
       `,
     },
+    // Conditional branches forwarding callbacks only into memoized children are fine
+    {
+      code: `
+        import React, { memo, useCallback } from 'react';
+        const MemoButton = memo(function MemoButton(props) {
+          return <button {...props} />;
+        });
+        function Screen({ active }) {
+          const handlePress = useCallback(() => {}, []);
+          return active ? <MemoButton onPress={handlePress} /> : null;
+        }
+      `,
+    },
+    // Mapping over data while passing stabilized handlers to memoized items
+    {
+      code: `
+        import React, { memo, useCallback } from 'react';
+        const ListItem = memo(function ListItem(props) {
+          return <li {...props} />;
+        });
+        function Screen({ items }) {
+          const handleSelect = useCallback(() => {}, []);
+          return items.map((item) => (
+            <ListItem key={item.id} onSelect={handleSelect} />
+          ));
+        }
+      `,
+    },
   ],
   invalid: [
     // Passing useCallback result directly to intrinsic
@@ -154,6 +182,43 @@ ruleTester.run('no-deopt-use-callback', rule, {
         };
       `,
       errors: [{ messageId: 'calledInsideInline' }],
+    },
+    // Multiple callbacks passed to intrinsic props report individually
+    {
+      code: `
+        import { useCallback } from 'react';
+        function Screen() {
+          const handleClick = useCallback(() => {}, []);
+          const handleFocus = useCallback(() => {}, []);
+          return (
+            <div onClick={handleClick} onFocus={() => handleFocus()}>
+              hello
+            </div>
+          );
+        }
+      `,
+      errors: [
+        { messageId: 'passToIntrinsic' },
+        { messageId: 'calledInsideInline' },
+      ],
+    },
+    // React.createElement intrinsic props with multiple stabilized callbacks
+    {
+      code: `
+        import React, { useCallback } from 'react';
+        function Screen() {
+          const enter = useCallback(() => {}, []);
+          const leave = useCallback(() => {}, []);
+          return React.createElement('button', {
+            onMouseEnter: enter,
+            onMouseLeave: () => leave(),
+          });
+        }
+      `,
+      errors: [
+        { messageId: 'passToIntrinsic' },
+        { messageId: 'calledInsideInline' },
+      ],
     },
   ],
 })
