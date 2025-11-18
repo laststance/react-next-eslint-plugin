@@ -18,6 +18,7 @@ import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import preferStableContextValue from './lib/rules/prefer-stable-context-value.js'
 import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js'
+import usecallbackForMemoizedComponent from './lib/rules/usecallback-for-memoized-component.js'
 
 const plugin = {
   meta: {
@@ -33,6 +34,7 @@ const plugin = {
     'no-deopt-use-callback': noDeoptUseCallback,
     'prefer-stable-context-value': preferStableContextValue,
     'no-unstable-classname-prop': noUnstableClassnameProp,
+    'usecallback-for-memoized-component': usecallbackForMemoizedComponent,
   },
 }
 

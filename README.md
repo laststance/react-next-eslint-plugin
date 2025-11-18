@@ -37,6 +37,7 @@ export default [
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
       'laststance/no-unstable-classname-prop': 'warn',
+      'laststance/usecallback-for-memoized-component': 'warn',
     },
   },
 ]
@@ -53,6 +54,7 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
+- [`laststance/usecallback-for-memoized-component`](docs/rules/usecallback-for-memoized-component.md): Ensure function props sent to memoized components are wrapped in `useCallback`
 
 ## Rule Details
 
