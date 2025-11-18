@@ -2,7 +2,7 @@
 
 exports[`ESLint integration snapshot > captures plugin warnings for the demo app 1`] = `
 "
-/Users/ryotamurakami/laststance/react-next-eslint-plugin/apps/todo-lint-app/src/app/page.tsx
+<projectRoot>/src/app/page.tsx
   265:15  warning  Avoid passing a useCallback-wrapped function "meaninglessFocus" to an intrinsic element. useCallback is intended to stabilize function props for memoized components to prevent unnecessary re-renders. Prefer an inline handler or plain function instead  laststance/no-deopt-use-callback
   266:21  warning  Avoid passing a useMemo result "uselessMemoizedStyle" to an intrinsic element. useMemo is intended to stabilize values for memoized components or expensive computations, so inline them here instead                                                       laststance/no-deopt-use-memo
   274:23  warning  Component "PlainActionButton" receives a new inline function for prop "onPress". Wrap it with useCallback to keep the reference stable                                                                                                                      laststance/usecallback-might-work

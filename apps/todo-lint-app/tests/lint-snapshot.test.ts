@@ -11,7 +11,16 @@ describe('ESLint integration snapshot', () => {
     const results = await eslint.lintFiles(['src'])
     const formatter = await eslint.loadFormatter('stylish')
     const output = formatter.format(results)
+    const projectRootNoTrailingSep = projectRoot.endsWith(path.sep)
+      ? projectRoot.slice(0, -path.sep.length)
+      : projectRoot
 
-    expect(output).toMatchSnapshot()
+    const normalizedOutput = output
+      .split(`${projectRootNoTrailingSep}${path.sep}`)
+      .join('<projectRoot>/')
+      .split(projectRootNoTrailingSep)
+      .join('<projectRoot>')
+
+    expect(normalizedOutput).toMatchSnapshot()
   })
 })
