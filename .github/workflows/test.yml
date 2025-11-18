@@ -54,5 +54,8 @@ jobs:
           pnpm lint
           pnpm test
 
+      - name: Type check plugin typings
+        run: pnpm typecheck
+
       - name: Run demo app ESLint snapshot suite
         run: pnpm --filter todo-lint-app test

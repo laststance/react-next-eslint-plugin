@@ -85,6 +85,10 @@ pnpm --filter todo-lint-app test -- --update
 pnpm --filter todo-lint-app lint
 ```
 
+### TypeScript Support
+
+The published package ships `index.d.ts` typings so flat-config files can import the plugin with autocomplete. Run `pnpm typecheck` to ensure the declaration files stay in sync when adding new rules.
+
 ## Rule Details
 
 ### `no-jsx-without-return`
