@@ -64,6 +64,27 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/usememo-for-memoized-component`](docs/rules/usememo-for-memoized-component.md): Ensure object/array props to memoized components are wrapped in `useMemo`
 - [`laststance/usememo-might-work`](docs/rules/usememo-might-work.md): Ensure custom components receive `useMemo`-stable object/array props
 
+## Monorepo Workspace & Demo App
+
+The repository now uses a pnpm workspace (`pnpm-workspace.yaml`). In addition to the plugin package located at the root, there is a Next.js TODO playground under `apps/todo-lint-app` that intentionally mixes code which should pass/fail the custom rules.
+
+- `apps/todo-lint-app`: Generated with `create-next-app`, wired to consume the local plugin, and equipped with Vitest snapshot tests that execute ESLint and capture its output.
+
+See [`docs/demo-playground.md`](docs/demo-playground.md) for detailed guidance on when and how to refresh the playground snapshot.
+
+Useful commands:
+
+```bash
+# Run Vitest snapshot tests inside the demo app
+pnpm --filter todo-lint-app test
+
+# Update the stored ESLint snapshot after rule/message changes
+pnpm --filter todo-lint-app test -- --update
+
+# Lint only the demo app using the workspace plugin build
+pnpm --filter todo-lint-app lint
+```
+
 ## Rule Details
 
 ### `no-jsx-without-return`

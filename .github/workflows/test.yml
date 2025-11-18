@@ -30,6 +30,8 @@ jobs:
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
 
       - name: Get pnpm store directory
         shell: bash
@@ -47,5 +49,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests
-        run: pnpm test
+      - name: Lint & test plugin package
+        run: |
+          pnpm lint
+          pnpm test
+
+      - name: Run demo app ESLint snapshot suite
+        run: pnpm --filter todo-lint-app test

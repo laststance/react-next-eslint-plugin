@@ -8,6 +8,10 @@ pnpm-debug.log*
 # Distribution
 dist/
 build/
+.next/
+
+# Workspace app artifacts
+apps/*/.next/
 
 # IDE files
 .vscode/
