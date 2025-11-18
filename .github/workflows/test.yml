@@ -30,8 +30,6 @@ jobs:
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.15.1
 
       - name: Get pnpm store directory
         shell: bash
