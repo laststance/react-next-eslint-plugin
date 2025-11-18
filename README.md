@@ -35,9 +35,13 @@ export default [
       'laststance/no-use-reducer': 'warn',
       'laststance/no-set-state-prop-drilling': 'warn',
       'laststance/no-deopt-use-callback': 'warn',
+      'laststance/no-deopt-use-memo': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
       'laststance/no-unstable-classname-prop': 'warn',
+      'laststance/usecallback-might-work': 'warn',
       'laststance/usecallback-for-memoized-component': 'warn',
+      'laststance/usememo-for-memoized-component': 'warn',
+      'laststance/usememo-might-work': 'warn',
     },
   },
 ]
@@ -52,9 +56,13 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/no-use-reducer`](docs/rules/no-use-reducer.md): Disallow `useReducer` hook in favor of Redux Toolkit to eliminate bugs
 - [`laststance/no-set-state-prop-drilling`](docs/rules/no-set-state-prop-drilling.md): Disallow passing `useState` setters via props; prefer semantic handlers or state management
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
+- [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
+- [`laststance/usecallback-might-work`](docs/rules/usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
 - [`laststance/usecallback-for-memoized-component`](docs/rules/usecallback-for-memoized-component.md): Ensure function props sent to memoized components are wrapped in `useCallback`
+- [`laststance/usememo-for-memoized-component`](docs/rules/usememo-for-memoized-component.md): Ensure object/array props to memoized components are wrapped in `useMemo`
+- [`laststance/usememo-might-work`](docs/rules/usememo-might-work.md): Ensure custom components receive `useMemo`-stable object/array props
 
 ## Rule Details
 
