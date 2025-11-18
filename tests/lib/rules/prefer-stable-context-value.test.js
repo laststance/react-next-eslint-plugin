@@ -32,6 +32,16 @@ ruleTester.run('prefer-stable-context-value', rule, {
         const App = () => <Ctx.Provider value={fn}><div/></Ctx.Provider>;
       `,
     },
+    {
+      code: `
+        import React, { useMemo } from 'react';
+        const Ctx = React.createContext(null);
+        function App({ theme }) {
+          const ctxValue = useMemo(() => [theme], [theme]);
+          return <Ctx.Provider value={ctxValue}><div/></Ctx.Provider>;
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -52,6 +62,23 @@ ruleTester.run('prefer-stable-context-value', rule, {
       code: `
         const Ctx = React.createContext(null);
         const App = () => <Ctx.Provider value={() => {}}><div/></Ctx.Provider>;
+      `,
+      errors: [{ messageId: 'preferStable' }],
+    },
+    {
+      code: `
+        const Ctx = React.createContext(null);
+        const App = () => <Ctx.Provider value={function build() { return {}; }}><div/></Ctx.Provider>;
+      `,
+      errors: [{ messageId: 'preferStable' }],
+    },
+    {
+      code: `
+        const base = { lang: 'en' };
+        const Ctx = React.createContext(null);
+        function App() {
+          return <Ctx.Provider value={{ ...base, theme: 'dark' }}><div/></Ctx.Provider>;
+        }
       `,
       errors: [{ messageId: 'preferStable' }],
     },

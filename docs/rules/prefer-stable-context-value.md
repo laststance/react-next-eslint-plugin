@@ -9,6 +9,7 @@ Prefer stable `Context.Provider` values; wrap with `useMemo`/`useCallback`.
 This rule prevents passing new object/array/function literals to `Context.Provider` values on each render, which causes unnecessary re-renders of all context consumers. Values should be wrapped with `useMemo` or `useCallback` to provide stable references.
 
 The rule flags:
+
 - Inline object literals: `value={{ user, setUser }}`
 - Inline array literals: `value={[user, setUser]}`
 - Inline function expressions: `value={() => doSomething()}`
@@ -35,47 +36,70 @@ Even if `user` and `setUser` haven't changed, the object literal creates a new r
 ### ❌ Incorrect
 
 ```javascript
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react'
 
-const UserContext = createContext(null);
+const UserContext = createContext(null)
 
 // Object literal - new reference every render!
 function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
-  );
+  )
 }
 
 // Array literal - new reference every render!
 function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('light')
 
   return (
     <ThemeContext.Provider value={[theme, setTheme]}>
       {children}
     </ThemeContext.Provider>
-  );
+  )
 }
 
 // Function literal - new reference every render!
 function ConfigProvider({ children }) {
-  const config = getConfig();
+  const config = getConfig()
 
   return (
     <ConfigContext.Provider value={() => config}>
       {children}
     </ConfigContext.Provider>
-  );
+  )
+}
+
+// Even a named function expression is still a new reference
+function InlineProvider({ children }) {
+  return (
+    <ConfigContext.Provider
+      value={function build() {
+        return {}
+      }}
+    >
+      {children}
+    </ConfigContext.Provider>
+  )
+}
+
+// Spreading into a fresh object recreates the value every time
+const base = { lang: 'en' }
+function ThemeProviderWithSpread({ children, theme }) {
+  return (
+    <ThemeContext.Provider value={{ ...base, theme }}>
+      {children}
+    </ThemeContext.Provider>
+  )
 }
 
 // Complex object with computed values
 function DataProvider({ children }) {
-  const [items, setItems] = useState([]);
-  const count = items.length;
+  const [items, setItems] = useState([])
+  const count = items.length
 
   return (
     <DataContext.Provider
@@ -87,20 +111,20 @@ function DataProvider({ children }) {
     >
       {children}
     </DataContext.Provider>
-  );
+  )
 }
 ```
 
 ### ✅ Correct
 
 ```javascript
-import React, { createContext, useState, useMemo, useCallback } from 'react';
+import React, { createContext, useState, useMemo, useCallback } from 'react'
 
-const UserContext = createContext(null);
+const UserContext = createContext(null)
 
 // Option 1: useMemo for object values (preferred)
 function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   // Stable reference - only changes when dependencies change
   const contextValue = useMemo(
@@ -108,23 +132,21 @@ function UserProvider({ children }) {
       user,
       setUser,
     }),
-    [user] // setUser is stable, only user changes
-  );
+    [user], // setUser is stable, only user changes
+  )
 
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
-  );
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
+  )
 }
 
 // Option 2: useMemo with computed values
 function DataProvider({ children }) {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([])
 
   const addItem = useCallback((item) => {
-    setItems((prev) => [...prev, item]);
-  }, []);
+    setItems((prev) => [...prev, item])
+  }, [])
 
   const contextValue = useMemo(
     () => ({
@@ -132,24 +154,22 @@ function DataProvider({ children }) {
       count: items.length,
       addItem,
     }),
-    [items, addItem]
-  );
+    [items, addItem],
+  )
 
   return (
-    <DataContext.Provider value={contextValue}>
-      {children}
-    </DataContext.Provider>
-  );
+    <DataContext.Provider value={contextValue}>{children}</DataContext.Provider>
+  )
 }
 
 // Option 3: Separate memoization for complex values
 function ThemeProvider({ children }) {
-  const [mode, setMode] = useState('light');
-  const [primaryColor, setPrimaryColor] = useState('#007bff');
+  const [mode, setMode] = useState('light')
+  const [primaryColor, setPrimaryColor] = useState('#007bff')
 
   const toggleMode = useCallback(() => {
-    setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
-  }, []);
+    setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }, [])
 
   const theme = useMemo(
     () => ({
@@ -157,53 +177,55 @@ function ThemeProvider({ children }) {
       primaryColor,
       colors: mode === 'light' ? lightColors : darkColors,
     }),
-    [mode, primaryColor]
-  );
+    [mode, primaryColor],
+  )
 
   const actions = useMemo(
     () => ({
       toggleMode,
       setPrimaryColor,
     }),
-    [toggleMode]
-  );
+    [toggleMode],
+  )
 
   const contextValue = useMemo(
     () => ({
       theme,
       actions,
     }),
-    [theme, actions]
-  );
+    [theme, actions],
+  )
 
   return (
     <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
-  );
+  )
 }
 
 // Option 4: Single stable value (primitive or pre-memoized)
 function SimpleProvider({ children }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   // If passing single primitive, it's already stable
-  return (
-    <CountContext.Provider value={count}>
-      {children}
-    </CountContext.Provider>
-  );
+  return <CountContext.Provider value={count}>{children}</CountContext.Provider>
 }
 
 // Option 5: Pre-computed stable value outside component
-const STATIC_CONFIG = { apiUrl: '/api', timeout: 5000 };
+const STATIC_CONFIG = { apiUrl: '/api', timeout: 5000 }
 
 function ConfigProvider({ children }) {
   return (
     <ConfigContext.Provider value={STATIC_CONFIG}>
       {children}
     </ConfigContext.Provider>
-  );
+  )
+}
+
+// Option 6: Memoized arrays stay stable as well
+function ArrayProvider({ children, theme }) {
+  const value = useMemo(() => [theme], [theme])
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 ```
 
@@ -227,17 +249,17 @@ You might want to disable this rule if:
 
 ```javascript
 // ✅ Correct: setUser is stable, don't include it
-const value = useMemo(() => ({ user, setUser }), [user]);
+const value = useMemo(() => ({ user, setUser }), [user])
 
 // ❌ Unnecessary: setUser never changes
-const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+const value = useMemo(() => ({ user, setUser }), [user, setUser])
 ```
 
 **Don't over-optimize**: If your context updates frequently anyway, memoization won't help:
 
 ```javascript
 // If userId changes constantly, memoization overhead might not be worth it
-const value = useMemo(() => ({ userId, fetchUser }), [userId, fetchUser]);
+const value = useMemo(() => ({ userId, fetchUser }), [userId, fetchUser])
 ```
 
 ## Further Reading

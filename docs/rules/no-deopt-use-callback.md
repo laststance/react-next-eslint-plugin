@@ -11,12 +11,15 @@ This rule detects meaningless uses of `useCallback` where the performance benefi
 The rule flags two anti-patterns:
 
 1. **Passing to intrinsic elements**: `<div onClick={callback} />`
+
    - Intrinsic elements (div, button, span, etc.) are not memoized and re-render anyway
    - The `useCallback` overhead provides no benefit
 
 2. **Called inside inline handlers**: `<div onClick={() => callback()} />`
    - Creating a new inline function defeats the referential stability purpose
    - The callback might as well be inlined directly
+
+These checks work for every DOM event prop (`onClick`, `onMouseEnter`, `onBlur`, etc.), for both `useCallback(...)` and `React.useCallback(...)`, and for `React.createElement` (or `createElement`) factory calls.
 
 ### Why This Rule Exists
 
@@ -38,12 +41,12 @@ The rule flags two anti-patterns:
 ### ❌ Incorrect
 
 ```javascript
-import { useCallback } from 'react';
+import { useCallback } from 'react'
 
 function Component() {
   const handleClick = useCallback(() => {
-    console.log('clicked');
-  }, []);
+    console.log('clicked')
+  }, [])
 
   return (
     <div>
@@ -57,53 +60,84 @@ function Component() {
       <div onClick={handleClick}>Clickable div</div>
       <span onClick={() => handleClick()}>Clickable span</span>
     </div>
-  );
+  )
 }
 
 // React.createElement is also checked
 function Component2() {
   const handleClick = useCallback(() => {
-    console.log('clicked');
-  }, []);
+    console.log('clicked')
+  }, [])
 
-  return React.createElement('button', {
-    onClick: handleClick, // Flagged
-  }, 'Click me');
+  return React.createElement(
+    'button',
+    {
+      onClick: handleClick, // Flagged
+    },
+    'Click me',
+  )
 }
 
 // Inline function calling callback
 function Component3() {
   const process = useCallback((data) => {
-    return data * 2;
-  }, []);
+    return data * 2
+  }, [])
 
   return React.createElement('div', {
     onClick: () => process(42), // Flagged
-  });
+  })
+}
+
+// React namespace usage and non-click events are also flagged
+import React from 'react'
+function Component4() {
+  const handleHover = React.useCallback(() => {}, [])
+  return <button onMouseEnter={handleHover}>Hover me</button>
+}
+
+// Inline handler blocks that call the callback still violate the rule
+function Component5() {
+  const handleClick = useCallback(() => console.log('click'), [])
+  return (
+    <div
+      onClick={() => {
+        handleClick()
+        console.log('extra')
+      }}
+    />
+  )
+}
+
+// createElement helper references inherit the same logic
+import { createElement, useCallback } from 'react'
+function Component6() {
+  const handler = useCallback(() => {}, [])
+  return createElement('section', { onClick: () => handler() })
 }
 ```
 
 ### ✅ Correct
 
 ```javascript
-import React, { useCallback, memo } from 'react';
+import React, { useCallback, memo } from 'react'
 
 // Option 1: Use useCallback with memoized components (correct usage)
 const MemoizedButton = memo(function MemoizedButton({ onClick, children }) {
-  return <button onClick={onClick}>{children}</button>;
-});
+  return <button onClick={onClick}>{children}</button>
+})
 
 function Component() {
   // Meaningful: stabilizes prop for memoized component
   const handleClick = useCallback(() => {
-    console.log('clicked');
-  }, []);
+    console.log('clicked')
+  }, [])
 
   return (
     <div>
       <MemoizedButton onClick={handleClick}>Click me</MemoizedButton>
     </div>
-  );
+  )
 }
 
 // Option 2: Just use inline for intrinsic elements (simpler, clearer)
@@ -113,47 +147,47 @@ function Component() {
       <button onClick={() => console.log('clicked')}>Click me</button>
       <button onClick={() => console.log('clicked again')}>Click again</button>
     </div>
-  );
+  )
 }
 
 // Option 3: Plain function if no optimization needed
 function Component() {
   function handleClick() {
-    console.log('clicked');
+    console.log('clicked')
   }
 
-  return <button onClick={handleClick}>Click me</button>;
+  return <button onClick={handleClick}>Click me</button>
 }
 
 // Option 4: useCallback for effect dependencies
 function Component({ userId }) {
   const fetchUser = useCallback(async () => {
-    const response = await fetch(`/api/users/${userId}`);
-    return response.json();
-  }, [userId]);
+    const response = await fetch(`/api/users/${userId}`)
+    return response.json()
+  }, [userId])
 
   useEffect(() => {
-    fetchUser().then(setUser);
-  }, [fetchUser]); // Stable reference prevents infinite loops
+    fetchUser().then(setUser)
+  }, [fetchUser]) // Stable reference prevents infinite loops
 
-  return <div>User data</div>;
+  return <div>User data</div>
 }
 
 // Option 5: useCallback for expensive child renders
 const ExpensiveList = memo(function ExpensiveList({ onItemClick }) {
   // Expensive rendering logic
-  return <ul>{/* thousands of items */}</ul>;
-});
+  return <ul>{/* thousands of items */}</ul>
+})
 
 function Parent() {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null)
 
   // Meaningful: prevents ExpensiveList re-render
   const handleItemClick = useCallback((id) => {
-    setSelected(id);
-  }, []);
+    setSelected(id)
+  }, [])
 
-  return <ExpensiveList onItemClick={handleItemClick} />;
+  return <ExpensiveList onItemClick={handleItemClick} />
 }
 ```
 
@@ -174,6 +208,7 @@ You might want to disable this rule if:
 ### Performance Reality Check
 
 Using `useCallback` on intrinsic elements:
+
 - **Cost**: Memory allocation, dependency comparison on every render
 - **Benefit**: None (intrinsic elements always re-render with parent)
 - **Net result**: Small performance penalty

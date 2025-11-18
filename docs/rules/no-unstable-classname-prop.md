@@ -9,6 +9,7 @@ Avoid unstable `className` expressions that change identity every render.
 This rule prevents unstable `className` expressions that create new references on every render, which can cause performance issues in memoized components and unnecessary DOM updates.
 
 The rule flags:
+
 - **Object literals**: `className={{ active: isActive }}`
 - **Array literals**: `className={['btn', isActive && 'active']}`
 - **Function calls**: `className={classNames('btn', { active })}`
@@ -27,11 +28,13 @@ These expressions create new values on every render, breaking referential equali
 ### What's Stable vs Unstable
 
 **Stable** (allowed):
+
 - String literals: `"btn primary"`
 - Template literals: `` `btn ${theme}` ``
 - Variables: `{buttonClass}`
 
 **Unstable** (flagged):
+
 - New objects/arrays each render
 - Function calls creating new strings
 - Binary concatenation operations
@@ -45,14 +48,10 @@ function Component({ isActive, theme }) {
   return (
     <div>
       {/* Object literal - new object every render */}
-      <button className={{ active: isActive, theme }}>
-        Button 1
-      </button>
+      <button className={{ active: isActive, theme }}>Button 1</button>
 
       {/* Array literal - new array every render */}
-      <button className={['btn', isActive && 'active']}>
-        Button 2
-      </button>
+      <button className={['btn', isActive && 'active']}>Button 2</button>
 
       {/* Function call - executes every render */}
       <button className={classNames('btn', { active: isActive })}>
@@ -60,8 +59,14 @@ function Component({ isActive, theme }) {
       </button>
 
       {/* String concatenation - new string every render */}
-      <button className={'btn ' + theme}>
-        Button 4
+      <button className={'btn ' + theme}>Button 4</button>
+
+      {/* String concatenation that references props is also unstable */}
+      <button className={'btn-' + theme}>Button 5</button>
+
+      {/* classNames/clsx helpers are just function calls */}
+      <button className={classNames('btn', { active: isActive })}>
+        Button 6
       </button>
 
       {/* Multiple violations in one component */}
@@ -70,62 +75,58 @@ function Component({ isActive, theme }) {
         <p className={'text-' + size}>Paragraph</p>
       </div>
     </div>
-  );
+  )
 }
 ```
 
 ### ✅ Correct
 
 ```javascript
-import { useMemo } from 'react';
-import classNames from 'classnames';
+import { useMemo } from 'react'
+import classNames from 'classnames'
 
 function Component({ isActive, theme }) {
   // Option 1: Memoize complex className logic
   const buttonClassName = useMemo(
     () => classNames('btn', { active: isActive }, theme),
-    [isActive, theme]
-  );
+    [isActive, theme],
+  )
+
+  // Option 1b: Memoize clsx usage once and reuse it
+  const memoizedClsx = useMemo(
+    () => classNames('btn', { active: isActive }),
+    [isActive],
+  )
 
   // Option 2: Memoize for each variant
   const primaryClass = useMemo(
     () => classNames('btn', 'primary', { active: isActive }),
-    [isActive]
-  );
+    [isActive],
+  )
 
-  const secondaryClass = useMemo(
-    () => `btn secondary ${theme}`,
-    [theme]
-  );
+  const secondaryClass = useMemo(() => `btn secondary ${theme}`, [theme])
 
   return (
     <div>
       {/* Static strings are fine */}
-      <button className="btn primary">
-        Static Button
-      </button>
+      <button className="btn primary">Static Button</button>
 
       {/* Template literals are stable references */}
-      <button className={`btn ${theme}`}>
-        Template Button
-      </button>
+      <button className={`btn ${theme}`}>Template Button</button>
 
       {/* Memoized complex logic */}
-      <button className={buttonClassName}>
-        Complex Button
-      </button>
+      <button className={buttonClassName}>Complex Button</button>
 
       {/* Variable holding memoized value */}
-      <button className={primaryClass}>
-        Primary Button
-      </button>
+      <button className={primaryClass}>Primary Button</button>
+
+      {/* clsx memoized once is stable */}
+      <button className={memoizedClsx}>Memoized clsx</button>
 
       {/* Single variable is stable */}
-      <button className={secondaryClass}>
-        Secondary Button
-      </button>
+      <button className={secondaryClass}>Secondary Button</button>
     </div>
-  );
+  )
 }
 
 // Option 3: Compute className outside component (for static variants)
@@ -133,51 +134,39 @@ const BUTTON_CLASSES = {
   primary: 'btn btn-primary',
   secondary: 'btn btn-secondary',
   danger: 'btn btn-danger',
-};
+}
 
 function StaticButton({ variant = 'primary' }) {
-  return (
-    <button className={BUTTON_CLASSES[variant]}>
-      Button
-    </button>
-  );
+  return <button className={BUTTON_CLASSES[variant]}>Button</button>
 }
 
 // Option 4: Extract to custom hook
 function useButtonClasses({ variant, size, isActive }) {
   return useMemo(
-    () => classNames(
-      'btn',
-      `btn-${variant}`,
-      `btn-${size}`,
-      { active: isActive }
-    ),
-    [variant, size, isActive]
-  );
+    () =>
+      classNames('btn', `btn-${variant}`, `btn-${size}`, { active: isActive }),
+    [variant, size, isActive],
+  )
 }
 
 function Button({ variant, size, isActive, children }) {
-  const className = useButtonClasses({ variant, size, isActive });
+  const className = useButtonClasses({ variant, size, isActive })
 
-  return <button className={className}>{children}</button>;
+  return <button className={className}>{children}</button>
 }
 
 // Option 5: Conditional className with stable values
 function ConditionalButton({ isPrimary, isDisabled }) {
   // Pre-compute stable strings
-  const baseClass = isPrimary ? 'btn btn-primary' : 'btn btn-secondary';
-  const disabledClass = isDisabled ? `${baseClass} disabled` : baseClass;
+  const baseClass = isPrimary ? 'btn btn-primary' : 'btn btn-secondary'
+  const disabledClass = isDisabled ? `${baseClass} disabled` : baseClass
 
-  return <button className={disabledClass}>Button</button>;
+  return <button className={disabledClass}>Button</button>
 }
 
 // Option 6: For simple cases, template literals are fine
 function SimpleButton({ theme, size }) {
-  return (
-    <button className={`btn btn-${theme} btn-${size}`}>
-      Button
-    </button>
-  );
+  return <button className={`btn btn-${theme} btn-${size}`}>Button</button>
 }
 ```
 
@@ -198,25 +187,29 @@ You might want to disable this rule if:
 ### Performance Reality Check
 
 The cost of unstable className props:
+
 - **Memoized components**: Will re-render even if other props are stable
 - **Prop comparison**: React compares className on every render
 - **DOM updates**: May trigger unnecessary attribute updates (though React optimizes this)
 
 For components that don't use `React.memo`:
+
 - Impact is minimal (just prop comparison overhead)
 - Memoization might be overkill for simple cases
 
 ### Common Patterns
 
 **CSS Modules** (stable by default):
+
 ```javascript
-import styles from './Button.module.css';
+import styles from './Button.module.css'
 
 // CSS module objects are stable
-<button className={styles.button}>Button</button>
+;<button className={styles.button}>Button</button>
 ```
 
 **Tailwind CSS** (template literals work well):
+
 ```javascript
 <button className={`px-4 py-2 ${isActive ? 'bg-blue-500' : 'bg-gray-300'}`}>
   Button
@@ -224,11 +217,9 @@ import styles from './Button.module.css';
 ```
 
 **clsx/classnames** (memoize the call):
+
 ```javascript
-const className = useMemo(
-  () => clsx('btn', { active: isActive }),
-  [isActive]
-);
+const className = useMemo(() => clsx('btn', { active: isActive }), [isActive])
 ```
 
 ## Further Reading

@@ -76,6 +76,32 @@ ruleTester.run('no-use-reducer', rule, {
         }
       `,
     },
+
+    // Valid: Custom hook imported from non-React module
+    {
+      code: `
+        import useCustomReducer from './useCustomReducer';
+        function Component() {
+          const [state] = useCustomReducer();
+          return <div>{state}</div>;
+        }
+      `,
+    },
+
+    // Valid: Non-React object method named useReducer
+    {
+      code: `
+        const store = {
+          useReducer() {
+            return [0, () => {}];
+          }
+        };
+        function Component() {
+          const [state] = store.useReducer();
+          return <span>{state}</span>;
+        }
+      `,
+    },
   ],
 
   invalid: [
@@ -245,6 +271,76 @@ ruleTester.run('no-use-reducer', rule, {
           const [state, dispatch] = useReducer(reducer, initialState);
           return <div>{state}</div>;
         };
+      `,
+      errors: [
+        {
+          messageId: 'noUseReducer',
+          type: 'ImportSpecifier',
+        },
+        {
+          messageId: 'noUseReducer',
+          type: 'CallExpression',
+        },
+      ],
+    },
+
+    // Invalid: CommonJS require destructuring
+    {
+      code: `
+        const { useReducer } = require('react');
+        function useWidget() {
+          const pair = useReducer((state) => state, 0);
+          return pair;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noUseReducer',
+          type: 'CallExpression',
+        },
+      ],
+    },
+
+    // Invalid: Namespace import React.* syntax
+    {
+      code: `
+        import * as React from 'react';
+        const Component = () => {
+          const pair = React.useReducer((state) => state, 0);
+          return <div>{pair[0]}</div>;
+        };
+      `,
+      errors: [
+        {
+          messageId: 'noUseReducer',
+          type: 'CallExpression',
+        },
+      ],
+    },
+
+    // Invalid: React required via CommonJS default import
+    {
+      code: `
+        const React = require('react');
+        function Component() {
+          return React.useReducer((state) => state, 0);
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noUseReducer',
+          type: 'CallExpression',
+        },
+      ],
+    },
+
+    // Invalid: useReducer call in exported helper
+    {
+      code: `
+        import { useReducer } from 'react';
+        export function useThing() {
+          return useReducer((state) => state, 0);
+        }
       `,
       errors: [
         {

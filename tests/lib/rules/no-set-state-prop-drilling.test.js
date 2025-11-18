@@ -55,6 +55,29 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
         }
       `,
     },
+    // Wrapping setter inside useCallback handler stays valid
+    {
+      code: `
+        import React, { useState, useCallback } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          const handle = useCallback(() => setCount((c) => c + 1), []);
+          return <Child onClick={handle} />;
+        }
+      `,
+    },
+    // Aliasing setter but invoking through wrapper is allowed
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          const setter = setCount;
+          const onClick = () => setter((c) => c + 1);
+          return React.createElement(Child, { onClick });
+        }
+      `,
+    },
   ],
   invalid: [
     // Direct prop drilling of setter in JSX
@@ -86,6 +109,50 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
         function Parent() {
           const [count, setCount] = useState(0);
           return <Child onClick={setCount} />;
+        }
+      `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Passing setter from React.useState via JSX prop
+    {
+      code: `
+        import React from 'react';
+        function Parent() {
+          const [value, setValue] = React.useState('');
+          return <Child onUpdate={setValue} />;
+        }
+      `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Object literal attribute containing setter is blocked
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [value, setValue] = useState('');
+          return <Child handlers={{ onChange: setValue }} />;
+        }
+      `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // React.createElement via namespace still disallowed
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return React.createElement(Child, { onToggle: setCount });
+        }
+      `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Identifier createElement helper rejects setter as prop value
+    {
+      code: `
+        import { createElement, useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return createElement(Child, { dispatcher: setCount });
         }
       `,
       errors: [{ messageId: 'noPropDrillSetter' }],

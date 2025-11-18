@@ -69,6 +69,24 @@ ruleTester.run('all-memo', rule, {
         export default memo(Hello);
       `,
     },
+    // Direct export default with memo wrapping inline component
+    {
+      code: `
+        import { memo } from 'react';
+        export default memo(function Hello() {
+          return <div />;
+        });
+      `,
+    },
+    // Memo-wrapped component re-exported under new name
+    {
+      code: `
+        import React from 'react';
+        const Base = () => <div />;
+        const Wrapped = React.memo(Base);
+        export { Wrapped as Renamed };
+      `,
+    },
   ],
   invalid: [
     // Variable arrow component not memoized
@@ -102,6 +120,31 @@ ruleTester.run('all-memo', rule, {
         const b = () => <div/>; // ignored by name
         const C = () => 1; // ignored by return type
         export default A;
+      `,
+      errors: [{ messageId: 'notMemoized' }],
+    },
+    // Named export component without memo wrapping
+    {
+      code: `
+        export const Hello = () => <div/>;
+      `,
+      errors: [{ messageId: 'notMemoized' }],
+    },
+    // Function declaration re-exported without memo
+    {
+      code: `
+        function Hello() { return <div/> }
+        export { Hello };
+      `,
+      errors: [{ messageId: 'notMemoized' }],
+    },
+    // Calling React.memo without assigning keeps component unstable
+    {
+      code: `
+        import React from 'react';
+        const Hello = () => <div/>;
+        React.memo(Hello);
+        export default Hello;
       `,
       errors: [{ messageId: 'notMemoized' }],
     },

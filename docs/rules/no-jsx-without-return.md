@@ -9,6 +9,7 @@ Disallow JSX elements not returned or assigned.
 This rule prevents JSX elements that are not properly returned or assigned, which typically indicates a missing `return` statement. This is a common mistake that can lead to silent errors where components render nothing without any indication of what went wrong.
 
 The rule specifically catches:
+
 - Standalone JSX expressions that are neither returned nor assigned
 - JSX in if/else statements without proper return handling or block wrapping
 - JSX fragments that are written but not utilized
@@ -28,32 +29,44 @@ When JSX is written but not returned or assigned, it serves no purpose and indic
 ```javascript
 // Standalone JSX expression - missing return
 function Component() {
-  <div>Hello World</div>;
+  ;<div>Hello World</div>
 }
 
 // JSX fragment without return
 function Component() {
-  <>Hello</>;
+  ;<>Hello</>
 }
 
 // JSX in if statement without return or block wrapping
 function Component() {
-  if (condition)
-    <div>Hello</div>;
+  if (condition) <div>Hello</div>
 }
 
 // JSX in else statement without return or block wrapping
 function Component() {
   if (condition) {
-    return <div>Hello</div>;
-  } else
-    <div>Goodbye</div>;
+    return <div>Hello</div>
+  } else <div>Goodbye</div>
 }
 
 // Multiple standalone JSX expressions
 function Component() {
-  <div>Hello</div>;
-  <div>World</div>;
+  ;<div>Hello</div>
+  ;<div>World</div>
+}
+
+// JSX inside a block still needs a return statement
+function Component() {
+  if (condition) {
+    ;<div>Hi</div>
+  }
+}
+
+// Else-if branches can't leave bare JSX either
+function Component() {
+  if (primary) {
+    return <div />
+  } else if (secondary) <>Fallback</>
 }
 ```
 
@@ -62,57 +75,57 @@ function Component() {
 ```javascript
 // JSX returned from function
 function Component() {
-  return <div>Hello World</div>;
+  return <div>Hello World</div>
 }
 
 // JSX assigned to variable
 function Component() {
-  const element = <div>Hello</div>;
-  return element;
+  const element = <div>Hello</div>
+  return element
 }
 
 // JSX fragment returned
 function Component() {
-  return <>Hello</>;
+  return <>Hello</>
 }
 
 // JSX in if statement with return
 function Component() {
   if (condition) {
-    return <div>Hello</div>;
+    return <div>Hello</div>
   }
 }
 
 // JSX in if statement wrapped in block
 function Component() {
   if (condition) {
-    const element = <div>Hello</div>;
-    return element;
+    const element = <div>Hello</div>
+    return element
   }
 }
 
 // JSX in both if and else with proper returns
 function Component() {
   if (condition) {
-    return <div>Hello</div>;
+    return <div>Hello</div>
   } else {
-    return <div>Goodbye</div>;
+    return <div>Goodbye</div>
   }
 }
 
 // Nested if-else with proper returns
 function Component() {
   if (condition1) {
-    return <div>Hello</div>;
+    return <div>Hello</div>
   } else if (condition2) {
-    return <div>World</div>;
+    return <div>World</div>
   }
 }
 
 // Non-JSX expressions are allowed
 function Component() {
-  console.log("Hello");
-  return <div>Hello</div>;
+  console.log('Hello')
+  return <div>Hello</div>
 }
 ```
 

@@ -41,6 +41,30 @@ ruleTester.run('no-deopt-use-callback', rule, {
         };
       `,
     },
+    // Passing useCallback result to a memoized custom component is fine
+    {
+      code: `
+        import React, { memo, useCallback } from 'react';
+        const FancyButton = memo(function FancyButton(props) {
+          return <button {...props} />;
+        });
+        function Screen() {
+          const handle = useCallback(() => {}, []);
+          return <FancyButton onClick={handle} />;
+        }
+      `,
+    },
+    // React.createElement with custom components stays valid
+    {
+      code: `
+        import React, { useCallback } from 'react';
+        const Widget = () => <div/>;
+        function Screen() {
+          const handle = useCallback(() => {}, []);
+          return React.createElement(Widget, { onClick: handle });
+        }
+      `,
+    },
   ],
   invalid: [
     // Passing useCallback result directly to intrinsic
@@ -83,6 +107,50 @@ ruleTester.run('no-deopt-use-callback', rule, {
         const Parent = () => {
           const onClick = useCallback(() => {}, []);
           return React.createElement('div', { onClick: () => onClick() });
+        };
+      `,
+      errors: [{ messageId: 'calledInsideInline' }],
+    },
+    // React.useCallback followed by passing to intrinsic still warns
+    {
+      code: `
+        import React from 'react';
+        const Parent = () => {
+          const handle = React.useCallback(() => {}, []);
+          return <button onMouseEnter={handle} />;
+        };
+      `,
+      errors: [{ messageId: 'passToIntrinsic' }],
+    },
+    // Inline handler block that calls the callback should warn
+    {
+      code: `
+        import { useCallback } from 'react';
+        const Parent = () => {
+          const handle = useCallback(() => {}, []);
+          return <div onClick={() => { handle(); console.log('extra'); }} />;
+        };
+      `,
+      errors: [{ messageId: 'calledInsideInline' }],
+    },
+    // Passing callback to another intrinsic event name still warns
+    {
+      code: `
+        import { useCallback } from 'react';
+        const Parent = () => {
+          const handle = useCallback(() => {}, []);
+          return <input onBlur={handle} />;
+        };
+      `,
+      errors: [{ messageId: 'passToIntrinsic' }],
+    },
+    // Identifier createElement variant also rejected
+    {
+      code: `
+        import { createElement, useCallback } from 'react';
+        const Parent = () => {
+          const handle = useCallback(() => {}, []);
+          return createElement('section', { onClick: () => { handle(); console.log('noop'); } });
         };
       `,
       errors: [{ messageId: 'calledInsideInline' }],

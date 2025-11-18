@@ -164,7 +164,6 @@ function ProductItemBase({ title, price }) {
 const ProductItem = memo(ProductItemBase)
 ```
 
-
 ### `no-use-reducer`
 
 This rule discourages the use of `useReducer` hook in favor of Redux Toolkit to eliminate the possibility of introducing bugs through complex state management logic and provide better developer experience.
@@ -433,7 +432,6 @@ function Component({ isActive, theme }) {
   )
 }
 ```
-
 
 ## Configuration
 

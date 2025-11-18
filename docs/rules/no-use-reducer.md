@@ -9,6 +9,7 @@ Discourage using `useReducer` directly; prefer semantic custom hooks or Redux To
 This rule discourages the use of React's `useReducer` hook in favor of more robust state management solutions like Redux Toolkit or semantic custom hooks. While `useReducer` can be useful, it can lead to bugs and maintainability issues in complex applications.
 
 The rule flags:
+
 - Direct `useReducer` calls
 - `React.useReducer` member expression calls
 - Import statements importing `useReducer` from React
@@ -34,21 +35,21 @@ The rule flags:
 ### ❌ Incorrect
 
 ```javascript
-import { useReducer } from 'react';
+import { useReducer } from 'react'
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'increment':
-      return { count: state.count + 1 };
+      return { count: state.count + 1 }
     case 'decrement':
-      return { count: state.count - 1 };
+      return { count: state.count - 1 }
     default:
-      return state;
+      return state
   }
-};
+}
 
 function Counter() {
-  const [state, dispatch] = useReducer(reducer, { count: 0 });
+  const [state, dispatch] = useReducer(reducer, { count: 0 })
 
   return (
     <div>
@@ -56,13 +57,22 @@ function Counter() {
       <button onClick={() => dispatch({ type: 'increment' })}>+</button>
       <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
     </div>
-  );
+  )
 }
 
 // Also flags React.useReducer
 function AnotherCounter() {
-  const [state, dispatch] = React.useReducer(reducer, { count: 0 });
-  return <div>{state.count}</div>;
+  const [state, dispatch] = React.useReducer(reducer, { count: 0 })
+  return <div>{state.count}</div>
+}
+
+// Namespace imports or CommonJS requires behave the same
+import * as React from 'react'
+const { useReducer } = require('react')
+function LegacyCounter() {
+  const [state, dispatch] = React.useReducer(reducer, { count: 0 })
+  const pair = useReducer(reducer, { count: 0 })
+  return <div>{state.count + pair[0].count}</div>
 }
 ```
 
@@ -70,25 +80,25 @@ function AnotherCounter() {
 
 ```javascript
 // Option 1: Redux Toolkit (recommended for complex state)
-import { useSelector, useDispatch } from 'react-redux';
-import { createSlice } from '@reduxjs/toolkit';
+import { useSelector, useDispatch } from 'react-redux'
+import { createSlice } from '@reduxjs/toolkit'
 
 const counterSlice = createSlice({
   name: 'counter',
   initialState: { count: 0 },
   reducers: {
     increment: (state) => {
-      state.count += 1; // Immer makes this safe
+      state.count += 1 // Immer makes this safe
     },
     decrement: (state) => {
-      state.count -= 1;
+      state.count -= 1
     },
   },
-});
+})
 
 function Counter() {
-  const count = useSelector((state) => state.counter.count);
-  const dispatch = useDispatch();
+  const count = useSelector((state) => state.counter.count)
+  const dispatch = useDispatch()
 
   return (
     <div>
@@ -100,20 +110,20 @@ function Counter() {
         -
       </button>
     </div>
-  );
+  )
 }
 
 // Option 2: Zustand (simpler alternative)
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 const useCounterStore = create((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
   decrement: () => set((state) => ({ count: state.count - 1 })),
-}));
+}))
 
 function Counter() {
-  const { count, increment, decrement } = useCounterStore();
+  const { count, increment, decrement } = useCounterStore()
 
   return (
     <div>
@@ -121,26 +131,26 @@ function Counter() {
       <button onClick={increment}>+</button>
       <button onClick={decrement}>-</button>
     </div>
-  );
+  )
 }
 
 // Option 3: Semantic custom hook with useState (for simple cases)
 function useCounter(initialCount = 0) {
-  const [count, setCount] = useState(initialCount);
+  const [count, setCount] = useState(initialCount)
 
   const increment = useCallback(() => {
-    setCount(c => c + 1);
-  }, []);
+    setCount((c) => c + 1)
+  }, [])
 
   const decrement = useCallback(() => {
-    setCount(c => c - 1);
-  }, []);
+    setCount((c) => c - 1)
+  }, [])
 
-  return { count, increment, decrement };
+  return { count, increment, decrement }
 }
 
 function Counter() {
-  const { count, increment, decrement } = useCounter(0);
+  const { count, increment, decrement } = useCounter(0)
 
   return (
     <div>
@@ -148,24 +158,24 @@ function Counter() {
       <button onClick={increment}>+</button>
       <button onClick={decrement}>-</button>
     </div>
-  );
+  )
 }
 
 // Option 4: Jotai (atomic state management)
-import { atom, useAtom } from 'jotai';
+import { atom, useAtom } from 'jotai'
 
-const countAtom = atom(0);
+const countAtom = atom(0)
 
 function Counter() {
-  const [count, setCount] = useAtom(countAtom);
+  const [count, setCount] = useAtom(countAtom)
 
   return (
     <div>
       <span>{count}</span>
-      <button onClick={() => setCount(c => c + 1)}>+</button>
-      <button onClick={() => setCount(c => c - 1)}>-</button>
+      <button onClick={() => setCount((c) => c + 1)}>+</button>
+      <button onClick={() => setCount((c) => c - 1)}>-</button>
     </div>
-  );
+  )
 }
 ```
 

@@ -20,11 +20,13 @@ This rule enforces that all React function components (PascalCase functions retu
 ### How It Works
 
 The rule identifies React components by:
+
 - PascalCase naming convention (e.g., `UserCard`, `ProductItem`)
 - Functions that return JSX elements or fragments
 - Both function declarations and arrow function expressions
 
 It then verifies that these components are wrapped with:
+
 - `memo(...)` (when imported from React)
 - `React.memo(...)`
 - Export statements like `export default memo(Component)`
@@ -41,8 +43,8 @@ const UserCard = ({ name, email }) => {
       <h3>{name}</h3>
       <p>{email}</p>
     </div>
-  );
-};
+  )
+}
 
 // Function declaration without memo
 function ProductItem({ title, price }) {
@@ -51,17 +53,25 @@ function ProductItem({ title, price }) {
       <h4>{title}</h4>
       <span>${price}</span>
     </div>
-  );
+  )
 }
 
 // Named function expression without memo
 const Header = function Header() {
-  return <header>My App</header>;
-};
+  return <header>My App</header>
+}
 
 // Multiple components - all need memo
-const ComponentA = () => <div>A</div>;
-const ComponentB = () => <div>B</div>;
+const ComponentA = () => <div>A</div>
+const ComponentB = () => <div>B</div>
+
+// Named exports also need memo wrapping
+export const Sidebar = () => <aside>Sidebar</aside>
+
+// Calling React.memo without reassigning keeps the component un-memoized
+const InlineNotice = () => <div>Heads up</div>
+React.memo(InlineNotice)
+export default InlineNotice
 ```
 
 ### ✅ Correct
@@ -107,6 +117,16 @@ function BaseComponent({ children }) {
 }
 BaseComponent = memo(BaseComponent);
 
+// Inline export with memo is allowed
+export default memo(function Banner() {
+  return <div>Banner</div>;
+});
+
+// Memoized component can be re-exported under a new name
+const BaseCard = () => <div>Base</div>;
+const MemoCard = React.memo(BaseCard);
+export { MemoCard as Card };
+
 // Non-component functions are ignored (camelCase, non-JSX return)
 const helper = () => 1;
 const processData = (data) => data.map(x => x * 2);
@@ -132,11 +152,13 @@ You might want to disable this rule if:
 ### Important Considerations
 
 While `React.memo` can improve performance, it's not free:
+
 - It adds a prop comparison overhead on every render
 - It may prevent optimization in some cases if props include complex objects
 - Over-memoization can sometimes hurt more than help
 
 For best results with this rule:
+
 - Use `useCallback` for function props
 - Use `useMemo` for object/array props
 - Keep prop values stable when possible

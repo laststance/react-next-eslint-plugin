@@ -9,6 +9,7 @@ Disallow passing `useState` setters via props; prefer semantic handlers or state
 This rule prevents passing `useState` setter functions directly through component props. Passing raw setters creates tight coupling between components and can cause unnecessary re-renders due to unstable function identity.
 
 The rule flags:
+
 - Direct setter prop drilling in JSX: `<Child setState={setState} />`
 - Setter in React.createElement props: `createElement(Child, { setState })`
 - Setters passed within object literals to intrinsic elements
@@ -36,101 +37,105 @@ The rule flags:
 ### ❌ Incorrect
 
 ```javascript
-import { useState } from 'react';
+import { useState } from 'react'
 
 function Parent() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   // Passing setter directly creates tight coupling
-  return <Child setCount={setCount} count={count} />;
+  return <Child setCount={setCount} count={count} />
 }
 
 function Child({ setCount, count }) {
-  return (
-    <button onClick={() => setCount(c => c + 1)}>
-      Count: {count}
-    </button>
-  );
+  return <button onClick={() => setCount((c) => c + 1)}>Count: {count}</button>
 }
 
 // Also flags React.createElement with setter in props
 function Parent2() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   return React.createElement(Modal, {
     isOpen,
     setIsOpen, // Flagged
-  });
+  })
 }
 
 // Setter passed in object literal to intrinsic element
 function Parent3() {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('')
 
-  return <div someProps={{ setValue }}>Content</div>;
+  return <div someProps={{ setValue }}>Content</div>
+}
+
+// React namespace imports behave the same way
+import React from 'react'
+function Parent4() {
+  const [value, setValue] = React.useState('')
+  return <Child onUpdate={setValue} />
+}
+
+// Nested object literals are still raw setters
+function Parent5() {
+  const [value, setValue] = useState('')
+  return <Child handlers={{ onChange: setValue }} />
 }
 ```
 
 ### ✅ Correct
 
 ```javascript
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react'
 
 // Option 1: Semantic handler with clear intent (preferred)
 function Parent() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   const handleIncrement = useCallback(() => {
-    setCount(c => c + 1);
-  }, []);
+    setCount((c) => c + 1)
+  }, [])
 
-  return <Child onIncrement={handleIncrement} count={count} />;
+  return <Child onIncrement={handleIncrement} count={count} />
 }
 
 function Child({ onIncrement, count }) {
-  return <button onClick={onIncrement}>Count: {count}</button>;
+  return <button onClick={onIncrement}>Count: {count}</button>
 }
 
 // Option 2: Inline arrow function (allowed - creates semantic wrapper)
 function Parent() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
-  return (
-    <Child
-      onIncrement={() => setCount(c => c + 1)}
-      count={count}
-    />
-  );
+  return <Child onIncrement={() => setCount((c) => c + 1)} count={count} />
 }
 
 // Option 3: State management library (Zustand)
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 const useCounterStore = create((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
-}));
+}))
 
 function Parent() {
-  return <Child />;
+  return <Child />
 }
 
 function Child() {
-  const { count, increment } = useCounterStore();
-  return <button onClick={increment}>Count: {count}</button>;
+  const { count, increment } = useCounterStore()
+  return <button onClick={increment}>Count: {count}</button>
 }
 
 // Option 4: Multiple semantic handlers
 function Form() {
-  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '' })
 
   const handleNameChange = useCallback((e) => {
-    setFormData(prev => ({ ...prev, name: e.target.value }));
-  }, []);
+    setFormData((prev) => ({ ...prev, name: e.target.value }))
+  }, [])
 
   const handleEmailChange = useCallback((e) => {
-    setFormData(prev => ({ ...prev, email: e.target.value }));
-  }, []);
+    setFormData((prev) => ({ ...prev, email: e.target.value }))
+  }, [])
 
   return (
     <FormFields
@@ -139,26 +144,27 @@ function Form() {
       onNameChange={handleNameChange}
       onEmailChange={handleEmailChange}
     />
-  );
+  )
 }
 
 // Option 5: Context for deeply nested components
-const CounterContext = createContext();
+const CounterContext = createContext()
 
 function CounterProvider({ children }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
-  const value = useMemo(() => ({
-    count,
-    increment: () => setCount(c => c + 1),
-    decrement: () => setCount(c => c - 1),
-  }), [count]);
+  const value = useMemo(
+    () => ({
+      count,
+      increment: () => setCount((c) => c + 1),
+      decrement: () => setCount((c) => c - 1),
+    }),
+    [count],
+  )
 
   return (
-    <CounterContext.Provider value={value}>
-      {children}
-    </CounterContext.Provider>
-  );
+    <CounterContext.Provider value={value}>{children}</CounterContext.Provider>
+  )
 }
 ```
 
@@ -179,6 +185,7 @@ You might want to disable this rule if:
 ### Trade-offs to Consider
 
 Creating semantic handlers has costs:
+
 - Slightly more boilerplate code
 - Additional function allocations (mitigated by `useCallback`)
 - More lines of code in parent components

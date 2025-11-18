@@ -217,5 +217,36 @@ ruleTester.run('no-jsx-without-return', rule, {
         },
       ],
     },
+    // Invalid: JSX expression statement inside block without return
+    {
+      code: `
+        function Component() {
+          if (condition) {
+            <div>Hi</div>;
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'jsxWithoutReturn',
+        },
+      ],
+    },
+    // Invalid: Else-if branch using bare JSX without return
+    {
+      code: `
+        function Component() {
+          if (primary) {
+            return <div/>;
+          } else if (secondary)
+            <>Fallback</>;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'jsxInIfWithoutReturn',
+        },
+      ],
+    },
   ],
 })
