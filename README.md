@@ -21,27 +21,27 @@ pnpm add --save-dev @laststance/react-next-eslint-plugin@latest
 ### Flat Config (ESLint 9.0+)
 
 ```javascript
-import lastStancePlugin from '@laststance/react-next-eslint-plugin'
+import lastStanceReactNextPlugin from '@laststance/react-next-eslint-plugin'
 
 export default [
   {
     plugins: {
-      laststance: lastStancePlugin,
+      '@laststance/react-next': lastStanceReactNextPlugin,
     },
     rules: {
       // Opt-in per rule
-      'laststance/no-jsx-without-return': 'error',
-      'laststance/all-memo': 'warn',
-      'laststance/no-use-reducer': 'warn',
-      'laststance/no-set-state-prop-drilling': 'warn',
-      'laststance/no-deopt-use-callback': 'warn',
-      'laststance/no-deopt-use-memo': 'warn',
-      'laststance/prefer-stable-context-value': 'warn',
-      'laststance/no-unstable-classname-prop': 'warn',
-      'laststance/usecallback-might-work': 'warn',
-      'laststance/usecallback-for-memoized-component': 'warn',
-      'laststance/usememo-for-memoized-component': 'warn',
-      'laststance/usememo-might-work': 'warn',
+      '@laststance/react-next/no-jsx-without-return': 'error',
+      '@laststance/react-next/all-memo': 'warn',
+      '@laststance-react-next/no-use-reducer': 'warn',
+      '@laststance/react-next/no-set-state-prop-drilling': 'warn',
+      '@laststance/react-next/no-deopt-use-callback': 'warn',
+      '@laststance/react-next/no-deopt-use-memo': 'warn',
+      '@laststance/react-next/prefer-stable-context-value': 'warn',
+      '@laststance/react-next/no-unstable-classname-prop': 'warn',
+      '@laststance/react-next/usecallback-might-work': 'warn',
+      '@laststance/react-next/usecallback-for-memoized-component': 'warn',
+      '@laststance/react-next/usememo-for-memoized-component': 'warn',
+      '@laststance/react-next/usememo-might-work': 'warn',
     },
   },
 ]
