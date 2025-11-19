@@ -1,8 +1,8 @@
-# usememo-might-work
+# prefer-usememo-might-work
 
 Require wrapping object/array props passed to custom (non-intrinsic) components with `useMemo`.
 
-🔧 [Rule Source](../../lib/rules/usememo-might-work.js)
+🔧 [Rule Source](../../lib/rules/prefer-usememo-might-work.js)
 
 ## Rule Details
 

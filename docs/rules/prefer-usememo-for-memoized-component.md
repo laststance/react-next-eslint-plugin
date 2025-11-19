@@ -1,8 +1,8 @@
-# usememo-for-memoized-component
+# prefer-usememo-for-memoized-component
 
 Require wrapping object/array props passed to memoized components with `useMemo`.
 
-🔧 [Rule Source](../../lib/rules/usememo-for-memoized-component.js)
+🔧 [Rule Source](../../lib/rules/prefer-usememo-for-memoized-component.js)
 
 ## Rule Details
 

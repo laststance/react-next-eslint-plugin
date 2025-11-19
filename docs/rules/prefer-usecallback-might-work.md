@@ -1,8 +1,8 @@
-# usecallback-might-work
+# prefer-usecallback-might-work
 
 Require wrapping function props passed to custom (non-intrinsic) components with `useCallback`.
 
-🔧 [Rule Source](../../lib/rules/usecallback-might-work.js)
+🔧 [Rule Source](../../lib/rules/prefer-usecallback-might-work.js)
 
 ## Rule Details
 

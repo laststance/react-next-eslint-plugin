@@ -1,8 +1,8 @@
-# usecallback-for-memoized-component
+# prefer-usecallback-for-memoized-component
 
 Require wrapping function props sent to memoized components with `useCallback` so their references stay stable across renders.
 
-🔧 [Rule Source](../../lib/rules/usecallback-for-memoized-component.js)
+🔧 [Rule Source](../../lib/rules/prefer-usecallback-for-memoized-component.js)
 
 ## Rule Details
 

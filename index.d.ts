@@ -9,10 +9,10 @@ export interface LaststanceRuleModules {
   'no-deopt-use-memo': Rule.RuleModule
   'prefer-stable-context-value': Rule.RuleModule
   'no-unstable-classname-prop': Rule.RuleModule
-  'usecallback-might-work': Rule.RuleModule
-  'usecallback-for-memoized-component': Rule.RuleModule
-  'usememo-for-memoized-component': Rule.RuleModule
-  'usememo-might-work': Rule.RuleModule
+  'prefer-usecallback-might-work': Rule.RuleModule
+  'prefer-usecallback-for-memoized-component': Rule.RuleModule
+  'prefer-usememo-for-memoized-component': Rule.RuleModule
+  'prefer-usememo-might-work': Rule.RuleModule
 }
 
 export type LaststanceRuleName = keyof LaststanceRuleModules

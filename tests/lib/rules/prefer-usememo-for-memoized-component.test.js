@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint'
-import rule from '../../../lib/rules/usememo-for-memoized-component.js'
+import rule from '../../../lib/rules/prefer-usememo-for-memoized-component.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
   },
 })
 
-ruleTester.run('usememo-for-memoized-component', rule, {
+ruleTester.run('prefer-usememo-for-memoized-component', rule, {
   valid: [
     {
       code: `

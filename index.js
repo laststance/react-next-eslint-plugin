@@ -19,10 +19,10 @@ import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import noDeoptUseMemo from './lib/rules/no-deopt-use-memo.js'
 import preferStableContextValue from './lib/rules/prefer-stable-context-value.js'
 import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js'
-import usecallbackForMemoizedComponent from './lib/rules/usecallback-for-memoized-component.js'
-import usecallbackMightWork from './lib/rules/usecallback-might-work.js'
-import usememoForMemoizedComponent from './lib/rules/usememo-for-memoized-component.js'
-import usememoMightWork from './lib/rules/usememo-might-work.js'
+import usecallbackForMemoizedComponent from './lib/rules/prefer-usecallback-for-memoized-component.js'
+import usecallbackMightWork from './lib/rules/prefer-usecallback-might-work.js'
+import usememoForMemoizedComponent from './lib/rules/prefer-usememo-for-memoized-component.js'
+import usememoMightWork from './lib/rules/prefer-usememo-might-work.js'
 
 const plugin = {
   meta: {
@@ -39,10 +39,10 @@ const plugin = {
     'no-deopt-use-memo': noDeoptUseMemo,
     'prefer-stable-context-value': preferStableContextValue,
     'no-unstable-classname-prop': noUnstableClassnameProp,
-    'usecallback-might-work': usecallbackMightWork,
-    'usecallback-for-memoized-component': usecallbackForMemoizedComponent,
-    'usememo-for-memoized-component': usememoForMemoizedComponent,
-    'usememo-might-work': usememoMightWork,
+    'prefer-usecallback-might-work': usecallbackMightWork,
+    'prefer-usecallback-for-memoized-component': usecallbackForMemoizedComponent,
+    'prefer-usememo-for-memoized-component': usememoForMemoizedComponent,
+    'prefer-usememo-might-work': usememoMightWork,
   },
 }
 

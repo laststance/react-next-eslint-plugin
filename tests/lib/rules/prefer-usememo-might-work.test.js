@@ -1,5 +1,5 @@
 import { RuleTester } from 'eslint'
-import rule from '../../../lib/rules/usememo-might-work.js'
+import rule from '../../../lib/rules/prefer-usememo-might-work.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -13,7 +13,7 @@ const ruleTester = new RuleTester({
   },
 })
 
-ruleTester.run('usememo-might-work', rule, {
+ruleTester.run('prefer-usememo-might-work', rule, {
   valid: [
     {
       code: `

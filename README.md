@@ -37,10 +37,10 @@ export default [
       '@laststance/react-next/no-deopt-use-memo': 'error',
       '@laststance/react-next/prefer-stable-context-value': 'error',
       '@laststance/react-next/no-unstable-classname-prop': 'error',
-      '@laststance/react-next/usecallback-might-work': 'error',
-      '@laststance/react-next/usecallback-for-memoized-component': 'error',
-      '@laststance/react-next/usememo-for-memoized-component': 'error',
-      '@laststance/react-next/usememo-might-work': 'error',
+      '@laststance/react-next/prefer-usecallback-might-work': 'error',
+      '@laststance/react-next/prefer-usecallback-for-memoized-component': 'error',
+      '@laststance/react-next/prefer-usememo-for-memoized-component': 'error',
+      '@laststance/react-next/prefer-usememo-might-work': 'error',
     },
   },
 ]
@@ -58,10 +58,10 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
-- [`laststance/usecallback-might-work`](docs/rules/usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
-- [`laststance/usecallback-for-memoized-component`](docs/rules/usecallback-for-memoized-component.md): Ensure function props sent to memoized components are wrapped in `useCallback`
-- [`laststance/usememo-for-memoized-component`](docs/rules/usememo-for-memoized-component.md): Ensure object/array props to memoized components are wrapped in `useMemo`
-- [`laststance/usememo-might-work`](docs/rules/usememo-might-work.md): Ensure custom components receive `useMemo`-stable object/array props
+- [`laststance/prefer-usecallback-might-work`](docs/rules/prefer-usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
+- [`laststance/prefer-usecallback-for-memoized-component`](docs/rules/prefer-usecallback-for-memoized-component.md): Ensure function props sent to memoized components are wrapped in `useCallback`
+- [`laststance/prefer-usememo-for-memoized-component`](docs/rules/prefer-usememo-for-memoized-component.md): Ensure object/array props to memoized components are wrapped in `useMemo`
+- [`laststance/prefer-usememo-might-work`](docs/rules/prefer-usememo-might-work.md): Ensure custom components receive `useMemo`-stable object/array props
 
 ## Monorepo Workspace & Demo App
 
