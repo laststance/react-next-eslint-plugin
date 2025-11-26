@@ -6,6 +6,7 @@ import {
   type CSSProperties,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
@@ -156,6 +157,14 @@ const initialTasks: Task[] = [
   { id: 3, label: 'Polish UI copy', completed: false },
 ]
 
+function useTaskCountAnnouncement(count: number) {
+  useEffect(() => {
+    if (count > 5) {
+      console.info('Plenty of tasks in progress')
+    }
+  }, [count])
+}
+
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks)
   const [newLabel, setNewLabel] = useState('')
@@ -241,6 +250,12 @@ export default function Home() {
       ].join(' '),
     [filterCompleted],
   )
+
+  useEffect(() => {
+    console.log('Inline useEffect for lint demo', tasks.length)
+  }, [tasks.length])
+
+  useTaskCountAnnouncement(completedCount)
 
   return (
     <main className="flex min-h-screen flex-col gap-8 bg-slate-50 p-8 text-slate-900">

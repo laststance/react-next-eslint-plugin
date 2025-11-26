@@ -35,6 +35,7 @@ export default [
       '@laststance/react-next/no-set-state-prop-drilling': 'error',
       '@laststance/react-next/no-deopt-use-callback': 'error',
       '@laststance/react-next/no-deopt-use-memo': 'error',
+      '@laststance/react-next/no-direct-use-effect': 'error',
       '@laststance/react-next/prefer-stable-context-value': 'error',
       '@laststance/react-next/no-unstable-classname-prop': 'error',
       '@laststance/react-next/prefer-usecallback-might-work': 'error',
@@ -56,6 +57,7 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/no-set-state-prop-drilling`](docs/rules/no-set-state-prop-drilling.md): Disallow passing `useState` setters via props; prefer semantic handlers or state management
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
+- [`laststance/no-direct-use-effect`](docs/rules/no-direct-use-effect.md): Disallow calling `useEffect` directly inside React components; extract to custom hooks
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
 - [`laststance/prefer-usecallback-might-work`](docs/rules/prefer-usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
@@ -357,6 +359,41 @@ function Component() {
       <button onClick={() => console.log('clicked')}>Simple click</button>
     </div>
   )
+}
+```
+
+### `no-direct-use-effect`
+
+This rule discourages calling `useEffect` directly inside React components so that side effects live in focused custom hooks. Keeping components declarative makes them easier to test and reuse.
+
+**❌ Incorrect**
+
+```javascript
+import { useEffect } from 'react'
+
+function Dashboard() {
+  useEffect(() => {
+    trackPageView('dashboard')
+  }, [])
+
+  return <main>Dashboard</main>
+}
+```
+
+**✅ Correct**
+
+```javascript
+import { useEffect } from 'react'
+
+function useDashboardTracking() {
+  useEffect(() => {
+    trackPageView('dashboard')
+  }, [])
+}
+
+function Dashboard() {
+  useDashboardTracking()
+  return <main>Dashboard</main>
 }
 ```
 

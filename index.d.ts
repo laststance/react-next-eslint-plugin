@@ -7,6 +7,7 @@ export interface LaststanceRuleModules {
   'no-set-state-prop-drilling': Rule.RuleModule
   'no-deopt-use-callback': Rule.RuleModule
   'no-deopt-use-memo': Rule.RuleModule
+  'no-direct-use-effect': Rule.RuleModule
   'prefer-stable-context-value': Rule.RuleModule
   'no-unstable-classname-prop': Rule.RuleModule
   'prefer-usecallback-might-work': Rule.RuleModule

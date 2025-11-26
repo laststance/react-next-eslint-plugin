@@ -17,6 +17,7 @@ import noUseReducer from './lib/rules/no-use-reducer.js'
 import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import noDeoptUseMemo from './lib/rules/no-deopt-use-memo.js'
+import noDirectUseEffect from './lib/rules/no-direct-use-effect.js'
 import preferStableContextValue from './lib/rules/prefer-stable-context-value.js'
 import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js'
 import usecallbackForMemoizedComponent from './lib/rules/prefer-usecallback-for-memoized-component.js'
@@ -37,6 +38,7 @@ const plugin = {
     'no-set-state-prop-drilling': noSetStatePropDrilling,
     'no-deopt-use-callback': noDeoptUseCallback,
     'no-deopt-use-memo': noDeoptUseMemo,
+    'no-direct-use-effect': noDirectUseEffect,
     'prefer-stable-context-value': preferStableContextValue,
     'no-unstable-classname-prop': noUnstableClassnameProp,
     'prefer-usecallback-might-work': usecallbackMightWork,
