@@ -96,6 +96,49 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
         }
       `,
     },
+    // Allow depth 1 to pass setter to a direct child
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return <Child onClick={setCount} />;
+        }
+        function Child({ onClick }) {
+          return <button onClick={onClick}>Click</button>;
+        }
+      `,
+      options: [{ depth: 1 }],
+    },
+    // Stop propagation when child component is imported (depth 1 allowed)
+    {
+      code: `
+        import React, { useState } from 'react';
+        import { ExternalChild } from './ExternalChild';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return <ExternalChild onClick={setCount} />;
+        }
+      `,
+      options: [{ depth: 1 }],
+    },
+    // Allow depth 2 to pass through two same-file components
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return <Child onClick={setCount} />;
+        }
+        function Child({ onClick }) {
+          return <Grandchild onClick={onClick} />;
+        }
+        function Grandchild({ onClick }) {
+          return <button onClick={onClick}>Click</button>;
+        }
+      `,
+      options: [{ depth: 2 }],
+    },
   ],
   invalid: [
     // Direct prop drilling of setter in JSX
@@ -208,6 +251,45 @@ ruleTester.run('no-set-state-prop-drilling', rule, {
           });
         }
       `,
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Depth 1 still rejects passing setter beyond one level in same file
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return <Child onClick={setCount} />;
+        }
+        function Child({ onClick }) {
+          return <Grandchild onClick={onClick} />;
+        }
+        function Grandchild({ onClick }) {
+          return <button onClick={onClick}>Click</button>;
+        }
+      `,
+      options: [{ depth: 1 }],
+      errors: [{ messageId: 'noPropDrillSetter' }],
+    },
+    // Depth 2 rejects passing setter beyond two levels in same file
+    {
+      code: `
+        import React, { useState } from 'react';
+        function Parent() {
+          const [count, setCount] = useState(0);
+          return <Child onClick={setCount} />;
+        }
+        function Child({ onClick }) {
+          return <Grandchild onClick={onClick} />;
+        }
+        function Grandchild({ onClick }) {
+          return <GreatGrandchild onClick={onClick} />;
+        }
+        function GreatGrandchild({ onClick }) {
+          return <button onClick={onClick}>Click</button>;
+        }
+      `,
+      options: [{ depth: 2 }],
       errors: [{ messageId: 'noPropDrillSetter' }],
     },
   ],

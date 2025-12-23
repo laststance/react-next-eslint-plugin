@@ -14,7 +14,7 @@ The rule flags:
 - Setter in React.createElement props: `createElement(Child, { setState })`
 - Setters passed within object literals to intrinsic elements
 
-**Note**: The rule allows wrapping setters in arrow functions or named functions, as these create semantic handlers.
+**Note**: The rule allows wrapping setters in arrow functions or named functions, as these create semantic handlers. You can also allow limited prop depth via the `depth` option.
 
 ### Why This Rule Exists
 
@@ -170,7 +170,22 @@ function CounterProvider({ children }) {
 
 ## Options
 
-This rule has no configuration options. All direct useState setter prop drilling is flagged.
+This rule accepts an options object:
+
+- `depth` (number, default: `0`): allows passing a setter through up to N component levels **within the same file**.
+
+**Important behaviors**
+
+- Only components defined in the same file are tracked for depth propagation.
+- Imported/unknown components stop the depth chain (no extra warnings beyond the allowed depth).
+- Intrinsic elements like `div` or `button` are still flagged when the setter originates in the same component, or when the depth already exceeds the allowed limit.
+
+### Example
+
+```javascript
+// eslint config
+'@laststance/react-next/no-set-state-prop-drilling': ['error', { depth: 1 }]
+```
 
 ## When Not To Use It
 

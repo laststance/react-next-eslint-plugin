@@ -344,6 +344,82 @@ export default function Home() {
           className={stableMetricClassName}
         />
       </section>
+
+      <section className="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-6 text-sm text-slate-700">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Prop drilling depth demo
+        </p>
+        <DepthPropDrillDemo />
+      </section>
     </main>
+  )
+}
+
+const DEPTH_DEMO_INITIAL_COUNT = 0
+const DEPTH_DEMO_INCREMENT = 1
+type CountSetter = (value: number | ((previous: number) => number)) => void
+
+/**
+ * Renders a demo of setter prop drilling depth behavior.
+ * @returns
+ * - A section that forwards a useState setter across multiple component levels
+ * @example
+ * <DepthPropDrillDemo />
+ */
+function DepthPropDrillDemo() {
+  const [count, setCount] = useState(DEPTH_DEMO_INITIAL_COUNT)
+
+  return (
+    <div className="mt-4 space-y-3">
+      <p className="text-sm text-slate-600">
+        Current depth demo count: {count}
+      </p>
+      <DepthPropDrillChild onIncrement={setCount} />
+    </div>
+  )
+}
+
+/**
+ * Forwards a setter to a nested child to exercise depth checks.
+ * @param props - Component props.
+ * @param props.onIncrement - Setter for updating the demo count.
+ * @returns
+ * - A nested child that receives the forwarded setter
+ * @example
+ * <DepthPropDrillChild onIncrement={setCount} />
+ */
+function DepthPropDrillChild({ onIncrement }: { onIncrement: CountSetter }) {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white px-4 py-3">
+      <p className="text-xs uppercase tracking-wide text-slate-500">
+        Child forwarding setter
+      </p>
+      <DepthPropDrillGrandchild onIncrement={onIncrement} />
+    </div>
+  )
+}
+
+/**
+ * Consumes the forwarded setter and triggers updates.
+ * @param props - Component props.
+ * @param props.onIncrement - Setter for updating the demo count.
+ * @returns
+ * - A button that invokes the forwarded setter
+ * @example
+ * <DepthPropDrillGrandchild onIncrement={setCount} />
+ */
+function DepthPropDrillGrandchild({
+  onIncrement,
+}: {
+  onIncrement: CountSetter
+}) {
+  return (
+    <button
+      type="button"
+      className="mt-2 rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-700"
+      onClick={() => onIncrement((value) => value + DEPTH_DEMO_INCREMENT)}
+    >
+      Increment via grandchild
+    </button>
   )
 }

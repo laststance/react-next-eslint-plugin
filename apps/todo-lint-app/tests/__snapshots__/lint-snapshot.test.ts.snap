@@ -14,7 +14,8 @@ exports[`ESLint integration snapshot > captures plugin warnings for the demo app
   312:29  warning  Value "inlineFilters" passed to component "StatsPanel" via prop "filters" is not wrapped in useMemo. Wrap it with useMemo to avoid unnecessary renders                                                                                                      laststance/prefer-usememo-might-work
   318:11  warning  Avoid passing a new object literal to Context.Provider "value" on each render. Wrap it in useMemo/useCallback to provide a stable reference and prevent unnecessary context consumers re-rendering                                                          laststance/prefer-stable-context-value
   334:11  warning  Avoid creating a new function call for className on each render. Prefer a stable string, template literal, or a memoized result of a classnames utility                                                                                                     laststance/no-unstable-classname-prop
+  397:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai).  laststance/no-set-state-prop-drilling
 
-✖ 11 problems (0 errors, 11 warnings)
+✖ 12 problems (0 errors, 12 warnings)
 "
 `;

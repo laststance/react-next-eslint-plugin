@@ -23,6 +23,7 @@ const eslintConfig = defineConfig([
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/no-deopt-use-memo': 'warn',
       'laststance/no-direct-use-effect': 'warn',
+      'laststance/no-set-state-prop-drilling': ['warn', { depth: 1 }],
       'laststance/prefer-usecallback-might-work': 'warn',
       'laststance/prefer-usecallback-for-memoized-component': 'warn',
       'laststance/prefer-usememo-for-memoized-component': 'warn',

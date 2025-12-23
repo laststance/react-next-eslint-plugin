@@ -2,6 +2,10 @@
 
 ESLint plugin for React and Next.js projects with rules to improve code quality and catch common mistakes.
 
+<p align="center">
+  <img src="./image.png" alt="ESLint plugin preview" />
+</p>
+
 ## Installation
 
 ```bash
@@ -32,7 +36,10 @@ export default [
       '@laststance/react-next/no-jsx-without-return': 'error',
       '@laststance/react-next/all-memo': 'error',
       '@laststance/react-next/no-use-reducer': 'error',
-      '@laststance/react-next/no-set-state-prop-drilling': 'error',
+      '@laststance/react-next/no-set-state-prop-drilling': [
+        'error',
+        { depth: 1 },
+      ],
       '@laststance/react-next/no-deopt-use-callback': 'error',
       '@laststance/react-next/no-deopt-use-memo': 'error',
       '@laststance/react-next/no-direct-use-effect': 'error',
@@ -309,6 +316,10 @@ function Child({ onIncrement, count }) {
   return <button onClick={onIncrement}>Count: {count}</button>
 }
 ```
+
+**Options**
+
+- `depth` (number, default: `0`): allows passing a setter through up to N component levels **within the same file**. Imported components stop depth propagation.
 
 ### `no-deopt-use-callback`
 
