@@ -459,7 +459,7 @@ function UserProvider({ children }) {
 
 ### `no-unstable-classname-prop`
 
-This rule prevents unstable `className` expressions that change identity on every render, which can cause performance issues in memoized components. It flags inline objects, arrays, function calls, and string concatenations.
+This rule prevents unstable `className` expressions that change identity on every render, which can cause performance issues in memoized components. It flags inline objects, arrays, most function calls, and string concatenations. Calls to common class merge utilities (`cn`, `cva`, `clsx`, `classnames`) are allowed.
 
 **❌ Incorrect**
 
@@ -474,7 +474,7 @@ function Component({ isActive, theme }) {
       <button className={['btn', isActive && 'active']}>Button 2</button>
 
       {/* Function call executes each render */}
-      <button className={classNames('btn', { active: isActive })}>
+      <button className={buildClassName('btn', isActive)}>
         Button 3
       </button>
 
@@ -489,15 +489,9 @@ function Component({ isActive, theme }) {
 
 ```javascript
 import { useMemo } from 'react'
-import classNames from 'classnames'
+import { cn } from '@/lib/utils'
 
 function Component({ isActive, theme }) {
-  // Memoize complex className logic
-  const buttonClassName = useMemo(
-    () => classNames('btn', { active: isActive }, theme),
-    [isActive, theme],
-  )
-
   return (
     <div>
       {/* Static strings are fine */}
@@ -506,8 +500,10 @@ function Component({ isActive, theme }) {
       {/* Template literals with stable references */}
       <button className={`btn ${theme}`}>Template Button</button>
 
-      {/* Memoized complex logic */}
-      <button className={buttonClassName}>Complex Button</button>
+      {/* Utility helpers are allowed */}
+      <button className={cn('btn', { active: isActive }, theme)}>
+        Utility Button
+      </button>
     </div>
   )
 }

@@ -1,5 +1,8 @@
 'use client'
 
+import { cva } from 'class-variance-authority'
+import classnames from 'classnames'
+import clsx from 'clsx'
 import {
   createContext,
   memo,
@@ -11,6 +14,7 @@ import {
   useState,
 } from 'react'
 
+import { cn } from '@/lib/utils'
 type Task = {
   id: number
   label: string
@@ -250,6 +254,7 @@ export default function Home() {
       ].join(' '),
     [filterCompleted],
   )
+  const classMergeTone = filterCompleted ? 'accent' : 'neutral'
 
   useEffect(() => {
     console.log('Inline useEffect for lint demo', tasks.length)
@@ -343,6 +348,60 @@ export default function Home() {
           value={filterCompleted ? 'Filtered view' : 'All tasks'}
           className={stableMetricClassName}
         />
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        <article
+          className={cn(
+            'rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700',
+            filterCompleted && 'border-emerald-200 bg-emerald-50 text-emerald-900',
+          )}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            cn utility
+          </p>
+          <p className="mt-2">cn merges conditionals without warnings.</p>
+        </article>
+        <article
+          className={clsx(
+            'rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700',
+            { 'border-slate-300 bg-slate-100': !filterCompleted },
+          )}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            clsx utility
+          </p>
+          <p className="mt-2">clsx stays stable for className props.</p>
+        </article>
+        <article
+          className={classnames(
+            'rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-700',
+            { 'border-amber-200 bg-amber-50 text-amber-900': filterCompleted },
+          )}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            classnames utility
+          </p>
+          <p className="mt-2">classnames is allowed in className.</p>
+        </article>
+        <article
+          className={cva('rounded-xl border p-4 text-sm font-medium', {
+            variants: {
+              tone: {
+                neutral: 'border-slate-200 bg-white text-slate-700',
+                accent: 'border-emerald-200 bg-emerald-50 text-emerald-900',
+              },
+            },
+            defaultVariants: {
+              tone: 'neutral',
+            },
+          })({ tone: classMergeTone })}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            cva utility
+          </p>
+          <p className="mt-2">cva output can be used inline too.</p>
+        </article>
       </section>
 
       <section className="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-6 text-sm text-slate-700">

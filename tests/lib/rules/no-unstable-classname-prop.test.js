@@ -28,6 +28,30 @@ ruleTester.run('no-unstable-classname-prop', rule, {
         };
       `,
     },
+    {
+      code: `
+        import { cn } from '@/lib/utils';
+        const C = ({ active }) => <div className={cn('btn', active && 'is-active')}/>;
+      `,
+    },
+    {
+      code: `
+        import { cva } from 'class-variance-authority';
+        const C = () => <div className={cva('btn')({})}/>;
+      `,
+    },
+    {
+      code: `
+        import clsx from 'clsx';
+        const C = ({ active }) => <div className={clsx('btn', { active })}/>;
+      `,
+    },
+    {
+      code: `
+        import classnames from 'classnames';
+        const C = ({ active }) => <div className={classnames('btn', { active })}/>;
+      `,
+    },
   ],
   invalid: [
     {
@@ -39,7 +63,7 @@ ruleTester.run('no-unstable-classname-prop', rule, {
       errors: [{ messageId: 'unstableClassName' }],
     },
     {
-      code: "import cx from 'classnames'; const C = () => <div className={cx('a', 'b')}/>;",
+      code: "const makeClasses = () => 'btn'; const C = () => <div className={makeClasses()}/>;",
       errors: [{ messageId: 'unstableClassName' }],
     },
     {
@@ -49,13 +73,6 @@ ruleTester.run('no-unstable-classname-prop', rule, {
     {
       code: `
         const C = ({ theme }) => <div className={'btn-' + theme}/>;
-      `,
-      errors: [{ messageId: 'unstableClassName' }],
-    },
-    {
-      code: `
-        import clsx from 'clsx';
-        const C = ({ active }) => <div className={clsx('btn', { active })}/>;
       `,
       errors: [{ messageId: 'unstableClassName' }],
     },

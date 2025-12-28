@@ -12,7 +12,7 @@ The rule flags:
 
 - **Object literals**: `className={{ active: isActive }}`
 - **Array literals**: `className={['btn', isActive && 'active']}`
-- **Function calls**: `className={classNames('btn', { active })}`
+- **Function calls**: `className={buildClassName('btn', { active })}` (excluding `cn`, `cva`, `clsx`, `classnames`)
 - **String concatenation**: `className={'btn ' + theme}`
 
 These expressions create new values on every render, breaking referential equality and defeating React's optimization mechanisms.
@@ -54,7 +54,7 @@ function Component({ isActive, theme }) {
       <button className={['btn', isActive && 'active']}>Button 2</button>
 
       {/* Function call - executes every render */}
-      <button className={classNames('btn', { active: isActive })}>
+      <button className={buildClassName('btn', { active: isActive })}>
         Button 3
       </button>
 
@@ -64,8 +64,8 @@ function Component({ isActive, theme }) {
       {/* String concatenation that references props is also unstable */}
       <button className={'btn-' + theme}>Button 5</button>
 
-      {/* classNames/clsx helpers are just function calls */}
-      <button className={classNames('btn', { active: isActive })}>
+      {/* Custom helpers are still function calls */}
+      <button className={buildClassName('btn', { active: isActive })}>
         Button 6
       </button>
 
@@ -172,7 +172,7 @@ function SimpleButton({ theme, size }) {
 
 ## Options
 
-This rule has no configuration options. All unstable className expressions are flagged.
+This rule has no configuration options. All unstable className expressions are flagged except calls to `cn`, `cva`, `clsx`, and `classnames`.
 
 ## When Not To Use It
 
