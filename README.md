@@ -147,6 +147,11 @@ function Component() {
 
 This rule enforces that all React function components (PascalCase functions returning JSX) are wrapped with `React.memo` to prevent unnecessary re-renders and improve performance.
 
+This rule ignores the following files:
+
+- Next.js `layout.tsx` (Server Components)
+- Storybook stories that include `.stories.` in the filename
+
 **❌ Incorrect**
 
 ```javascript

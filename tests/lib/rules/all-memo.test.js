@@ -114,6 +114,22 @@ ruleTester.run('all-memo', rule, {
         export default Toolbar;
       `,
     },
+    // layout.tsx (Server Component) is ignored
+    {
+      filename: '/app/layout.tsx',
+      code: `
+        const RootLayout = ({ children }) => <div>{children}</div>;
+        export default RootLayout;
+      `,
+    },
+    // Storybook stories are ignored
+    {
+      filename: '/components/Button.stories.tsx',
+      code: `
+        const Button = () => <button type="button">Click</button>;
+        export default Button;
+      `,
+    },
   ],
   invalid: [
     // Variable arrow component not memoized

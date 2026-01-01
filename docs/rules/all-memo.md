@@ -31,6 +31,13 @@ It then verifies that these components are wrapped with:
 - `React.memo(...)`
 - Export statements like `export default memo(Component)`
 
+## Ignored Files
+
+This rule does not report in the following cases:
+
+- Next.js `layout.tsx` (Server Components)
+- Storybook stories that include `.stories.` in the filename
+
 ## Examples
 
 ### ❌ Incorrect
