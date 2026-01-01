@@ -1,6 +1,6 @@
 # @laststance/react-next-eslint-plugin
 
-ESLint plugin for React and Next.js projects with rules to improve code quality and catch common mistakes.
+ESLint plugin for React and Next.js projects that includes one rule for my personal use and a rule to prevent infinite re-renders during Vibe Coding.
 
 <p align="center">
   <img src="./image.png" alt="ESLint plugin preview" />
