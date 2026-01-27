@@ -8,6 +8,13 @@ export interface LaststanceRuleModules {
   'no-deopt-use-callback': Rule.RuleModule
   'no-deopt-use-memo': Rule.RuleModule
   'no-direct-use-effect': Rule.RuleModule
+  'no-forward-ref': Rule.RuleModule
+  'no-context-provider': Rule.RuleModule
+  'no-missing-key': Rule.RuleModule
+  'no-duplicate-key': Rule.RuleModule
+  'no-missing-component-display-name': Rule.RuleModule
+  'no-nested-component-definitions': Rule.RuleModule
+  'no-missing-button-type': Rule.RuleModule
   'prefer-stable-context-value': Rule.RuleModule
   'no-unstable-classname-prop': Rule.RuleModule
   'prefer-usecallback-might-work': Rule.RuleModule

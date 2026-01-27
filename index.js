@@ -18,6 +18,13 @@ import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import noDeoptUseMemo from './lib/rules/no-deopt-use-memo.js'
 import noDirectUseEffect from './lib/rules/no-direct-use-effect.js'
+import noForwardRef from './lib/rules/no-forward-ref.js'
+import noContextProvider from './lib/rules/no-context-provider.js'
+import noMissingKey from './lib/rules/no-missing-key.js'
+import noDuplicateKey from './lib/rules/no-duplicate-key.js'
+import noMissingComponentDisplayName from './lib/rules/no-missing-component-display-name.js'
+import noNestedComponentDefinitions from './lib/rules/no-nested-component-definitions.js'
+import noMissingButtonType from './lib/rules/no-missing-button-type.js'
 import preferStableContextValue from './lib/rules/prefer-stable-context-value.js'
 import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js'
 import usecallbackForMemoizedComponent from './lib/rules/prefer-usecallback-for-memoized-component.js'
@@ -39,6 +46,13 @@ const plugin = {
     'no-deopt-use-callback': noDeoptUseCallback,
     'no-deopt-use-memo': noDeoptUseMemo,
     'no-direct-use-effect': noDirectUseEffect,
+    'no-forward-ref': noForwardRef,
+    'no-context-provider': noContextProvider,
+    'no-missing-key': noMissingKey,
+    'no-duplicate-key': noDuplicateKey,
+    'no-missing-component-display-name': noMissingComponentDisplayName,
+    'no-nested-component-definitions': noNestedComponentDefinitions,
+    'no-missing-button-type': noMissingButtonType,
     'prefer-stable-context-value': preferStableContextValue,
     'no-unstable-classname-prop': noUnstableClassnameProp,
     'prefer-usecallback-might-work': usecallbackMightWork,

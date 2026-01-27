@@ -43,6 +43,13 @@ export default [
       '@laststance/react-next/no-deopt-use-callback': 'error',
       '@laststance/react-next/no-deopt-use-memo': 'error',
       '@laststance/react-next/no-direct-use-effect': 'error',
+      '@laststance/react-next/no-forward-ref': 'error',
+      '@laststance/react-next/no-context-provider': 'error',
+      '@laststance/react-next/no-missing-key': 'error',
+      '@laststance/react-next/no-duplicate-key': 'error',
+      '@laststance/react-next/no-missing-component-display-name': 'error',
+      '@laststance/react-next/no-nested-component-definitions': 'error',
+      '@laststance/react-next/no-missing-button-type': 'error',
       '@laststance/react-next/prefer-stable-context-value': 'error',
       '@laststance/react-next/no-unstable-classname-prop': 'error',
       '@laststance/react-next/prefer-usecallback-might-work': 'error',
@@ -57,6 +64,7 @@ export default [
 ## Rules
 
 These rules are provided by the plugin. Enable only those you need. Click on each rule for detailed documentation.
+Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-plugin-react.
 
 - [`laststance/no-jsx-without-return`](docs/rules/no-jsx-without-return.md): Disallow JSX elements not returned or assigned
 - [`laststance/all-memo`](docs/rules/all-memo.md): Enforce wrapping React function components with `React.memo`
@@ -65,6 +73,13 @@ These rules are provided by the plugin. Enable only those you need. Click on eac
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
 - [`laststance/no-direct-use-effect`](docs/rules/no-direct-use-effect.md): Disallow calling `useEffect` directly inside React components; extract to custom hooks
+- [`laststance/no-forward-ref`](docs/rules/no-forward-ref.md): Prefer passing `ref` as a prop instead of `forwardRef` (React 19)
+- [`laststance/no-context-provider`](docs/rules/no-context-provider.md): Prefer rendering `<Context>` instead of `<Context.Provider>` (React 19)
+- [`laststance/no-missing-key`](docs/rules/no-missing-key.md): Disallow list items without `key`
+- [`laststance/no-duplicate-key`](docs/rules/no-duplicate-key.md): Disallow duplicate `key` values among siblings
+- [`laststance/no-missing-component-display-name`](docs/rules/no-missing-component-display-name.md): Require `displayName` for anonymous memo/forwardRef components
+- [`laststance/no-nested-component-definitions`](docs/rules/no-nested-component-definitions.md): Disallow defining components inside other components
+- [`laststance/no-missing-button-type`](docs/rules/no-missing-button-type.md): Require explicit `type` for button elements
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
 - [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
 - [`laststance/prefer-usecallback-might-work`](docs/rules/prefer-usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
@@ -512,6 +527,147 @@ function Component({ isActive, theme }) {
     </div>
   )
 }
+```
+
+### `no-forward-ref`
+
+In React 19, `forwardRef` is no longer required for function components. This rule flags `forwardRef` usage so you can pass `ref` as a prop instead.
+
+**❌ Incorrect**
+
+```javascript
+const Button = React.forwardRef((props, ref) => {
+  return <button ref={ref} />
+})
+```
+
+**✅ Correct**
+
+```javascript
+const Button = ({ ref }) => {
+  return <button ref={ref} />
+}
+```
+
+### `no-context-provider`
+
+In React 19, `<Context>` can be used directly as a provider. This rule warns on `<Context.Provider>`.
+
+**❌ Incorrect**
+
+```javascript
+const App = () => <ThemeContext.Provider value={value} />
+```
+
+**✅ Correct**
+
+```javascript
+const App = () => <ThemeContext value={value} />
+```
+
+### `no-missing-key`
+
+This rule requires `key` when rendering lists and discourages fragment shorthand in list items.
+
+**❌ Incorrect**
+
+```javascript
+items.map((item) => <Item />)
+
+items.map((item) => <>{item}</>)
+```
+
+**✅ Correct**
+
+```javascript
+items.map((item) => <Item key={item.id} />)
+
+items.map((item) => <React.Fragment key={item.id}>{item}</React.Fragment>)
+```
+
+### `no-duplicate-key`
+
+This rule requires sibling elements to have unique `key` values.
+
+**❌ Incorrect**
+
+```javascript
+return [
+  <Item key="a" />,
+  <Item key="a" />,
+]
+```
+
+**✅ Correct**
+
+```javascript
+return [
+  <Item key="a" />,
+  <Item key="b" />,
+]
+```
+
+### `no-missing-component-display-name`
+
+Anonymous components wrapped with `memo` or `forwardRef` should have an explicit `displayName`.
+
+**❌ Incorrect**
+
+```javascript
+const App = React.memo(() => <div />)
+```
+
+**✅ Correct**
+
+```javascript
+const App = React.memo(function App() {
+  return <div />
+})
+
+App.displayName = 'App'
+```
+
+### `no-nested-component-definitions`
+
+Defining components inside other components recreates them on each render. This rule flags nested component definitions.
+
+**❌ Incorrect**
+
+```javascript
+function Parent() {
+  function Child() {
+    return <div />
+  }
+  return <Child />
+}
+```
+
+**✅ Correct**
+
+```javascript
+function Child() {
+  return <div />
+}
+
+function Parent() {
+  return <Child />
+}
+```
+
+### `no-missing-button-type`
+
+Buttons should have an explicit `type` attribute to avoid implicit submit behavior.
+
+**❌ Incorrect**
+
+```javascript
+<button />
+```
+
+**✅ Correct**
+
+```javascript
+<button type="button" />
 ```
 
 ## Configuration
