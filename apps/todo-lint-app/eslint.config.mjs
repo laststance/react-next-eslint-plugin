@@ -20,6 +20,13 @@ const eslintConfig = defineConfig([
       laststance: laststancePlugin,
     },
     rules: {
+      'laststance/no-forward-ref': 'warn',
+      'laststance/no-context-provider': 'warn',
+      'laststance/no-missing-key': 'warn',
+      'laststance/no-duplicate-key': 'warn',
+      'laststance/no-missing-component-display-name': 'warn',
+      'laststance/no-nested-component-definitions': 'warn',
+      'laststance/no-missing-button-type': 'warn',
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/no-deopt-use-memo': 'warn',
       'laststance/no-direct-use-effect': 'warn',

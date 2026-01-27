@@ -2,6 +2,13 @@
 
 exports[`ESLint integration snapshot > captures plugin warnings for the demo app 1`] = `
 "
+<projectRoot>/src/app/invalid/page.tsx
+   41:3   warning  Add missing 'displayName' for component                                                laststance/no-missing-component-display-name
+   50:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead         laststance/no-forward-ref
+   95:3   warning  Do not nest component definitions inside other components. Move it to the top level    laststance/no-nested-component-definitions
+  105:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'  laststance/no-context-provider
+  113:11  warning  Missing an explicit type attribute for button                                          laststance/no-missing-button-type
+
 <projectRoot>/src/app/page.tsx
   259:3   warning  Component "Home" should not call useEffect directly. Extract this effect into a well-named custom hook (e.g., useDataLoader or useSyncProfile)                                                                                                                                            laststance/no-direct-use-effect
   285:15  warning  Avoid passing a useCallback-wrapped function "meaninglessFocus" to an intrinsic element. useCallback is intended to stabilize function props for memoized components to prevent unnecessary re-renders. Prefer an inline handler or plain function instead                                laststance/no-deopt-use-callback
@@ -12,10 +19,13 @@ exports[`ESLint integration snapshot > captures plugin warnings for the demo app
   312:22  warning  Value "unstableEmphasisStyles" passed to memoized component "MemoizedTaskList" via prop "listStyles" is not wrapped in useMemo. Wrap it with useMemo to prevent breaking memoization                                                                                                      laststance/prefer-usememo-for-memoized-component
   312:22  warning  Value "unstableEmphasisStyles" passed to component "MemoizedTaskList" via prop "listStyles" is not wrapped in useMemo. Wrap it with useMemo to avoid unnecessary renders                                                                                                                  laststance/prefer-usememo-might-work
   317:29  warning  Value "inlineFilters" passed to component "StatsPanel" via prop "filters" is not wrapped in useMemo. Wrap it with useMemo to avoid unnecessary renders                                                                                                                                    laststance/prefer-usememo-might-work
+  322:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   323:11  warning  Avoid passing a new object literal to Context.Provider "value" on each render. Wrap it in useMemo/useCallback to provide a stable reference and prevent unnecessary context consumers re-rendering                                                                                        laststance/prefer-stable-context-value
+  330:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   339:11  warning  Avoid creating a new function call for className on each render. Prefer a stable string, template literal, or a memoized result of a classnames utility                                                                                                                                   laststance/no-unstable-classname-prop
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
-✖ 12 problems (0 errors, 12 warnings)
+✖ 19 problems (0 errors, 19 warnings)
+  0 errors and 3 warnings potentially fixable with the \`--fix\` option.
 "
 `;
