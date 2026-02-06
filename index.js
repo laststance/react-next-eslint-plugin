@@ -26,7 +26,6 @@ import noMissingComponentDisplayName from './lib/rules/no-missing-component-disp
 import noNestedComponentDefinitions from './lib/rules/no-nested-component-definitions.js'
 import noMissingButtonType from './lib/rules/no-missing-button-type.js'
 import preferStableContextValue from './lib/rules/prefer-stable-context-value.js'
-import noUnstableClassnameProp from './lib/rules/no-unstable-classname-prop.js'
 import usecallbackForMemoizedComponent from './lib/rules/prefer-usecallback-for-memoized-component.js'
 import usecallbackMightWork from './lib/rules/prefer-usecallback-might-work.js'
 import usememoForMemoizedComponent from './lib/rules/prefer-usememo-for-memoized-component.js'
@@ -54,7 +53,6 @@ const plugin = {
     'no-nested-component-definitions': noNestedComponentDefinitions,
     'no-missing-button-type': noMissingButtonType,
     'prefer-stable-context-value': preferStableContextValue,
-    'no-unstable-classname-prop': noUnstableClassnameProp,
     'prefer-usecallback-might-work': usecallbackMightWork,
     'prefer-usecallback-for-memoized-component': usecallbackForMemoizedComponent,
     'prefer-usememo-for-memoized-component': usememoForMemoizedComponent,

@@ -51,7 +51,6 @@ export default [
       '@laststance/react-next/no-nested-component-definitions': 'error',
       '@laststance/react-next/no-missing-button-type': 'error',
       '@laststance/react-next/prefer-stable-context-value': 'error',
-      '@laststance/react-next/no-unstable-classname-prop': 'error',
       '@laststance/react-next/prefer-usecallback-might-work': 'error',
       '@laststance/react-next/prefer-usecallback-for-memoized-component': 'error',
       '@laststance/react-next/prefer-usememo-for-memoized-component': 'error',
@@ -81,7 +80,6 @@ Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-pl
 - [`laststance/no-nested-component-definitions`](docs/rules/no-nested-component-definitions.md): Disallow defining components inside other components
 - [`laststance/no-missing-button-type`](docs/rules/no-missing-button-type.md): Require explicit `type` for button elements
 - [`laststance/prefer-stable-context-value`](docs/rules/prefer-stable-context-value.md): Prefer stable `Context.Provider` values (wrap with `useMemo`/`useCallback`)
-- [`laststance/no-unstable-classname-prop`](docs/rules/no-unstable-classname-prop.md): Avoid unstable `className` expressions that change identity every render
 - [`laststance/prefer-usecallback-might-work`](docs/rules/prefer-usecallback-might-work.md): Ensure custom components receive `useCallback`-stable function props
 - [`laststance/prefer-usecallback-for-memoized-component`](docs/rules/prefer-usecallback-for-memoized-component.md): Ensure function props sent to memoized components are wrapped in `useCallback`
 - [`laststance/prefer-usememo-for-memoized-component`](docs/rules/prefer-usememo-for-memoized-component.md): Ensure object/array props to memoized components are wrapped in `useMemo`
@@ -473,58 +471,6 @@ function UserProvider({ children }) {
 
   return (
     <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
-  )
-}
-```
-
-### `no-unstable-classname-prop`
-
-This rule prevents unstable `className` expressions that change identity on every render, which can cause performance issues in memoized components. It flags inline objects, arrays, most function calls, and string concatenations. Calls to common class merge utilities (`cn`, `cva`, `clsx`, `classnames`) are allowed.
-
-**❌ Incorrect**
-
-```javascript
-function Component({ isActive, theme }) {
-  return (
-    <div>
-      {/* Object literal creates new reference each render */}
-      <button className={{ active: isActive, theme }}>Button 1</button>
-
-      {/* Array literal creates new reference each render */}
-      <button className={['btn', isActive && 'active']}>Button 2</button>
-
-      {/* Function call executes each render */}
-      <button className={buildClassName('btn', isActive)}>
-        Button 3
-      </button>
-
-      {/* String concatenation creates new string each render */}
-      <button className={'btn ' + theme}>Button 4</button>
-    </div>
-  )
-}
-```
-
-**✅ Correct**
-
-```javascript
-import { useMemo } from 'react'
-import { cn } from '@/lib/utils'
-
-function Component({ isActive, theme }) {
-  return (
-    <div>
-      {/* Static strings are fine */}
-      <button className="btn primary">Static Button</button>
-
-      {/* Template literals with stable references */}
-      <button className={`btn ${theme}`}>Template Button</button>
-
-      {/* Utility helpers are allowed */}
-      <button className={cn('btn', { active: isActive }, theme)}>
-        Utility Button
-      </button>
-    </div>
   )
 }
 ```

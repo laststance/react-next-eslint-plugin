@@ -51,7 +51,6 @@ export default defineConfig([
       'laststance/no-set-state-prop-drilling': 'warn',
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
-      'laststance/no-unstable-classname-prop': 'warn',
     },
   },
 ])

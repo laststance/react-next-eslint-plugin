@@ -22,10 +22,9 @@ exports[`ESLint integration snapshot > captures plugin warnings for the demo app
   322:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   323:11  warning  Avoid passing a new object literal to Context.Provider "value" on each render. Wrap it in useMemo/useCallback to provide a stable reference and prevent unnecessary context consumers re-rendering                                                                                        laststance/prefer-stable-context-value
   330:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
-  339:11  warning  Avoid creating a new function call for className on each render. Prefer a stable string, template literal, or a memoized result of a classnames utility                                                                                                                                   laststance/no-unstable-classname-prop
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
-✖ 19 problems (0 errors, 19 warnings)
+✖ 18 problems (0 errors, 18 warnings)
   0 errors and 3 warnings potentially fixable with the \`--fix\` option.
 "
 `;

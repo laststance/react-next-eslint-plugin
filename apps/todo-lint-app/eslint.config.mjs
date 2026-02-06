@@ -36,7 +36,6 @@ const eslintConfig = defineConfig([
       'laststance/prefer-usememo-for-memoized-component': 'warn',
       'laststance/prefer-usememo-might-work': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
-      'laststance/no-unstable-classname-prop': 'warn',
     },
   },
 ])

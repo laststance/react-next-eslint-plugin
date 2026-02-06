@@ -16,7 +16,6 @@ export interface LaststanceRuleModules {
   'no-nested-component-definitions': Rule.RuleModule
   'no-missing-button-type': Rule.RuleModule
   'prefer-stable-context-value': Rule.RuleModule
-  'no-unstable-classname-prop': Rule.RuleModule
   'prefer-usecallback-might-work': Rule.RuleModule
   'prefer-usecallback-for-memoized-component': Rule.RuleModule
   'prefer-usememo-for-memoized-component': Rule.RuleModule
