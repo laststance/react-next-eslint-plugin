@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/prepare
+      # Configure registry for OIDC token exchange
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
       - run: git config user.name "${{ github.actor }}"
       - run: git config user.email "${{ github.actor }}@users.noreply.github.com"
 
