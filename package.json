@@ -1,6 +1,6 @@
 {
   "name": "@laststance/react-next-eslint-plugin",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "ESLint plugin for React and Next.js projects with no-jsx-without-return rule",
   "main": "index.js",
   "types": "index.d.ts",
