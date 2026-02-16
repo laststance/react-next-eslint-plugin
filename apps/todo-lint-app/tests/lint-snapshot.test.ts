@@ -12,6 +12,11 @@ const ESLINT_V10_MAJOR = '10'
 const APP_SOURCE_GLOB = 'src'
 const V10_COMPAT_FIXTURE_GLOB = 'tests/fixtures/eslint-v10'
 const SNAPSHOT_TEST_NAME = `captures plugin warnings for the demo app (eslint v${ESLINT_MAJOR_VERSION})`
+const SNAPSHOT_DIRECTORY = path.join(projectRoot, 'tests', '__snapshots__')
+const SNAPSHOT_FILE_PATH = path.join(
+  SNAPSHOT_DIRECTORY,
+  `lint-snapshot.eslint-v${ESLINT_MAJOR_VERSION}.snap`,
+)
 const V10_COMPAT_RULES = {
   'laststance/no-forward-ref': 'warn',
   'laststance/no-context-provider': 'warn',
@@ -38,7 +43,7 @@ describe('ESLint integration snapshot', () => {
         .join('<projectRoot>'),
     )
 
-    expect(normalizedOutput).toMatchSnapshot()
+    await expect(normalizedOutput).toMatchFileSnapshot(SNAPSHOT_FILE_PATH)
   })
 })
 
