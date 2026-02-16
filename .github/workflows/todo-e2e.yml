@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['22.16.0']
+        node-version: ['22.16.0', '24.x']
         eslint-major: ['9', '10']
 
     steps:
