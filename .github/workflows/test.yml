@@ -8,15 +8,17 @@ on:
 
 jobs:
   test:
-    name: Run Tests
+    name: Run Tests (Node ${{ matrix.node-version }}, ESLint v${{ matrix.eslint-major }})
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ['20.x', '22.x']
+        node-version: ['20.19.0', '22.16.0']
+        eslint-major: ['9', '10']
 
     steps:
       - name: Checkout repository
@@ -46,6 +48,24 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Resolve matrix ESLint versions
+        id: eslint-versions
+        shell: bash
+        run: |
+          if [ "${{ matrix.eslint-major }}" = "9" ]; then
+            echo "eslint=9.39.2" >> "$GITHUB_OUTPUT"
+            echo "eslint_js=9.39.2" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "eslint=10.0.0" >> "$GITHUB_OUTPUT"
+          echo "eslint_js=10.0.1" >> "$GITHUB_OUTPUT"
+
+      - name: Switch ESLint major for matrix run
+        run: |
+          pnpm add -Dw eslint@${{ steps.eslint-versions.outputs.eslint }} @eslint/js@${{ steps.eslint-versions.outputs.eslint_js }}
+          pnpm --filter todo-lint-app add -D eslint@${{ steps.eslint-versions.outputs.eslint }}
 
       - name: Lint & test plugin package
         run: |

@@ -2,6 +2,11 @@
 
 The `apps/todo-lint-app` workspace package acts as an end-to-end playground that runs the published ESLint plugin against intentionally noisy source files. The Vitest suite (`tests/lint-snapshot.test.ts`) lints `src/` and stores the formatted ESLint output in `tests/__snapshots__/lint-snapshot.test.ts.snap`.
 
+Snapshot keys are now generated per ESLint major version (for example, `eslint v9` and `eslint v10`) so CI can validate both compatibility targets independently.
+
+- ESLint v9 snapshot lints `src/` with the full demo app config.
+- ESLint v10 snapshot uses `tests/fixtures/eslint-v10/` with a plugin-only compatibility config while the Next.js ESLint stack catches up to v10.
+
 ## When the Snapshot Needs Updates
 
 Update the stored snapshot whenever any of the following change:

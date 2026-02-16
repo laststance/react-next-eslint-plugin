@@ -22,7 +22,7 @@ pnpm add --save-dev @laststance/react-next-eslint-plugin@latest
 
 ## Usage
 
-### Flat Config (ESLint 9.0+)
+### Flat Config (ESLint 9.x / 10.x)
 
 ```javascript
 import lastStanceReactNextPlugin from '@laststance/react-next-eslint-plugin'
@@ -59,6 +59,12 @@ export default [
   },
 ]
 ```
+
+### Compatibility
+
+- ESLint: `^9.0.0 || ^10.0.0`
+- Node.js: follow the Node.js runtime requirement of your selected ESLint major version
+- Demo playground snapshot: ESLint v9 lints `src/`; ESLint v10 uses `tests/fixtures/eslint-v10/` compatibility fixtures
 
 ## Rules
 

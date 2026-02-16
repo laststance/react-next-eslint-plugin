@@ -118,11 +118,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -140,7 +138,6 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -159,15 +156,12 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -185,11 +179,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -213,11 +205,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -253,11 +243,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -275,11 +263,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -296,7 +282,6 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -313,7 +298,6 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -329,7 +313,6 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },
@@ -345,11 +328,9 @@ ruleTester.run('no-use-reducer', rule, {
       errors: [
         {
           messageId: 'noUseReducer',
-          type: 'ImportSpecifier',
         },
         {
           messageId: 'noUseReducer',
-          type: 'CallExpression',
         },
       ],
     },

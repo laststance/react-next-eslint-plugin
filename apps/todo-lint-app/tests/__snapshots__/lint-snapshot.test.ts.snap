@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ESLint integration snapshot > captures plugin warnings for the demo app 1`] = `
+exports[`ESLint integration snapshot > captures plugin warnings for the demo app (eslint v9) 1`] = `
 "
 <projectRoot>/src/app/invalid/page.tsx
    41:3   warning  Add missing 'displayName' for component                                                laststance/no-missing-component-display-name
@@ -26,5 +26,20 @@ exports[`ESLint integration snapshot > captures plugin warnings for the demo app
 
 ✖ 18 problems (0 errors, 18 warnings)
   0 errors and 3 warnings potentially fixable with the \`--fix\` option.
+"
+`;
+
+exports[`ESLint integration snapshot > captures plugin warnings for the demo app (eslint v10) 1`] = `
+"
+<projectRoot>/tests/fixtures/eslint-v10/page.jsx
+   5:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead                                                                                                                      laststance/no-forward-ref
+   6:10  warning  Missing an explicit type attribute for button                                                                                                                                                       laststance/no-missing-button-type
+  10:3   warning  Component "V10CompatFixture" should not call useEffect directly. Extract this effect into a well-named custom hook (e.g., useDataLoader or useSyncProfile)                                          laststance/no-direct-use-effect
+  13:5   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                               laststance/no-context-provider
+  13:28  warning  Avoid passing a new object literal to Context.Provider "value" on each render. Wrap it in useMemo/useCallback to provide a stable reference and prevent unnecessary context consumers re-rendering  laststance/prefer-stable-context-value
+  14:7   warning  Missing an explicit type attribute for button                                                                                                                                                       laststance/no-missing-button-type
+
+✖ 6 problems (0 errors, 6 warnings)
+  0 errors and 1 warning potentially fixable with the \`--fix\` option.
 "
 `;

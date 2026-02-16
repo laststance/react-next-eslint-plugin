@@ -69,7 +69,7 @@ ruleTester.run('no-direct-use-effect', rule, {
           return <div />
         }
       `,
-      errors: [{ messageId: 'noDirectUseEffect', type: 'CallExpression' }],
+      errors: [{ messageId: 'noDirectUseEffect' }],
     },
     {
       code: `
@@ -80,7 +80,7 @@ ruleTester.run('no-direct-use-effect', rule, {
           return <main>hello</main>
         }
       `,
-      errors: [{ messageId: 'noDirectUseEffect', type: 'CallExpression' }],
+      errors: [{ messageId: 'noDirectUseEffect' }],
     },
     {
       code: `
@@ -91,7 +91,7 @@ ruleTester.run('no-direct-use-effect', rule, {
           return <span>anon</span>
         }
       `,
-      errors: [{ messageId: 'noDirectUseEffect', type: 'CallExpression' }],
+      errors: [{ messageId: 'noDirectUseEffect' }],
     },
   ],
 })
