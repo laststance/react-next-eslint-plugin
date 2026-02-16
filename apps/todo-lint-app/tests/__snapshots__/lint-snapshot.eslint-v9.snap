@@ -1,7 +1,4 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ESLint integration snapshot > captures plugin warnings for the demo app 1`] = `
-"
 <projectRoot>/src/app/invalid/page.tsx
    41:3   warning  Add missing 'displayName' for component                                                laststance/no-missing-component-display-name
    50:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead         laststance/no-forward-ref
@@ -25,6 +22,4 @@ exports[`ESLint integration snapshot > captures plugin warnings for the demo app
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
 ✖ 18 problems (0 errors, 18 warnings)
-  0 errors and 3 warnings potentially fixable with the \`--fix\` option.
-"
-`;
+  0 errors and 3 warnings potentially fixable with the `--fix` option.

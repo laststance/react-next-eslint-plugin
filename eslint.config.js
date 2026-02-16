@@ -5,7 +5,13 @@ import laststancePlugin from './index.js'
 export default defineConfig([
   // Global ignores
   {
-    ignores: ['node_modules/**', 'dist/**', 'coverage/**', '.serena/**'],
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      'coverage/**',
+      '.serena/**',
+      'apps/**',
+    ],
   },
 
   // Recommended base configuration
