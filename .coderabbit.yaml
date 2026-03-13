@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: 'en-US'
+early_access: false
+
+reviews:
+  profile: 'assertive'
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    ignore:
+      - 'pnpm-lock.yaml'
+      - 'apps/todo-lint-app/tests/__snapshots__/**'
+
+  path_instructions:
+    - path: 'lib/rules/*.js'
+      instructions: |
+        This is an ESLint rule implementation. Review for:
+        - Correct ESLint Rule API structure (meta + create pattern)
+        - meta.type, meta.docs, meta.messages, meta.schema must be present
+        - If meta.fixable is set, verify fixer function produces correct output
+        - All messages must use messageId (no hardcoded strings in context.report)
+        - AST visitor functions must handle null/undefined node properties defensively
+        - Must use ESM export default (no module.exports/require)
+        - Functions should have JSDoc with @param, @returns, @example
+        - Rule file names must be kebab-case matching the rule name
+        - Prefer named constants over magic strings/numbers
+
+    - path: 'lib/utils/*.js'
+      instructions: |
+        Utility module for ESLint rules. Review for:
+        - Functions must be pure where possible (no side effects)
+        - Must use ESM named exports (no default export, no require)
+        - JSDoc with @param, @returns, @example on every exported function
+        - Keep utilities focused and reusable across multiple rules
+
+    - path: 'tests/lib/rules/*.test.js'
+      instructions: |
+        ESLint rule test using Mocha + RuleTester. Review for:
+        - Test file name must match the corresponding rule file name
+        - Must include both valid and invalid test cases
+        - Invalid cases must verify messageId (not just message text)
+        - If the rule is fixable, invalid cases must include output to verify fixes
+        - Edge cases: empty components, nested functions, TypeScript syntax
+        - Test descriptions should be clear and specific
+
+    - path: 'tests/lib/utils/*.test.js'
+      instructions: |
+        Utility function tests. Review for:
+        - Comprehensive input coverage including edge cases and null/undefined
+        - Each exported function should have dedicated test cases
+        - Use descriptive test names
+
+    - path: 'docs/rules/*.md'
+      instructions: |
+        ESLint rule documentation. Review for:
+        - Must include: rule description, fail/pass examples, options (if any)
+        - Examples must use JSX/React code that is syntactically valid
+        - File name must match the rule name (kebab-case)
+        - Link to the rule source should be correct
+
+    - path: 'index.js'
+      instructions: |
+        Plugin entry point. Every rule in lib/rules/ must be registered here.
+        Verify that new rules are added to both the rules object and the
+        recommended config. Check that rule names match their file names.
+
+    - path: 'index.d.ts'
+      instructions: |
+        TypeScript type definitions for the plugin. Verify that:
+        - All rules from index.js are typed
+        - Rule option types match the schema in the rule's meta.schema
+        - The Plugin type is compatible with ESLint's flat config API
+
+    - path: 'apps/todo-lint-app/**'
+      instructions: |
+        Demo Next.js app used for integration testing. Review for:
+        - ESLint config must include all plugin rules
+        - Vitest snapshot tests must be updated when rule output changes
+        - Do not introduce production dependencies unless necessary
+
+  tools:
+    eslint:
+      enabled: true
+    gitleaks:
+      enabled: true
+
+chat:
+  auto_reply: true

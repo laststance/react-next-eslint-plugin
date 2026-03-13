@@ -37,6 +37,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc -p tests/types/tsconfig.json",
+    "validate": "run-p test test:todo-e2e lint:fix typecheck",
     "push-release-commit": "npx push-release-commit"
   },
   "peerDependencies": {
@@ -47,6 +48,7 @@
     "@laststance/npm-publish-tool": "^2.0.0",
     "eslint": "^10.0.2",
     "mocha": "^11.7.5",
+    "npm-run-all2": "^8.0.4",
     "prettier": "^3.8.1",
     "release-it": "^19.2.4",
     "typescript": "5.9.3"

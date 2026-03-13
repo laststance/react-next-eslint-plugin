@@ -31,6 +31,20 @@ It then verifies that these components are wrapped with:
 - `React.memo(...)`
 - Export statements like `export default memo(Component)`
 
+## Autofix (`--fix`)
+
+This rule supports safe autofix for **top-level variable-declared components**:
+
+- `const/let/var Component = () => <JSX />`
+- `const/let/var Component = function Component() { return <JSX /> }`
+
+When autofix is available, the rule wraps the initializer with `memo(...)` (or `React.memo(...)`) and updates/imports `memo` from `react` when needed.
+
+The following cases are intentionally **report-only** (no autofix):
+
+- `function Component() { ... }` declarations
+- nested component declarations inside other functions/components
+
 ## Ignored Files
 
 This rule does not report in the following cases:

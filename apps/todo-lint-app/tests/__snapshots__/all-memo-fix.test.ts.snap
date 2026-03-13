@@ -1,0 +1,68 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`all-memo --fix > should augment existing named react import with memo 1`] = `
+"import { memo, useState } from "react";
+
+const Comp = memo(() => {
+  return <div>Hello</div>;
+});
+
+export { Comp };
+"
+`;
+
+exports[`all-memo --fix > should fix multiple components in a single file 1`] = `
+"import { memo } from 'react'
+const First = memo(() => <div>First</div>);
+const Second = memo(() => <span>Second</span>);
+const Third = memo(() => <p>Third</p>);
+
+export { First, Second, Third };
+"
+`;
+
+exports[`all-memo --fix > should not duplicate memo import when already imported as named 1`] = `
+"import { memo } from "react";
+
+const Comp = memo(() => {
+  return <div>Hello</div>;
+});
+
+export { Comp };
+"
+`;
+
+exports[`all-memo --fix > should skip already memoized components 1`] = `
+"import { memo } from "react";
+
+const Memoized = memo(() => <div>Memoized</div>);
+const NotMemoized = memo(() => <span>Not memoized</span>);
+
+export { Memoized, NotMemoized };
+"
+`;
+
+exports[`all-memo --fix > should use React.memo when React is imported as default 1`] = `
+"import React from "react";
+
+const Comp = React.memo(() => {
+  return <div>Hello</div>;
+});
+
+export default Comp;
+"
+`;
+
+exports[`all-memo --fix > should wrap arrow function components with memo and add import 1`] = `
+"import { memo } from 'react'
+const Arrow = memo(() => {
+  return <div>Arrow Component</div>;
+});
+
+const ArrowWithProps = memo((props) => {
+  return <span>{props.name}</span>;
+});
+
+export { Arrow, ArrowWithProps };
+"
+`;

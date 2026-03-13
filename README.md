@@ -165,6 +165,7 @@ function Component() {
 ### `all-memo`
 
 This rule enforces that all React function components (PascalCase functions returning JSX) are wrapped with `React.memo` to prevent unnecessary re-renders and improve performance.
+It provides safe `--fix` support for top-level variable-declared components and keeps function declarations report-only.
 
 This rule ignores the following files:
 

@@ -22,7 +22,7 @@ ruleTester.run('no-duplicate-key', rule, {
       ]`,
     },
     {
-      code: `items.map((item) => <Item key={item.id} />)`,
+      code: 'items.map((item) => <Item key={item.id} />)',
     },
   ],
   invalid: [
@@ -37,7 +37,7 @@ ruleTester.run('no-duplicate-key', rule, {
       ],
     },
     {
-      code: `items.map((item) => <Item key="a" />)`,
+      code: 'items.map((item) => <Item key="a" />)',
       errors: [{ messageId: 'noDuplicateKey' }],
     },
   ],

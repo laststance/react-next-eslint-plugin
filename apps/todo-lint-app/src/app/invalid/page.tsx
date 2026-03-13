@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name, react-hooks/static-components */
 import { createContext, forwardRef, memo, type Ref } from 'react'
 
 const THEME_DARK = 'dark'

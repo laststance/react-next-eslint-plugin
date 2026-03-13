@@ -16,7 +16,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-missing-button-type', rule, {
   valid: [
     {
-      code: `<button type="button" />`,
+      code: '<button type="button" />',
     },
     {
       code: `const props = { type: 'button' }
@@ -25,7 +25,7 @@ ruleTester.run('no-missing-button-type', rule, {
   ],
   invalid: [
     {
-      code: `<button />`,
+      code: '<button />',
       errors: [
         {
           messageId: 'missingTypeAttribute',
@@ -33,24 +33,24 @@ ruleTester.run('no-missing-button-type', rule, {
             {
               messageId: 'addTypeAttribute',
               data: { type: 'button' },
-              output: `<button type="button" />`,
+              output: '<button type="button" />',
             },
             {
               messageId: 'addTypeAttribute',
               data: { type: 'submit' },
-              output: `<button type="submit" />`,
+              output: '<button type="submit" />',
             },
             {
               messageId: 'addTypeAttribute',
               data: { type: 'reset' },
-              output: `<button type="reset" />`,
+              output: '<button type="reset" />',
             },
           ],
         },
       ],
     },
     {
-      code: `<PolyComponent as="button" />`,
+      code: '<PolyComponent as="button" />',
       settings: {
         'react-x': {
           polymorphicPropName: 'as',
@@ -63,17 +63,17 @@ ruleTester.run('no-missing-button-type', rule, {
             {
               messageId: 'addTypeAttribute',
               data: { type: 'button' },
-              output: `<PolyComponent type="button" as="button" />`,
+              output: '<PolyComponent type="button" as="button" />',
             },
             {
               messageId: 'addTypeAttribute',
               data: { type: 'submit' },
-              output: `<PolyComponent type="submit" as="button" />`,
+              output: '<PolyComponent type="submit" as="button" />',
             },
             {
               messageId: 'addTypeAttribute',
               data: { type: 'reset' },
-              output: `<PolyComponent type="reset" as="button" />`,
+              output: '<PolyComponent type="reset" as="button" />',
             },
           ],
         },

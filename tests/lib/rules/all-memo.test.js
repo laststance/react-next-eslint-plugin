@@ -138,6 +138,11 @@ ruleTester.run('all-memo', rule, {
         const Hello = () => <div/>;
         export default Hello;
       `,
+      output: `
+        import { memo } from 'react'
+const Hello = memo(() => <div/>);
+        export default Hello;
+      `,
       errors: [{ messageId: 'notMemoized' }],
     },
     // Function declaration component not memoized
@@ -154,6 +159,11 @@ ruleTester.run('all-memo', rule, {
         const Hello = function Hello() { return <div/> };
         export default Hello;
       `,
+      output: `
+        import { memo } from 'react'
+const Hello = memo(function Hello() { return <div/> });
+        export default Hello;
+      `,
       errors: [{ messageId: 'notMemoized' }],
     },
     // Multiple components: only those returning JSX should warn
@@ -164,12 +174,23 @@ ruleTester.run('all-memo', rule, {
         const C = () => 1; // ignored by return type
         export default A;
       `,
+      output: `
+        import { memo } from 'react'
+const A = memo(() => <div/>);
+        const b = () => <div/>; // ignored by name
+        const C = () => 1; // ignored by return type
+        export default A;
+      `,
       errors: [{ messageId: 'notMemoized' }],
     },
     // Named export component without memo wrapping
     {
       code: `
         export const Hello = () => <div/>;
+      `,
+      output: `
+        import { memo } from 'react'
+export const Hello = memo(() => <div/>);
       `,
       errors: [{ messageId: 'notMemoized' }],
     },
@@ -189,6 +210,41 @@ ruleTester.run('all-memo', rule, {
         React.memo(Hello);
         export default Hello;
       `,
+      output: `
+        import React from 'react';
+        const Hello = React.memo(() => <div/>);
+        React.memo(Hello);
+        export default Hello;
+      `,
+      errors: [{ messageId: 'notMemoized' }],
+    },
+    // Existing React named import should be augmented with memo
+    {
+      code: `
+        import { useState } from 'react';
+        const Hello = () => <div/>;
+        export default Hello;
+      `,
+      output: `
+        import { memo, useState } from 'react';
+        const Hello = memo(() => <div/>);
+        export default Hello;
+      `,
+      errors: [{ messageId: 'notMemoized' }],
+    },
+    // New import should be inserted after directives
+    {
+      code: `
+        'use client';
+        const Hello = () => <div/>;
+        export default Hello;
+      `,
+      output: `
+        'use client';
+import { memo } from 'react'
+        const Hello = memo(() => <div/>);
+        export default Hello;
+      `,
       errors: [{ messageId: 'notMemoized' }],
     },
     // Components with nested declarations still need memoization
@@ -202,10 +258,17 @@ ruleTester.run('all-memo', rule, {
         };
         export default Layout;
       `,
-      errors: [
-        { messageId: 'notMemoized' },
-        { messageId: 'notMemoized' },
-      ],
+      output: `
+        import { memo } from 'react'
+const Layout = memo(() => {
+          function Sidebar() {
+            return <aside />;
+          }
+          return <Sidebar />;
+        });
+        export default Layout;
+      `,
+      errors: [{ messageId: 'notMemoized' }, { messageId: 'notMemoized' }],
     },
   ],
 })
