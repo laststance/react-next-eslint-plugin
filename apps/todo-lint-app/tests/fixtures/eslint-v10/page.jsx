@@ -1,6 +1,7 @@
 import React, { createContext, forwardRef, useEffect } from 'react'
 
 const ThemeContext = createContext({ mode: 'light' })
+const USELESS_FRAGMENT_LABEL = 'Useless fragment text'
 
 const ForwardedButton = forwardRef(function ForwardedButton(_props, ref) {
   return <button ref={ref}>Forwarded</button>
@@ -13,6 +14,9 @@ export default function V10CompatFixture() {
     <ThemeContext.Provider value={{ mode: 'dark' }}>
       <button>Missing button type</button>
       <ForwardedButton />
+      <div>
+        <>{USELESS_FRAGMENT_LABEL}</>
+      </div>
     </ThemeContext.Provider>
   )
 }

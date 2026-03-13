@@ -23,7 +23,9 @@ reviews:
         This is an ESLint rule implementation. Review for:
         - Correct ESLint Rule API structure (meta + create pattern)
         - meta.type, meta.docs, meta.messages, meta.schema must be present
+        - Rule options in meta.schema must match option handling and defaults inside create()
         - If meta.fixable is set, verify fixer function produces correct output
+        - For autofix rules, validate "safe-to-fix" guards to avoid semantic behavior changes
         - All messages must use messageId (no hardcoded strings in context.report)
         - AST visitor functions must handle null/undefined node properties defensively
         - Must use ESM export default (no module.exports/require)
@@ -67,21 +69,22 @@ reviews:
     - path: 'index.js'
       instructions: |
         Plugin entry point. Every rule in lib/rules/ must be registered here.
-        Verify that new rules are added to both the rules object and the
-        recommended config. Check that rule names match their file names.
+        Verify that new rules are added to the rules object and that
+        rule names match their file names.
 
     - path: 'index.d.ts'
       instructions: |
         TypeScript type definitions for the plugin. Verify that:
         - All rules from index.js are typed
-        - Rule option types match the schema in the rule's meta.schema
-        - The Plugin type is compatible with ESLint's flat config API
+        - New rule names are reflected in LaststanceRuleModules
+        - The plugin type remains compatible with ESLint's flat config API
 
     - path: 'apps/todo-lint-app/**'
       instructions: |
         Demo Next.js app used for integration testing. Review for:
         - ESLint config must include all plugin rules
-        - Vitest snapshot tests must be updated when rule output changes
+        - Vitest lint snapshots must be updated when rule output changes
+        - Keep v9 (`src/`) and v10 (`tests/fixtures/eslint-v10/`) snapshot expectations consistent
         - Do not introduce production dependencies unless necessary
 
   tools:

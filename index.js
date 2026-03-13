@@ -22,6 +22,7 @@ import noForwardRef from './lib/rules/no-forward-ref.js'
 import noContextProvider from './lib/rules/no-context-provider.js'
 import noMissingKey from './lib/rules/no-missing-key.js'
 import noDuplicateKey from './lib/rules/no-duplicate-key.js'
+import jsxNoUselessFragment from './lib/rules/jsx-no-useless-fragment.js'
 import noMissingComponentDisplayName from './lib/rules/no-missing-component-display-name.js'
 import noNestedComponentDefinitions from './lib/rules/no-nested-component-definitions.js'
 import noMissingButtonType from './lib/rules/no-missing-button-type.js'
@@ -49,6 +50,7 @@ const plugin = {
     'no-context-provider': noContextProvider,
     'no-missing-key': noMissingKey,
     'no-duplicate-key': noDuplicateKey,
+    'jsx-no-useless-fragment': jsxNoUselessFragment,
     'no-missing-component-display-name': noMissingComponentDisplayName,
     'no-nested-component-definitions': noNestedComponentDefinitions,
     'no-missing-button-type': noMissingButtonType,

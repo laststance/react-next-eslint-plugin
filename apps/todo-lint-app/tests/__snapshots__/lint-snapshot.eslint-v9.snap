@@ -1,10 +1,13 @@
 
 <projectRoot>/src/app/invalid/page.tsx
-   40:3   warning  Add missing 'displayName' for component                                                laststance/no-missing-component-display-name
-   49:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead         laststance/no-forward-ref
-   94:3   warning  Do not nest component definitions inside other components. Move it to the top level    laststance/no-nested-component-definitions
-  104:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'  laststance/no-context-provider
-  112:11  warning  Missing an explicit type attribute for button                                          laststance/no-missing-button-type
+   42:3   warning  Add missing 'displayName' for component                                                laststance/no-missing-component-display-name
+   51:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead         laststance/no-forward-ref
+   96:3   warning  Do not nest component definitions inside other components. Move it to the top level    laststance/no-nested-component-definitions
+  106:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'  laststance/no-context-provider
+  114:11  warning  Missing an explicit type attribute for button                                          laststance/no-missing-button-type
+  121:11  warning  A fragment placed inside a host component is useless                                   laststance/jsx-no-useless-fragment
+  121:11  warning  A fragment contains less than two children is useless                                  laststance/jsx-no-useless-fragment
+  127:13  warning  A fragment placed inside a host component is useless                                   laststance/jsx-no-useless-fragment
 
 <projectRoot>/src/app/page.tsx
   259:3   warning  Component "Home" should not call useEffect directly. Extract this effect into a well-named custom hook (e.g., useDataLoader or useSyncProfile)                                                                                                                                            laststance/no-direct-use-effect
@@ -21,5 +24,5 @@
   330:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
-✖ 18 problems (0 errors, 18 warnings)
-  0 errors and 3 warnings potentially fixable with the `--fix` option.
+✖ 21 problems (0 errors, 21 warnings)
+  0 errors and 6 warnings potentially fixable with the `--fix` option.
