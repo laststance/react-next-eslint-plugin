@@ -20,6 +20,7 @@ const SNAPSHOT_FILE_PATH = path.join(
 const V10_COMPAT_RULES = {
   'laststance/no-forward-ref': 'warn',
   'laststance/no-context-provider': 'warn',
+  'laststance/jsx-no-useless-fragment': 'warn',
   'laststance/no-missing-button-type': 'warn',
   'laststance/no-direct-use-effect': 'warn',
   'laststance/prefer-stable-context-value': 'warn',
