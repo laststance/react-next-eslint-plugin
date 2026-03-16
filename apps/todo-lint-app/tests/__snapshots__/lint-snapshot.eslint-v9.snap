@@ -6,7 +6,6 @@
   106:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'  laststance/no-context-provider
   114:11  warning  Missing an explicit type attribute for button                                          laststance/no-missing-button-type
   121:11  warning  A fragment placed inside a host component is useless                                   laststance/jsx-no-useless-fragment
-  121:11  warning  A fragment contains less than two children is useless                                  laststance/jsx-no-useless-fragment
   127:13  warning  A fragment placed inside a host component is useless                                   laststance/jsx-no-useless-fragment
 
 <projectRoot>/src/app/page.tsx
@@ -24,5 +23,5 @@
   330:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
-✖ 21 problems (0 errors, 21 warnings)
-  0 errors and 6 warnings potentially fixable with the `--fix` option.
+✖ 20 problems (0 errors, 20 warnings)
+  0 errors and 5 warnings potentially fixable with the `--fix` option.
