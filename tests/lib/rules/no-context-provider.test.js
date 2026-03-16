@@ -3,7 +3,7 @@ import rule from '../../../lib/rules/no-context-provider.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 2024,
     sourceType: 'module',
     parserOptions: {
       ecmaFeatures: {

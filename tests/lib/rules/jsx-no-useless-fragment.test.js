@@ -3,7 +3,7 @@ import rule from '../../../lib/rules/jsx-no-useless-fragment.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 2024,
     sourceType: 'module',
     parserOptions: {
       ecmaFeatures: {
@@ -54,7 +54,7 @@ ruleTester.run('jsx-no-useless-fragment', rule, {
     },
     {
       code: '<p>moo<>foo</></p>',
-      errors: [{ messageId: 'default' }, { messageId: 'default' }],
+      errors: [{ messageId: 'default' }],
       output: '<p>moofoo</p>',
     },
     {
@@ -74,7 +74,7 @@ ruleTester.run('jsx-no-useless-fragment', rule, {
     },
     {
       code: '<div><Fragment>foo</Fragment></div>',
-      errors: [{ messageId: 'default' }, { messageId: 'default' }],
+      errors: [{ messageId: 'default' }],
       output: '<div>foo</div>',
     },
   ],

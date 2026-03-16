@@ -3,7 +3,7 @@ import rule from '../../../lib/rules/no-set-state-prop-drilling.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 2024,
     sourceType: 'module',
     parserOptions: {
       ecmaFeatures: {
