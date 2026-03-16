@@ -47,6 +47,7 @@ export default [
       '@laststance/react-next/no-context-provider': 'error',
       '@laststance/react-next/no-missing-key': 'error',
       '@laststance/react-next/no-duplicate-key': 'error',
+      '@laststance/react-next/jsx-no-useless-fragment': 'error',
       '@laststance/react-next/no-missing-component-display-name': 'error',
       '@laststance/react-next/no-nested-component-definitions': 'error',
       '@laststance/react-next/no-missing-button-type': 'error',
@@ -82,6 +83,7 @@ Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-pl
 - [`laststance/no-context-provider`](docs/rules/no-context-provider.md): Prefer rendering `<Context>` instead of `<Context.Provider>` (React 19)
 - [`laststance/no-missing-key`](docs/rules/no-missing-key.md): Disallow list items without `key`
 - [`laststance/no-duplicate-key`](docs/rules/no-duplicate-key.md): Disallow duplicate `key` values among siblings
+- [`laststance/jsx-no-useless-fragment`](docs/rules/jsx-no-useless-fragment.md): Disallow fragments that do not add structure
 - [`laststance/no-missing-component-display-name`](docs/rules/no-missing-component-display-name.md): Require `displayName` for anonymous memo/forwardRef components
 - [`laststance/no-nested-component-definitions`](docs/rules/no-nested-component-definitions.md): Disallow defining components inside other components
 - [`laststance/no-missing-button-type`](docs/rules/no-missing-button-type.md): Require explicit `type` for button elements
@@ -558,6 +560,26 @@ return [
   <Item key="a" />,
   <Item key="b" />,
 ]
+```
+
+### `jsx-no-useless-fragment`
+
+This rule disallows fragments that do not add structure and can be removed safely.
+
+**❌ Incorrect**
+
+```jsx
+<><Foo /></>
+
+<p><>text</></p>
+```
+
+**✅ Correct**
+
+```jsx
+<Foo />
+
+<p>text</p>
 ```
 
 ### `no-missing-component-display-name`

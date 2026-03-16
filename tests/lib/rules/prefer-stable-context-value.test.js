@@ -3,7 +3,7 @@ import rule from '../../../lib/rules/prefer-stable-context-value.js'
 
 const ruleTester = new RuleTester({
   languageOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 2024,
     sourceType: 'module',
     parserOptions: {
       ecmaFeatures: {
