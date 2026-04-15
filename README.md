@@ -582,6 +582,7 @@ This rule disallows fragments that do not add structure and can be removed safel
 ### `no-jsx-iife`
 
 This rule disallows immediately invoked function expressions inside JSX.
+Move the computation outside JSX, then reference the resulting value in the template instead.
 
 **❌ Incorrect**
 
@@ -589,17 +590,27 @@ This rule disallows immediately invoked function expressions inside JSX.
 <div>{(() => 'x')()}</div>
 
 <Button label={(() => computeLabel())()} />
+
+<section>{(function () {
+  return formatStatus(status)
+})()}</section>
 ```
 
 **✅ Correct**
 
 ```jsx
+const message = 'x'
 const label = computeLabel()
+const statusText = formatStatus(status)
 
-<div>{label}</div>
+<div>{message}</div>
 
 <Button label={label} />
+
+<section>{statusText}</section>
 ```
+
+This rule has no options.
 
 ### `no-missing-component-display-name`
 
