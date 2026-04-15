@@ -55,6 +55,32 @@ ruleTester.run('no-jsx-iife', rule, {
         console.log(result);
       `,
     },
+    {
+      code: `
+        function Component() {
+          const compute = () => 'ok'
+          return <div>{compute()}</div>;
+        }
+      `,
+    },
+    {
+      code: `
+        function Component() {
+          function renderInner() {
+            const value = (() => 'outside-jsx')()
+            return value
+          }
+          return <div>{renderInner()}</div>;
+        }
+      `,
+    },
+    {
+      code: `
+        function Component() {
+          return <div />;
+        }
+      `,
+    },
   ],
   invalid: [
     {
@@ -85,6 +111,33 @@ ruleTester.run('no-jsx-iife', rule, {
       code: `
         function Component() {
           return <input value={(function () { return 'x'; })()} />;
+        }
+      `,
+      errors: [{ messageId: 'noJsxIife' }],
+    },
+    {
+      code: `
+        function Component() {
+          return <div>{(() => 'x')?.()}</div>;
+        }
+      `,
+      errors: [{ messageId: 'noJsxIife' }],
+    },
+    {
+      code: `
+        function Component() {
+          return <Button label={(function () { return 'x'; })?.()} />;
+        }
+      `,
+      errors: [{ messageId: 'noJsxIife' }],
+    },
+    {
+      code: `
+        function Outer() {
+          function Inner() {
+            return <div>{(() => 'nested')()}</div>;
+          }
+          return <Inner />;
         }
       `,
       errors: [{ messageId: 'noJsxIife' }],

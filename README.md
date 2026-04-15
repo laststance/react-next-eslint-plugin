@@ -587,10 +587,13 @@ Move the computation outside JSX, then reference the resulting value in the temp
 **❌ Incorrect**
 
 ```jsx
+// Inline arrow IIFE inside JSX — obscures a trivial string constant.
 <div>{(() => 'x')()}</div>
 
+// IIFE wraps a plain call, adding an unnecessary closure per render.
 <Button label={(() => computeLabel())()} />
 
+// Function-expression IIFE inside JSX hides the computation that produced `statusText`.
 <section>{(function () {
   return formatStatus(status)
 })()}</section>
@@ -599,6 +602,7 @@ Move the computation outside JSX, then reference the resulting value in the temp
 **✅ Correct**
 
 ```jsx
+// Bind values to named variables outside JSX so the template stays declarative.
 const message = 'x'
 const label = computeLabel()
 const statusText = formatStatus(status)

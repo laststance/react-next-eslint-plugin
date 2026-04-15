@@ -10,9 +10,9 @@ The app now has two ESLint E2E suites:
 
 Snapshot keys are now generated per ESLint major version (for example, `eslint v9` and `eslint v10`) so CI can validate both compatibility targets independently.
 
-- ESLint v9 snapshot lints `src/` with the full demo app config.
-- ESLint v10 snapshot uses `tests/fixtures/eslint-v10/` with a plugin-only compatibility config while the Next.js ESLint stack catches up to v10.
-- ESLint v10 focused assertions verify representative compatibility rules directly: `no-jsx-iife`, `no-missing-button-type`, and `jsx-no-useless-fragment`.
+- The v9 snapshot lints `src/` using the full demo app config.
+- For v10, the snapshot targets `tests/fixtures/eslint-v10/` with a plugin-only compatibility config while the Next.js ESLint stack catches up.
+- Focused v10 assertions verify representative compatibility rules directly: `no-jsx-iife`, `no-missing-button-type`, and `jsx-no-useless-fragment`.
 
 ## When the Snapshot Needs Updates
 
