@@ -8,7 +8,7 @@ on:
 
 jobs:
   todo-e2e:
-    name: Run todo app ESLint snapshot (Node ${{ matrix.node-version }}, ESLint v${{ matrix.eslint-major }})
+    name: Run todo app ESLint E2E (Node ${{ matrix.node-version }}, ESLint v${{ matrix.eslint-major }})
     runs-on: ubuntu-latest
 
     permissions:
@@ -63,5 +63,5 @@ jobs:
       - name: Switch ESLint major for matrix run
         run: pnpm --filter todo-lint-app add -D eslint@${{ steps.eslint-version.outputs.eslint }}
 
-      - name: Run todo app ESLint snapshot suite
+      - name: Run todo app ESLint E2E suite
         run: pnpm test:todo-e2e

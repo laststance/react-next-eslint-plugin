@@ -48,12 +48,14 @@ export default [
       '@laststance/react-next/no-missing-key': 'error',
       '@laststance/react-next/no-duplicate-key': 'error',
       '@laststance/react-next/jsx-no-useless-fragment': 'error',
+      '@laststance/react-next/no-jsx-iife': 'error',
       '@laststance/react-next/no-missing-component-display-name': 'error',
       '@laststance/react-next/no-nested-component-definitions': 'error',
       '@laststance/react-next/no-missing-button-type': 'error',
       '@laststance/react-next/prefer-stable-context-value': 'error',
       '@laststance/react-next/prefer-usecallback-might-work': 'error',
-      '@laststance/react-next/prefer-usecallback-for-memoized-component': 'error',
+      '@laststance/react-next/prefer-usecallback-for-memoized-component':
+        'error',
       '@laststance/react-next/prefer-usememo-for-memoized-component': 'error',
       '@laststance/react-next/prefer-usememo-might-work': 'error',
     },
@@ -84,6 +86,7 @@ Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-pl
 - [`laststance/no-missing-key`](docs/rules/no-missing-key.md): Disallow list items without `key`
 - [`laststance/no-duplicate-key`](docs/rules/no-duplicate-key.md): Disallow duplicate `key` values among siblings
 - [`laststance/jsx-no-useless-fragment`](docs/rules/jsx-no-useless-fragment.md): Disallow fragments that do not add structure
+- [`laststance/no-jsx-iife`](docs/rules/no-jsx-iife.md): Disallow immediately invoked function expressions inside JSX
 - [`laststance/no-missing-component-display-name`](docs/rules/no-missing-component-display-name.md): Require `displayName` for anonymous memo/forwardRef components
 - [`laststance/no-nested-component-definitions`](docs/rules/no-nested-component-definitions.md): Disallow defining components inside other components
 - [`laststance/no-missing-button-type`](docs/rules/no-missing-button-type.md): Require explicit `type` for button elements
@@ -547,19 +550,13 @@ This rule requires sibling elements to have unique `key` values.
 **❌ Incorrect**
 
 ```javascript
-return [
-  <Item key="a" />,
-  <Item key="a" />,
-]
+return [<Item key="a" />, <Item key="a" />]
 ```
 
 **✅ Correct**
 
 ```javascript
-return [
-  <Item key="a" />,
-  <Item key="b" />,
-]
+return [<Item key="a" />, <Item key="b" />]
 ```
 
 ### `jsx-no-useless-fragment`
@@ -580,6 +577,28 @@ This rule disallows fragments that do not add structure and can be removed safel
 <Foo />
 
 <p>text</p>
+```
+
+### `no-jsx-iife`
+
+This rule disallows immediately invoked function expressions inside JSX.
+
+**❌ Incorrect**
+
+```jsx
+<div>{(() => 'x')()}</div>
+
+<Button label={(() => computeLabel())()} />
+```
+
+**✅ Correct**
+
+```jsx
+const label = computeLabel()
+
+<div>{label}</div>
+
+<Button label={label} />
 ```
 
 ### `no-missing-component-display-name`
