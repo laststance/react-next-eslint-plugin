@@ -21,6 +21,7 @@ const eslintConfig = defineConfig([
       'laststance/no-missing-key': 'warn',
       'laststance/no-duplicate-key': 'warn',
       'laststance/jsx-no-useless-fragment': 'warn',
+      'laststance/no-jsx-iife': 'warn',
       'laststance/no-missing-component-display-name': 'warn',
       'laststance/no-nested-component-definitions': 'warn',
       'laststance/no-missing-button-type': 'warn',

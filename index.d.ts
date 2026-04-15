@@ -13,6 +13,7 @@ export interface LaststanceRuleModules {
   'no-missing-key': Rule.RuleModule
   'no-duplicate-key': Rule.RuleModule
   'jsx-no-useless-fragment': Rule.RuleModule
+  'no-jsx-iife': Rule.RuleModule
   'no-missing-component-display-name': Rule.RuleModule
   'no-nested-component-definitions': Rule.RuleModule
   'no-missing-button-type': Rule.RuleModule

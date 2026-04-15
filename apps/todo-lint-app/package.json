@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
+    "test:e2e": "vitest run tests/lint-snapshot.test.ts tests/lint-focused.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {

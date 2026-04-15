@@ -10,6 +10,7 @@ const FORWARDED_BUTTON_LABEL = 'Forwarded'
 const MISSING_TYPE_LABEL = 'Missing type'
 const USELESS_FRAGMENT_SINGLE_CHILD_LABEL = 'Single child wrapped by fragment'
 const USELESS_FRAGMENT_HOST_LABEL = 'Host wrapper fragment'
+const JSX_IIFE_LABEL = 'JSX IIFE label'
 
 type ThemeValue = {
   theme: string
@@ -125,6 +126,9 @@ export default function InvalidPage() {
           </>
           <div className="rounded-md border border-cyan-300 bg-cyan-50 px-3 py-2 text-sm text-cyan-900">
             <>{USELESS_FRAGMENT_HOST_LABEL}</>
+          </div>
+          <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+            {(() => JSX_IIFE_LABEL)()}
           </div>
           <NestedBadge />
         </section>
