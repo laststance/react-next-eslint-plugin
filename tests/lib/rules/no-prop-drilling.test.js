@@ -481,5 +481,47 @@ ruleTester.run('no-prop-drilling', rule, {
       // Assert: only the earlier received-prop forwarding edge remains a violation.
       errors: [{ messageId: 'noPropDrilling' }],
     },
+    {
+      name: 'reports forwarding when only an uninvoked callback reassigns the prop binding',
+      // Arrange: a nested callback contains a binding write but is never called before forwarding.
+      code: `
+        function Parent({ value }) {
+          return <Child value={value} />;
+        }
+        function Child({ value }) {
+          const resetValue = () => {
+            value = 'local';
+          };
+          return <Grandchild value={value} resetValue={resetValue} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester compares the nested write owner with the forwarding component body.
+      // Assert: the unexecuted callback cannot erase the received-prop violation.
+      errors: [{ messageId: 'noPropDrilling' }],
+    },
+    {
+      name: 'reports forwarding when only an uninvoked callback mutates a destructured object prop',
+      // Arrange: a nested callback mutates user.name but is never called before forwarding.
+      code: `
+        function Parent({ user }) {
+          return <Child user={user} />;
+        }
+        function Child({ user }) {
+          const resetUser = () => {
+            user.name = 'local';
+          };
+          return <Grandchild value={user.name} resetUser={resetUser} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester compares the member-write owner with the forwarding component body.
+      // Assert: an unexecuted nested mutation cannot make user.name local.
+      errors: [{ messageId: 'noPropDrilling' }],
+    },
   ],
 })
