@@ -12,7 +12,7 @@ Snapshot keys are now generated per ESLint major version (for example, `eslint v
 
 - The v9 snapshot lints `src/` using the full demo app config.
 - For v10, the snapshot targets `tests/fixtures/eslint-v10/` with a plugin-only compatibility config while the Next.js ESLint stack catches up.
-- Focused v10 assertions verify representative compatibility rules directly: `no-jsx-iife`, `no-missing-button-type`, and `jsx-no-useless-fragment`.
+- Focused v10 assertions verify representative compatibility rules directly: `no-react-context`, `no-prop-drilling`, `no-jsx-iife`, `no-missing-button-type`, and `jsx-no-useless-fragment`.
 
 ## When the Snapshot Needs Updates
 

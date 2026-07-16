@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     },
     rules: {
       'laststance/no-forward-ref': 'warn',
+      'laststance/no-react-context': 'warn',
+      'laststance/no-prop-drilling': 'warn',
       'laststance/no-context-provider': 'warn',
       'laststance/no-missing-key': 'warn',
       'laststance/no-duplicate-key': 'warn',

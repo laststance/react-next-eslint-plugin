@@ -54,6 +54,8 @@ export default defineConfig([
       'laststance/no-jsx-without-return': 'warn',
       'laststance/all-memo': 'warn',
       'laststance/no-use-reducer': 'warn',
+      'laststance/no-react-context': 'warn',
+      'laststance/no-prop-drilling': 'warn',
       'laststance/no-set-state-prop-drilling': 'warn',
       'laststance/no-deopt-use-callback': 'warn',
       'laststance/prefer-stable-context-value': 'warn',
