@@ -1,4 +1,7 @@
+import { Linter } from 'eslint'
+import tseslint from 'typescript-eslint'
 import { describe, expect, it } from 'vitest'
+import laststancePlugin from '@laststance/react-next-eslint-plugin'
 import {
   createEslintForCurrentMajor,
   ESLINT_MAJOR_VERSION,
@@ -12,6 +15,14 @@ const EXPECTED_MESSAGE_COUNT = 1
 const describeWhenEslintV10 =
   ESLINT_MAJOR_VERSION === ESLINT_V10_MAJOR ? describe : describe.skip
 const REPRESENTATIVE_RULE_ASSERTIONS = [
+  {
+    ruleId: 'laststance/no-react-context',
+    messageFragment: 'Do not use React.createContext.',
+  },
+  {
+    ruleId: 'laststance/no-prop-drilling',
+    messageFragment: 'through two or more component levels',
+  },
   {
     ruleId: 'laststance/no-jsx-iife',
     messageFragment:
@@ -46,5 +57,39 @@ describeWhenEslintV10('ESLint focused integration assertions', () => {
         ruleAssertion.messageFragment,
       )
     }
+  })
+})
+
+describe('no-react-context TypeScript compatibility', () => {
+  it('reports context APIs accessed through TypeScript import-equals syntax', () => {
+    // Arrange
+    const linter = new Linter()
+    const code = `
+      import React = require('react')
+
+      React.useContext(null)
+    `
+
+    // Act
+    const messages = linter.verify(
+      code,
+      [
+        {
+          files: ['**/*.ts'],
+          languageOptions: {
+            parser: tseslint.parser,
+            parserOptions: { sourceType: 'module' },
+          },
+          plugins: { laststance: laststancePlugin },
+          rules: { 'laststance/no-react-context': 'error' },
+        },
+      ],
+      { filename: 'context.ts' },
+    )
+
+    // Assert
+    expect(messages).toHaveLength(1)
+    expect(messages[0]?.ruleId).toBe('laststance/no-react-context')
+    expect(messages[0]?.message).toContain('Do not use React.useContext.')
   })
 })

@@ -14,6 +14,8 @@ const pkg = JSON.parse(
 import noJsxWithoutReturn from './lib/rules/no-jsx-without-return.js'
 import allMemo from './lib/rules/all-memo.js'
 import noUseReducer from './lib/rules/no-use-reducer.js'
+import noReactContext from './lib/rules/no-react-context.js'
+import noPropDrilling from './lib/rules/no-prop-drilling.js'
 import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import noDeoptUseMemo from './lib/rules/no-deopt-use-memo.js'
@@ -43,6 +45,8 @@ const plugin = {
     'no-jsx-without-return': noJsxWithoutReturn,
     'all-memo': allMemo,
     'no-use-reducer': noUseReducer,
+    'no-react-context': noReactContext,
+    'no-prop-drilling': noPropDrilling,
     'no-set-state-prop-drilling': noSetStatePropDrilling,
     'no-deopt-use-callback': noDeoptUseCallback,
     'no-deopt-use-memo': noDeoptUseMemo,

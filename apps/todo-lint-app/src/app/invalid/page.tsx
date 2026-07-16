@@ -11,6 +11,7 @@ const MISSING_TYPE_LABEL = 'Missing type'
 const USELESS_FRAGMENT_SINGLE_CHILD_LABEL = 'Single child wrapped by fragment'
 const USELESS_FRAGMENT_HOST_LABEL = 'Host wrapper fragment'
 const JSX_IIFE_LABEL = 'JSX IIFE label'
+const PROP_DRILLING_VALUE = 'Forwarded through two component levels'
 
 type ThemeValue = {
   theme: string
@@ -19,6 +20,10 @@ type ThemeValue = {
 type Item = {
   id: number
   label: string
+}
+
+type PropDrillingProps = {
+  value: string
 }
 
 const THEME_CONTEXT_VALUE: ThemeValue = {
@@ -66,6 +71,52 @@ function DuplicateKeyList() {
     </ul>
   )
 }
+
+/**
+ * Starts the deliberate two-level prop chain rendered by the invalid playground page.
+ * @param props - Component props.
+ * @param props.value - Value forwarded to the child component.
+ * @returns
+ * - The first allowed component boundary
+ * @example
+ * <PropDrillingParent value="Example" />
+ */
+const PropDrillingParent = memo(function PropDrillingParent({
+  value,
+}: PropDrillingProps) {
+  return <PropDrillingChild value={value} />
+})
+
+/**
+ * Completes the deliberate prop-drilling violation so demo lint snapshots cover the rule.
+ * @param props - Component props.
+ * @param props.value - Value received from the parent component.
+ * @returns
+ * - The second component boundary that the rule reports
+ * @example
+ * <PropDrillingChild value="Example" />
+ */
+const PropDrillingChild = memo(function PropDrillingChild({
+  value,
+}: PropDrillingProps) {
+  // This second forwarding edge intentionally demonstrates the lint violation.
+  return <PropDrillingGrandchild value={value} />
+})
+
+/**
+ * Renders the prop-drilling demo value after the invalid second forwarding boundary.
+ * @param props - Component props.
+ * @param props.value - Drilled value displayed by the leaf component.
+ * @returns
+ * - A visible prop-drilling example
+ * @example
+ * <PropDrillingGrandchild value="Example" />
+ */
+const PropDrillingGrandchild = memo(function PropDrillingGrandchild({
+  value,
+}: PropDrillingProps) {
+  return <div className="rounded-lg border border-red-300 p-3">{value}</div>
+})
 
 /**
  * Renders list items without keys to trigger missing key warnings.
@@ -131,6 +182,7 @@ export default function InvalidPage() {
             {(() => JSX_IIFE_LABEL)()}
           </div>
           <NestedBadge />
+          <PropDrillingParent value={PROP_DRILLING_VALUE} />
         </section>
       </ThemeContext.Provider>
     </main>

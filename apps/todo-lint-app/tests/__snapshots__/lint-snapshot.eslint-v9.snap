@@ -1,15 +1,19 @@
 
 <projectRoot>/src/app/invalid/page.tsx
-   43:3   warning  Add missing 'displayName' for component                                                                                              laststance/no-missing-component-display-name
-   52:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead                                                       laststance/no-forward-ref
-   97:3   warning  Do not nest component definitions inside other components. Move it to the top level                                                  laststance/no-nested-component-definitions
-  107:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                laststance/no-context-provider
-  115:11  warning  Missing an explicit type attribute for button                                                                                        laststance/no-missing-button-type
-  122:11  warning  A fragment placed inside a host component is useless                                                                                 laststance/jsx-no-useless-fragment
-  128:13  warning  A fragment placed inside a host component is useless                                                                                 laststance/jsx-no-useless-fragment
-  131:14  warning  Do not use immediately invoked function expressions inside JSX. Move the logic outside JSX and reference the computed value instead  laststance/no-jsx-iife
+    1:10  warning  Do not use React.createContext. Prefer explicit props, component composition, or an external state store                                                    laststance/no-react-context
+   48:3   warning  Add missing 'displayName' for component                                                                                                                     laststance/no-missing-component-display-name
+   57:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead                                                                              laststance/no-forward-ref
+  103:34  warning  Avoid forwarding the received prop "value" through two or more component levels. Read the value closer to its owner or use composition or state management  laststance/no-prop-drilling
+  148:3   warning  Do not nest component definitions inside other components. Move it to the top level                                                                         laststance/no-nested-component-definitions
+  158:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                       laststance/no-context-provider
+  166:11  warning  Missing an explicit type attribute for button                                                                                                               laststance/no-missing-button-type
+  173:11  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
+  179:13  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
+  182:14  warning  Do not use immediately invoked function expressions inside JSX. Move the logic outside JSX and reference the computed value instead                         laststance/no-jsx-iife
 
 <projectRoot>/src/app/page.tsx
+    7:3   warning  Do not use React.createContext. Prefer explicit props, component composition, or an external state store                                                                                                                                                                                  laststance/no-react-context
+   11:3   warning  Do not use React.useContext. Prefer explicit props, component composition, or an external state store                                                                                                                                                                                     laststance/no-react-context
   259:3   warning  Component "Home" should not call useEffect directly. Extract this effect into a well-named custom hook (e.g., useDataLoader or useSyncProfile)                                                                                                                                            laststance/no-direct-use-effect
   285:15  warning  Avoid passing a useCallback-wrapped function "meaninglessFocus" to an intrinsic element. useCallback is intended to stabilize function props for memoized components to prevent unnecessary re-renders. Prefer an inline handler or plain function instead                                laststance/no-deopt-use-callback
   286:21  warning  Avoid passing a useMemo result "uselessMemoizedStyle" to an intrinsic element. useMemo is intended to stabilize values for memoized components or expensive computations, so inline them here instead                                                                                     laststance/no-deopt-use-memo
@@ -24,5 +28,5 @@
   330:9   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                                                                                                                                                     laststance/no-context-provider
   456:33  warning  Avoid prop-drilling a React.useState updater (onIncrement). It tightly couples components and can cause unnecessary re-renders due to unstable function identity. Prefer exposing a semantic handler (e.g., onIncrement) or use a state management library (e.g., Zustand, Redux, Jotai)  laststance/no-set-state-prop-drilling
 
-✖ 21 problems (0 errors, 21 warnings)
+✖ 25 problems (0 errors, 25 warnings)
   0 errors and 5 warnings potentially fixable with the `--fix` option.

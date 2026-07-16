@@ -4,6 +4,8 @@ export interface LaststanceRuleModules {
   'no-jsx-without-return': Rule.RuleModule
   'all-memo': Rule.RuleModule
   'no-use-reducer': Rule.RuleModule
+  'no-react-context': Rule.RuleModule
+  'no-prop-drilling': Rule.RuleModule
   'no-set-state-prop-drilling': Rule.RuleModule
   'no-deopt-use-callback': Rule.RuleModule
   'no-deopt-use-memo': Rule.RuleModule

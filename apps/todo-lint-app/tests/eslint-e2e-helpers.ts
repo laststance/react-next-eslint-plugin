@@ -26,6 +26,8 @@ export const SNAPSHOT_FILE_PATH = path.join(
 )
 export const V10_COMPAT_RULES = {
   'laststance/no-forward-ref': 'warn',
+  'laststance/no-react-context': 'warn',
+  'laststance/no-prop-drilling': 'warn',
   'laststance/no-context-provider': 'warn',
   'laststance/jsx-no-useless-fragment': 'warn',
   'laststance/no-jsx-iife': 'warn',

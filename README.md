@@ -1,6 +1,6 @@
 # @laststance/react-next-eslint-plugin
 
-ESLint plugin for React and Next.js projects that includes one rule for my personal use and a rule to prevent infinite re-renders during Vibe Coding.
+An opinionated ESLint plugin for React and Next.js projects with rules for safer component structure, state flow, and rendering behavior.
 
 <p align="center">
   <img src="./image.png" alt="ESLint plugin preview" />
@@ -36,6 +36,8 @@ export default [
       '@laststance/react-next/no-jsx-without-return': 'error',
       '@laststance/react-next/all-memo': 'error',
       '@laststance/react-next/no-use-reducer': 'error',
+      '@laststance/react-next/no-react-context': 'error',
+      '@laststance/react-next/no-prop-drilling': 'error',
       '@laststance/react-next/no-set-state-prop-drilling': [
         'error',
         { depth: 1 },
@@ -77,6 +79,8 @@ Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-pl
 - [`laststance/no-jsx-without-return`](docs/rules/no-jsx-without-return.md): Disallow JSX elements not returned or assigned
 - [`laststance/all-memo`](docs/rules/all-memo.md): Enforce wrapping React function components with `React.memo`
 - [`laststance/no-use-reducer`](docs/rules/no-use-reducer.md): Disallow `useReducer` hook in favor of Redux Toolkit to eliminate bugs
+- [`laststance/no-react-context`](docs/rules/no-react-context.md): Disallow React `createContext` and `useContext` APIs
+- [`laststance/no-prop-drilling`](docs/rules/no-prop-drilling.md): Disallow forwarding received props through two or more same-file component levels
 - [`laststance/no-set-state-prop-drilling`](docs/rules/no-set-state-prop-drilling.md): Disallow passing `useState` setters via props; prefer semantic handlers or state management
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
@@ -304,6 +308,71 @@ function Counter() {
   )
 }
 ```
+
+### `no-react-context`
+
+This rule disallows React's `createContext` and `useContext` APIs. Prefer explicit props, component composition, or an external state store so dependencies and update boundaries remain visible.
+
+**❌ Incorrect**
+
+```javascript
+import { createContext, useContext } from 'react'
+
+const ThemeContext = createContext('light')
+
+function ThemeLabel() {
+  const theme = useContext(ThemeContext)
+  return <span>{theme}</span>
+}
+```
+
+The rule also catches aliases (including chained React namespace aliases), `React.createContext`, `React.useContext`, namespace imports, CommonJS `require('react')`, and TypeScript `import React = require('react')` access.
+
+**✅ Correct**
+
+```javascript
+function ThemeLabel({ theme }) {
+  return <span>{theme}</span>
+}
+
+function Page() {
+  return <ThemeLabel theme="light" />
+}
+```
+
+### `no-prop-drilling`
+
+This rule allows one same-file component boundary, then reports the second and every later boundary that forwards the same received prop. Intrinsic elements and imported components naturally stop the same-file component graph, so no library allowlist is required.
+
+**❌ Incorrect**
+
+```javascript
+function Parent({ value }) {
+  return <Child value={value} />
+}
+
+function Child({ value }) {
+  return <Grandchild value={value} /> // Second boundary: reported
+}
+
+function Grandchild({ value }) {
+  return <span>{value}</span>
+}
+```
+
+**✅ Correct**
+
+```javascript
+function Parent({ value }) {
+  return <Child value={value} /> // First boundary: allowed
+}
+
+function Child({ value }) {
+  return <span>{value}</span>
+}
+```
+
+The rule also follows parameter/body destructuring, static `props.value` access, simple aliases, JSX spreads, property reads such as `user.name`, conditional returns, React `memo` wrappers, and React `createElement`. Imported components stop propagation because the rule intentionally analyzes one file at a time.
 
 ### `no-set-state-prop-drilling`
 
