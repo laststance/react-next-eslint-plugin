@@ -194,6 +194,24 @@ ruleTester.run('no-prop-drilling', rule, {
       // Act: RuleTester inspects member writes that occur before the forwarded read.
       // Assert: the mutated member is not treated as the value received from Parent.
     },
+    {
+      name: 'allows a reassigned member of a destructured object prop to cross the second component boundary',
+      // Arrange: the child replaces a member of its destructured object prop before forwarding it.
+      code: `
+        function Parent({ user }) {
+          return <Child user={user} />;
+        }
+        function Child({ user }) {
+          user.name = 'local';
+          return <Grandchild value={user.name} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester follows the member write through the destructured user binding.
+      // Assert: the replaced member no longer carries the received user prop origin.
+    },
   ],
   invalid: [
     {
@@ -439,6 +457,28 @@ ruleTester.run('no-prop-drilling', rule, {
       `,
       // Act: RuleTester follows the parameter rest binding as the received props object.
       // Assert: parameter-level rest syntax cannot reset the known depth.
+      errors: [{ messageId: 'noPropDrilling' }],
+    },
+    {
+      name: 'reports forwarding that occurs before a later reassignment of the same prop binding',
+      // Arrange: one branch forwards the received prop before a later branch replaces and forwards it.
+      code: `
+        function Parent({ value }) {
+          return <Child value={value} />;
+        }
+        function Child({ value }) {
+          if (value) {
+            return <Grandchild value={value} />;
+          }
+          value = 'local';
+          return <Grandchild value={value} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester compares each forwarding expression with the later write position.
+      // Assert: only the earlier received-prop forwarding edge remains a violation.
       errors: [{ messageId: 'noPropDrilling' }],
     },
   ],
