@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/laststance/react-next-eslint-plugin#readme",
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "test": "mocha tests/**/*.test.js",
