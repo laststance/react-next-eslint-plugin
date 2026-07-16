@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, forwardRef, memo, type Ref } from 'react'
 
 const THEME_DARK = 'dark'
