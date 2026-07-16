@@ -7,9 +7,8 @@
     "noEmit": true,
     "skipLibCheck": false,
     "esModuleInterop": true,
-    "baseUrl": "../..",
     "paths": {
-      "@laststance/react-next-eslint-plugin": ["index.d.ts"]
+      "@laststance/react-next-eslint-plugin": ["../../index.d.ts"]
     }
   },
   "include": ["./plugin-usage.ts"]

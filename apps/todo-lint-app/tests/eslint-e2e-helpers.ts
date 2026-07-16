@@ -1,4 +1,4 @@
-import { ESLint, type LintResult } from 'eslint'
+import { ESLint, type Linter } from 'eslint'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import laststancePlugin from '@laststance/react-next-eslint-plugin'
@@ -34,7 +34,7 @@ export const V10_COMPAT_RULES = {
   'laststance/no-missing-button-type': 'warn',
   'laststance/no-direct-use-effect': 'warn',
   'laststance/prefer-stable-context-value': 'warn',
-}
+} satisfies Linter.RulesRecord
 
 /**
  * Removes ANSI escape sequences from terminal output.
@@ -111,7 +111,7 @@ export function getLintTargets() {
  */
 export async function lintCurrentTargets(): Promise<{
   eslint: ESLint
-  results: LintResult[]
+  results: ESLint.LintResult[]
 }> {
   const eslint = createEslintForCurrentMajor()
   const results = await eslint.lintFiles(getLintTargets())
@@ -130,10 +130,10 @@ export async function lintCurrentTargets(): Promise<{
  */
 export async function createNormalizedLintOutput(
   eslint: ESLint,
-  results: LintResult[],
+  results: ESLint.LintResult[],
 ) {
   const formatter = await eslint.loadFormatter('stylish')
-  const output = formatter.format(results)
+  const output = await formatter.format(results)
   const projectRootNoTrailingSep = projectRoot.endsWith(path.sep)
     ? projectRoot.slice(0, -path.sep.length)
     : projectRoot
