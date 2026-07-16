@@ -1,3 +1,4 @@
+import tsParser from '@typescript-eslint/parser'
 import { RuleTester } from 'eslint'
 import rule from '../../../lib/rules/no-react-context.js'
 
@@ -5,6 +6,9 @@ const ruleTester = new RuleTester({
   languageOptions: {
     ecmaVersion: 2024,
     sourceType: 'module',
+    parserOptions: {
+      ecmaFeatures: { jsx: true },
+    },
   },
 })
 
@@ -251,6 +255,30 @@ ruleTester.run('no-react-context', rule, {
         ReactAlias.createContext(null)
         NestedReactAlias.useContext(null)
       `,
+      // Assert
+      errors: [
+        {
+          messageId: 'noReactContext',
+          data: { apiName: 'createContext' },
+        },
+        {
+          messageId: 'noReactContext',
+          data: { apiName: 'useContext' },
+        },
+      ],
+    },
+    {
+      name: 'rejects context APIs accessed through a TypeScript import-equals binding',
+      // Arrange & Act
+      code: `
+        import React = require('react')
+
+        React.createContext(null)
+        React.useContext(null)
+      `,
+      languageOptions: {
+        parser: tsParser,
+      },
       // Assert
       errors: [
         {

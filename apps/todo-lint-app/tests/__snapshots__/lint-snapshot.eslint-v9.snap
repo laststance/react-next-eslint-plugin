@@ -3,13 +3,13 @@
     1:10  warning  Do not use React.createContext. Prefer explicit props, component composition, or an external state store                                                    laststance/no-react-context
    48:3   warning  Add missing 'displayName' for component                                                                                                                     laststance/no-missing-component-display-name
    57:7   warning  In React 19, 'forwardRef' is no longer necessary. Pass 'ref' as a prop instead                                                                              laststance/no-forward-ref
-   99:34  warning  Avoid forwarding the received prop "value" through two or more component levels. Read the value closer to its owner or use composition or state management  laststance/no-prop-drilling
-  142:3   warning  Do not nest component definitions inside other components. Move it to the top level                                                                         laststance/no-nested-component-definitions
-  152:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                       laststance/no-context-provider
-  160:11  warning  Missing an explicit type attribute for button                                                                                                               laststance/no-missing-button-type
-  167:11  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
-  173:13  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
-  176:14  warning  Do not use immediately invoked function expressions inside JSX. Move the logic outside JSX and reference the computed value instead                         laststance/no-jsx-iife
+  103:34  warning  Avoid forwarding the received prop "value" through two or more component levels. Read the value closer to its owner or use composition or state management  laststance/no-prop-drilling
+  148:3   warning  Do not nest component definitions inside other components. Move it to the top level                                                                         laststance/no-nested-component-definitions
+  158:7   warning  In React 19, you can render '<Context>' as a provider instead of '<Context.Provider>'                                                                       laststance/no-context-provider
+  166:11  warning  Missing an explicit type attribute for button                                                                                                               laststance/no-missing-button-type
+  173:11  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
+  179:13  warning  A fragment placed inside a host component is useless                                                                                                        laststance/jsx-no-useless-fragment
+  182:14  warning  Do not use immediately invoked function expressions inside JSX. Move the logic outside JSX and reference the computed value instead                         laststance/no-jsx-iife
 
 <projectRoot>/src/app/page.tsx
     7:3   warning  Do not use React.createContext. Prefer explicit props, component composition, or an external state store                                                                                                                                                                                  laststance/no-react-context

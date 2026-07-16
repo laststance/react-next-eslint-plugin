@@ -139,6 +139,61 @@ ruleTester.run('no-prop-drilling', rule, {
       // Act: RuleTester resolves both helper callees from lexical imports.
       // Assert: matching local names are not treated as React component syntax.
     },
+    {
+      name: 'allows a reassigned destructured prop to cross the second component boundary',
+      // Arrange: the child replaces its received binding with a local value before forwarding it.
+      code: `
+        function Parent({ value }) {
+          return <Child value={value} />;
+        }
+        function Child({ value }) {
+          value = 'local';
+          return <Grandchild value={value} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester resolves the write that occurs before the child forwarding expression.
+      // Assert: the replacement value is no longer classified as a received prop.
+    },
+    {
+      name: 'allows a reassigned prop alias to cross the second component boundary',
+      // Arrange: the child aliases a received prop, then replaces the alias before forwarding it.
+      code: `
+        function Parent({ value }) {
+          return <Child value={value} />;
+        }
+        function Child({ value }) {
+          let forwardedValue = value;
+          forwardedValue = 'local';
+          return <Grandchild value={forwardedValue} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester follows both the alias initializer and its later write.
+      // Assert: a replaced alias does not retain its received-prop origin.
+    },
+    {
+      name: 'allows a reassigned props member to cross the second component boundary',
+      // Arrange: the child replaces one props-object member before forwarding that member.
+      code: `
+        function Parent(props) {
+          return <Child value={props.value} />;
+        }
+        function Child(props) {
+          props.value = 'local';
+          return <Grandchild value={props.value} />;
+        }
+        function Grandchild({ value }) {
+          return <span>{value}</span>;
+        }
+      `,
+      // Act: RuleTester inspects member writes that occur before the forwarded read.
+      // Assert: the mutated member is not treated as the value received from Parent.
+    },
   ],
   invalid: [
     {

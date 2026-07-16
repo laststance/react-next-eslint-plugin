@@ -81,9 +81,11 @@ function DuplicateKeyList() {
  * @example
  * <PropDrillingParent value="Example" />
  */
-function PropDrillingParent({ value }: PropDrillingProps) {
+const PropDrillingParent = memo(function PropDrillingParent({
+  value,
+}: PropDrillingProps) {
   return <PropDrillingChild value={value} />
-}
+})
 
 /**
  * Completes the deliberate prop-drilling violation so demo lint snapshots cover the rule.
@@ -94,10 +96,12 @@ function PropDrillingParent({ value }: PropDrillingProps) {
  * @example
  * <PropDrillingChild value="Example" />
  */
-function PropDrillingChild({ value }: PropDrillingProps) {
+const PropDrillingChild = memo(function PropDrillingChild({
+  value,
+}: PropDrillingProps) {
   // This second forwarding edge intentionally demonstrates the lint violation.
   return <PropDrillingGrandchild value={value} />
-}
+})
 
 /**
  * Renders the prop-drilling demo value after the invalid second forwarding boundary.
@@ -108,9 +112,11 @@ function PropDrillingChild({ value }: PropDrillingProps) {
  * @example
  * <PropDrillingGrandchild value="Example" />
  */
-function PropDrillingGrandchild({ value }: PropDrillingProps) {
+const PropDrillingGrandchild = memo(function PropDrillingGrandchild({
+  value,
+}: PropDrillingProps) {
   return <div className="rounded-lg border border-red-300 p-3">{value}</div>
-}
+})
 
 /**
  * Renders list items without keys to trigger missing key warnings.
