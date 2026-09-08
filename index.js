@@ -20,6 +20,7 @@ import noSetStatePropDrilling from './lib/rules/no-set-state-prop-drilling.js'
 import noDeoptUseCallback from './lib/rules/no-deopt-use-callback.js'
 import noDeoptUseMemo from './lib/rules/no-deopt-use-memo.js'
 import noDirectUseEffect from './lib/rules/no-direct-use-effect.js'
+import noSingleUseHookFile from './lib/rules/no-single-use-hook-file.js'
 import noForwardRef from './lib/rules/no-forward-ref.js'
 import noContextProvider from './lib/rules/no-context-provider.js'
 import noMissingKey from './lib/rules/no-missing-key.js'
@@ -51,6 +52,7 @@ const plugin = {
     'no-deopt-use-callback': noDeoptUseCallback,
     'no-deopt-use-memo': noDeoptUseMemo,
     'no-direct-use-effect': noDirectUseEffect,
+    'no-single-use-hook-file': noSingleUseHookFile,
     'no-forward-ref': noForwardRef,
     'no-context-provider': noContextProvider,
     'no-missing-key': noMissingKey,

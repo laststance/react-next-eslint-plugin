@@ -1,9 +1,10 @@
 # Design: colocate single-use Hooks with their component
 
-Status: proposed implementation. This document defines a new rule; the published plugin does not provide it yet.
+Status: implemented for 2.4.0. Local verification is recorded below; pull-request CI, CodeRabbit review, and merge are separate delivery gates. npm publication is outside this change.
 
-Rule: `laststance/no-single-use-hook-file`  
-Verified against: `7a644cb` on 2026-09-09 (JST).
+Rule: `laststance/no-single-use-hook-file`
+
+Design baseline: `7a644cb`; implementation reviewed on 2026-09-09 (JST).
 
 ## Problem and decision
 
@@ -21,7 +22,7 @@ The rule must make component-specific logic identifiable from file placement, pr
 
 It does not inline Hook bodies into components, require shared Hooks to have separate files, prohibit test-only exports, enforce general utility placement, decide whether logic is conceptually generic, or move source code automatically. It does not change Hook execution, dependencies, component boundaries, or state management.
 
-## Current repository
+## Repository baseline before implementation
 
 | Surface                                                                                                                | Verified behavior                                                                                                                                     | Design implication                                                                                                             |
 | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -103,7 +104,7 @@ A single `Program` is not a monorepo-wide usage index. Separate TSConfigs may hi
 
 An incomplete TSConfig cannot be repaired by inference inside a lint rule. A linted file missing from the program or a local dependency represented only by declarations is detectable incompleteness and must produce an analysis error. An unrelated consumer deliberately omitted from the configured program may be undetectable: a fixture demonstrating that limitation must not be presented as proof of whole-repository coverage. The integration owns the complete-source precondition.
 
-## Proposed implementation
+## Implementation
 
 ### Use the existing compiler program
 
@@ -175,7 +176,7 @@ An incomplete-analysis diagnostic uses the rule's configured severity, like any 
 
 Use standard reason-bearing ESLint disable comments for intentional exceptions. No custom suppression annotation, name allowlist, size threshold, or configurable ownership threshold is proposed. Tests may import an exported colocated Hook; export restrictions belong to separate rules.
 
-The following is a **proposed configuration after implementation**, not a configuration supported by the current published plugin. It assumes the application's `tsconfig.json` includes all relevant source files and does not rely on an incomplete set of project references:
+The following configuration enables the implemented opt-in rule. It assumes the application's `tsconfig.json` includes all relevant source files and does not rely on an incomplete set of project references:
 
 ```javascript
 import { dirname } from 'node:path'
@@ -232,19 +233,19 @@ The chosen design adds typed-project setup and whole-program analysis cost. It a
 2. Add the rule adapter, optional TypeScript loading, stable diagnostic locations, and complete/incomplete analysis behavior. Add the runtime rule and type declaration together.
 3. Add a focused typed demo integration, public rule documentation, and compatibility checks for ESLint 9 and 10. Keep the existing syntax-only demo fixtures intact unless their output actually changes.
 
-| Planned file                                                          | Responsibility                                                                                          |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `lib/rules/no-single-use-hook-file.js`                                | Parser preconditions, current-file reporting, message definitions.                                      |
-| `lib/utils/hook-ownership.js`                                         | Compiler snapshot, canonical references, graph propagation, uncertainty.                                |
-| `lib/utils/hooks.js` and `lib/rules/no-direct-use-effect.js`          | Share the existing Hook-name predicate only if needed; preserve behavior.                               |
-| `index.js`, `index.d.ts`, `tests/types/plugin-usage.ts`               | Runtime registration and typed consumer coverage.                                                       |
-| `package.json`, `pnpm-lock.yaml`                                      | Optional compiler peer contract and verified dependency resolution.                                     |
-| `tests/lib/rules/no-single-use-hook-file.test.js` and scoped fixtures | Rule diagnostics and actual multi-file ownership cases.                                                 |
-| `tests/lib/utils/hook-ownership.test.js`                              | Graph identity, propagation, and invalidation cases that cannot be expressed as a single source string. |
-| `apps/todo-lint-app/tests/` and a focused typed fixture/config        | Consumer-level ESLint 9/10 execution and rule composition.                                              |
-| `docs/rules/no-single-use-hook-file.md`, `README.md`                  | Shipped behavior, setup, limitations, and migration instructions after implementation.                  |
+| Implementation surface                                                | Responsibility                                                                                                                       |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `lib/rules/no-single-use-hook-file.js`                                | Parser preconditions, current-file reporting, message definitions.                                                                   |
+| `lib/utils/hook-ownership.js`                                         | Compiler snapshot, canonical references, graph propagation, uncertainty.                                                             |
+| `lib/utils/hooks.js` and `lib/rules/no-direct-use-effect.js`          | Share the existing Hook-name predicate only if needed; preserve behavior.                                                            |
+| `index.js`, `index.d.ts`, `tests/types/plugin-usage.ts`               | Runtime registration and typed consumer coverage.                                                                                    |
+| `package.json`, `pnpm-lock.yaml`                                      | Optional compiler peer contract and verified dependency resolution.                                                                  |
+| `tests/lib/rules/no-single-use-hook-file.test.js` and scoped fixtures | Rule diagnostics and actual multi-file ownership cases.                                                                              |
+| `tests/lib/rules/no-single-use-hook-file.test.js`                     | Graph identity, propagation, and invalidation share the real compiler-project test harness; no separate utility test file is needed. |
+| `apps/todo-lint-app/tests/` and a focused typed fixture/config        | Consumer-level ESLint 9/10 execution and rule composition.                                                                           |
+| `docs/rules/no-single-use-hook-file.md`, `README.md`                  | Shipped behavior, setup, limitations, and migration instructions after implementation.                                               |
 
-The current task adds only this design document and its README link. The files above are the implementation handoff, not completed changes.
+The implementation covers the surfaces above. `pnpm install --lockfile-only` verified dependency resolution without a lockfile change; the optional peer does not change the installed graph. The [rule guide](../rules/no-single-use-hook-file.md) documents setup, diagnostics, boundaries, and migration for consumers.
 
 ## Acceptance and verification
 
@@ -271,7 +272,7 @@ Use the existing Mocha/RuleTester stack and Node assertions. Add actual multi-fi
 | A17 | Reversed lint order, isolated projects in one process, and ESLint workers                                              | Same diagnostics; no cache leakage between scopes.                                |
 | A18 | Enable with `no-direct-use-effect` after colocation                                                                    | Both rules accept the colocated Hook.                                             |
 | A19 | Import the published plugin without optional TypeScript and keep this rule disabled                                    | Existing rules still load and work.                                               |
-| A20 | Runtime registration, declarations, and consumer configurations on ESLint 9 and 10                                     | Rule is available only after implementation; types and runtime agree.             |
+| A20 | Runtime registration, declarations, and consumer configurations on ESLint 9 and 10                                     | Runtime registration and declarations agree; the rule remains opt-in.             |
 | A21 | Invoke `--fix`                                                                                                         | No source files are changed by this rule.                                         |
 
 Before release, run the focused rule/analyzer tests, `pnpm test`, `pnpm lint`, `pnpm typecheck`, and the actual demo lint tests for both supported ESLint majors. Refresh snapshots only for intended output changes and verify that tests actually executed.
@@ -280,6 +281,86 @@ Measure a fresh complete lint run with and without the rule on the same fixture 
 
 Adopt explicitly at `error` severity after reviewing initial diagnostics. The reliable CI check includes every relevant definition file and uses `--no-cache`. Rollback is to disable the opt-in rule; no application data or automated source migration needs reversal.
 
-## Decisions ready for implementation
+## Decision status
 
-Ownership, placement, transitive calls, test exclusions, explicit errors, and the absence of autofix are defined above. No product-policy question blocks implementation. Parser compatibility, project-boundary checks, and cache invalidation still require the executable acceptance cases before the rule can claim support. A passing design review is not evidence that those checks have already passed.
+Ownership, placement, transitive calls, test exclusions, explicit errors, and the absence of autofix are implemented. The executable acceptance suite covers parser compatibility, project boundaries, and cache invalidation. Remote CI and review must still pass on the final pull-request HEAD before merge.
+
+## Engineering review decisions
+
+Reviewed with `/plan-eng-review` on 2026-09-09. The user authorized choosing every recommended option. The scope remains the complete A1-A21 contract. More than eight files are required for registration, declarations, fixtures, and documentation, but only two runtime modules are new; keeping this scope is the recommended complexity decision.
+
+| ID  | Section                           | Finding and evidence                                                                                                                          | Selected recommendation                                                                                                                                                                                                                     | Alternative considered                                                           |
+| --- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| E1  | Architecture, P1, confidence 9/10 | "The integration must declare a closed application boundary" did not define an executable root selection rule.                                | **1A:** derive the application root from the compiler's configured TSConfig path; reject absent configuration, keep other package roots outside placement targets, and protect externally exposed Hook chains.                              | 1B: add separate root/allowlist options, duplicating typed configuration.        |
+| E2  | Code quality, P1, confidence 9/10 | "An anonymous default-export function ... must either resolve ... or receive an incomplete-analysis result" left candidate seeding ambiguous. | **2A:** seed Hook identity from declaration and resolved Hook-named import/export bindings; follow static aliases, and preserve opaque references as uncertainty. Keep the sole-owner/same-file exemption even when other uses are unknown. | 2B: require named exports, silently dropping supported default-import use cases. |
+| E3  | Tests, P1, confidence 9/10        | "Arrange TypeScript as an optional peer, loaded only when this rule runs" needs package-consumer evidence, beyond repository resolution.      | **3A:** test a copied published-layout package without TypeScript in a fresh process, plus real compiler projects for A1-A21 and both ESLint majors.                                                                                        | 3B: assert package metadata only, which would miss eager-import regressions.     |
+| E4  | Performance, P2, confidence 8/10  | "Before reuse, check the source-file membership" can add a full membership scan per linted file.                                              | **4A:** measure reuse/rebuild counts and elapsed time; retain capped owner propagation and avoid reparsing source. Preserve correctness checks until measurements justify an equivalent optimization.                                       | 4B: drop cache invalidation checks before verifying host snapshot behavior.      |
+
+Recommendations 1A-4A are adopted. The official parser's configured program path and stable source-list access were verified in the local demo. TypeScript is initially supported at the tested 6.0.x compiler version; widening that version contract requires compatibility evidence. No auth, storage, network service, or new distributable is introduced. Existing npm publication includes the new rule through `lib/`, and registry publication remains outside this merge request.
+
+### Coverage and failure paths
+
+```text
+Enable rule
+  +-- no typed program / compiler unavailable --> clear configuration error [A14, A19]
+  +-- typed program
+       +-- configuration / source mismatch --> analysis error [A14]
+       +-- local declarations + resolved aliases [A7, A9]
+            +-- excluded/exposed boundary --> preserved evidence/uncertainty [A5, A12]
+            +-- component and Hook edges [A3, A8, A13]
+                 +-- zero owners --> no destination [A6]
+                 +-- one known owner
+                 |    +-- same file --> pass [A2, A18]
+                 |    +-- different file + complete --> move diagnostic [A1, A10]
+                 |    +-- different file + unknown --> incomplete diagnostic [A11]
+                 +-- two owners --> pass [A4]
+Fresh run / changed program --> rebuilt evidence [A15, A16, A17]
+Consumer journey --> configure, lint, relocate, lint again [A1, A2, A20, A21]
+```
+
+All 21 acceptance groups now map to executable rule, compiler-project, package-loading, type, and consumer tests. The six existing effect-rule tests remain unchanged and pass. Graph traversal and fixture comments explain the ownership boundaries. The coverage audit is a behavioral assessment, not an instrumented branch-coverage percentage.
+
+### NOT in scope
+
+- Cross-project aggregation and an editor watcher: a complete single application remains the declared analysis unit.
+- Automated relocation and file deletion: they require a separate refactoring operation.
+- npm publication: the requested delivery ends at a verified merge.
+- Additional policy options and utility-function placement: they do not advance the component ownership rule.
+
+Existing context helpers, naming predicates, RuleTester/Mocha, TypeScript, and the ESLint 9/10 CI matrix are reused as documented above. No separate TODO is added for speculative extensions; the explicit limitations already identify their upgrade conditions.
+
+### Implementation tasks
+
+- [x] **T1 (P1, human: 1 day / agent: 60-120 min)**: implement the compiler ownership analyzer and rule boundary. From E1/E2; verify A1-A18 and A21. Files: `lib/rules/`, `lib/utils/`.
+- [x] **T2 (P1, human: 1 day / agent: 45-90 min)**: implement real multi-file acceptance tests and isolated package-loading regression checks. From E2/E3; verify `pnpm test`. Files: `tests/lib/` and scoped fixtures.
+- [x] **T3 (P1, human: 2-4 h / agent: 30-60 min)**: wire runtime/types/optional dependency and typed consumer verification. From E3; verify `pnpm validate` and actual ESLint 9/10 consumers locally; the existing CI matrix remains a merge gate. Files: `index.js`, `index.d.ts`, `package.json`, `tests/types/`, `apps/todo-lint-app/`, docs.
+- [x] **T4 (P2, human: 1-2 h / agent: 15-30 min)**: measure same-snapshot reuse and fresh-snapshot invalidation. From E4; record elapsed time, source/Hook counts, and graph rebuilds.
+
+Lane A implements the runtime analyzer/adapter; Lane B implements tests against its contract. They run concurrently without editing each other's files. T3 integrates after both lanes; T4 measures the integrated result. Packaging, docs, ship review, CodeRabbit resolution, and merge remain sequential.
+
+## Local implementation verification
+
+Verified on 2026-09-09 with Node 24.20.0 and TypeScript 6.0.3:
+
+- The dedicated ownership suite executes 84 behavior tests, including real compiler projects, standard-library dynamic imports, physical symlinks, typed asset imports, runtime versus type-only export paths, opaque CommonJS consumers, ESLint workers, fresh process package loading, and `--fix` immutability.
+- `pnpm validate` passes 361 Mocha tests, declaration checks, repository lint, and demo lint integration. `pnpm --filter todo-lint-app test` passes 12 tests across all four demo test files; the ESLint-10-only case is intentionally skipped by the demo's ESLint 9 installation. Root ESLint 10 and demo ESLint 9 both execute the public rule.
+- `pnpm --filter todo-lint-app build` produces the Next.js demo successfully. A complete demo compiler probe includes 22 roots and 793 total source files, discovers three Hooks, and successfully analyzes the application's CSS import.
+- A fresh-process comparison runs the same three runtime files (70 compiler sources, two Hooks) with and without the rule, including typed Program setup and complete lint. Three baseline runs took 199.0 / 197.7 / 191.4 ms with peak RSS 291.0 / 291.4 / 290.9 MiB; enabled runs took 238.9 / 203.6 / 198.3 ms with peak RSS 293.7 / 292.8 / 291.0 MiB. Other validation ran concurrently, so these are descriptive local observations, not an isolated overhead guarantee.
+- Every enabled measurement scanned each runtime source once, reused the same graph for unchanged snapshots, and rebuilt for a fresh Program. A separate synthetic propagation probe with 1,000 component owners and 100 / 1,000 / 4,000 Hooks completed in 12.55 / 15.80 / 28.34 ms while retaining at most two owner witnesses. These small fixtures do not establish a large-application latency guarantee.
+
+The local ship evidence stores the commands, raw test output, benchmark script, and measurement JSON. The source tests remain reproducible through the repository commands above. Remote CI and CodeRabbit evidence belongs to the final pull-request HEAD; it is not implied by these local results.
+
+## GSTACK REVIEW REPORT
+
+| Review          | Runs | Status  | Findings                                                 |
+| --------------- | ---- | ------- | -------------------------------------------------------- |
+| Scope challenge | 1    | CLEAR   | Full scope retained; two new runtime modules.            |
+| Architecture    | 1    | CLEAR   | E1 adopted.                                              |
+| Code quality    | 1    | CLEAR   | E2 adopted.                                              |
+| Tests           | 1    | CLEAR   | E3 adopted; A1-A21 mapped, zero unassigned gaps.         |
+| Performance     | 1    | CLEAR   | E4 adopted.                                              |
+| Outside voice   | 0    | SKIPPED | The skill skips nested Codex review inside a Codex host. |
+
+VERDICT: ENG CLEARED; 4/4 recommendations adopted and implemented. Local verification is recorded above; remote review and merge are tracked by the pull request.
+
+NO UNRESOLVED DECISIONS
