@@ -752,6 +752,10 @@ Buttons should have an explicit `type` attribute to avoid implicit submit behavi
 
 This plugin intentionally does not ship a bundled recommended config. Opt-in the rules that fit your codebase.
 
+## Design Documents
+
+- [Single-use Hook colocation](docs/design/no-single-use-hook-file.md): Proposed rule to keep component-specific Hooks in their owner's file. Not implemented yet.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
