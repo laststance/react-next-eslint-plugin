@@ -24,6 +24,12 @@ pnpm add --save-dev @laststance/react-next-eslint-plugin@latest
 
 ### Flat Config (ESLint 9.x / 10.x)
 
+Pick the example that matches how the project memoizes.
+
+#### Full Memoized Setup
+
+Use this when components and props are memoized by hand with `React.memo`, `useMemo`, and `useCallback`.
+
 ```javascript
 import lastStanceReactNextPlugin from '@laststance/react-next-eslint-plugin'
 
@@ -60,6 +66,44 @@ export default [
         'error',
       '@laststance/react-next/prefer-usememo-for-memoized-component': 'error',
       '@laststance/react-next/prefer-usememo-might-work': 'error',
+    },
+  },
+]
+```
+
+#### React Compiler Setup
+
+Use this when [React Compiler](https://react.dev/learn/react-compiler) is enabled. The compiler already memoizes components, values, and callbacks, so the manual memoization rules (`all-memo`, `prefer-stable-context-value`, `prefer-usecallback-*`, `prefer-usememo-*`) are omitted. Keep `no-deopt-use-callback` and `no-deopt-use-memo` so leftover `useCallback`/`useMemo` that cannot help is still flagged.
+
+```javascript
+import lastStanceReactNextPlugin from '@laststance/react-next-eslint-plugin'
+
+export default [
+  {
+    plugins: {
+      '@laststance/react-next': lastStanceReactNextPlugin,
+    },
+    rules: {
+      '@laststance/react-next/no-jsx-without-return': 'error',
+      '@laststance/react-next/no-use-reducer': 'error',
+      '@laststance/react-next/no-react-context': 'error',
+      '@laststance/react-next/no-prop-drilling': 'error',
+      '@laststance/react-next/no-set-state-prop-drilling': [
+        'error',
+        { depth: 1 },
+      ],
+      '@laststance/react-next/no-deopt-use-callback': 'error',
+      '@laststance/react-next/no-deopt-use-memo': 'error',
+      '@laststance/react-next/no-direct-use-effect': 'error',
+      '@laststance/react-next/no-forward-ref': 'error',
+      '@laststance/react-next/no-context-provider': 'error',
+      '@laststance/react-next/no-missing-key': 'error',
+      '@laststance/react-next/no-duplicate-key': 'error',
+      '@laststance/react-next/jsx-no-useless-fragment': 'error',
+      '@laststance/react-next/no-jsx-iife': 'error',
+      '@laststance/react-next/no-missing-component-display-name': 'error',
+      '@laststance/react-next/no-nested-component-definitions': 'error',
+      '@laststance/react-next/no-missing-button-type': 'error',
     },
   },
 ]
@@ -750,7 +794,7 @@ Buttons should have an explicit `type` attribute to avoid implicit submit behavi
 
 ## Configuration
 
-This plugin intentionally does not ship a bundled recommended config. Opt-in the rules that fit your codebase.
+This plugin intentionally does not ship a bundled recommended config. Copy the [Full Memoized Setup](#full-memoized-setup) or [React Compiler Setup](#react-compiler-setup) example and opt-in the rules that fit your codebase.
 
 ## Contributing
 
