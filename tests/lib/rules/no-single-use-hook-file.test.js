@@ -1378,6 +1378,23 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     )
   })
 
+  test('rejects malformed external runtime source that can hide local Hook consumers', () => {
+    // Arrange
+    const app = createApplication({
+      'src/useCart.ts': cartHook,
+      'src/CartPanel.tsx': "import '../../shared/Broken'; " + cartPanel,
+      '../shared/package.json':
+        '{"name":"shared-fixture","exports":"./Broken.ts"}',
+      '../shared/Broken.ts': "export { useCart from '../app/src/useCart';",
+    })
+
+    // Act / Assert
+    assert.throws(
+      () => lintFile(app, 'src/useCart.ts'),
+      /no-single-use-hook-file cannot analyze unparseable source .*shared\/Broken[.]ts; fix parser errors before linting/,
+    )
+  })
+
   test('rejects unresolved local runtime imports that can hide consumers', () => {
     // Arrange
     const app = createApplication({

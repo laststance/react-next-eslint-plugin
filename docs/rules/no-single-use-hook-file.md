@@ -2,11 +2,13 @@
 
 Require a custom Hook used by exactly one production component to live at module scope in that component's file.
 
+## Rule Details
+
 This opt-in architectural rule keeps component-specific logic visibly attached to its owner. A Hook may still organize a component's implementation and have its own name. A separate module becomes allowed when at least two component implementations actually use it. A generic name, a `shared/` directory, or planned future reuse does not grant an exemption.
 
-## Setup
+## Configuration
 
-Install `@typescript-eslint/parser` and TypeScript `~6.0.3`. TypeScript is an optional peer of the plugin: other rules work without it. This rule requires the parser's typed services and a complete application TSConfig.
+Install `@typescript-eslint/parser` and TypeScript `~6.0.3`. TypeScript is an optional peer of the plugin: other rules work without it or with TypeScript 5.x. This rule requires TypeScript `>=6.0.3 <6.1.0`, the parser's typed services, and a complete application TSConfig. It has no options; enable it through flat config:
 
 ```js
 import { dirname } from 'node:path'
@@ -36,7 +38,9 @@ Run the complete definition set in CI with `eslint src --no-cache`. ESLint's fil
 
 ## Examples
 
-Incorrect: one component owns the separately defined Hook.
+### ❌ Incorrect
+
+One component owns the separately defined Hook.
 
 ```jsx
 // useCart.js
@@ -53,7 +57,9 @@ export function CartPanel() {
 }
 ```
 
-Correct: the named Hook remains below its component at module scope.
+### ✅ Correct
+
+The named Hook remains below its component at module scope.
 
 ```jsx
 // CartPanel.jsx
@@ -67,7 +73,7 @@ function useCart() {
 }
 ```
 
-Correct: two components use the Hook, so a separate file is allowed.
+Two components use the Hook, so a separate file is also allowed:
 
 ```jsx
 import { useCart } from './useCart.js'
@@ -101,6 +107,8 @@ Opaque Hook values, dynamic namespace access, CommonJS loads, unrecognized wrapp
 
 Missing typed services, project references, unreadable roots, unparseable runtime source, and detectable missing local runtime dependencies produce configuration errors. Common non-code imports such as CSS, images, fonts, and JSON do not require a runtime source body. Type-only imports and re-exports do not expose runtime Hook values. A mismatched editor/compiler source snapshot produces incomplete analysis. Fix the configuration or source error and rerun a complete lint.
 
+Syntax validation includes external runtime sources present in the Program: malformed external code can hide a local Hook's consumers. Excluding an external definition from placement targets does not make its recovered syntax tree reliable ownership evidence.
+
 The rule cannot prove that an unrelated consumer omitted from the TSConfig does not exist. Supplying a complete closed application is a configuration precondition. An internal `export` alone is not a public API exemption; public package entry metadata and package boundaries carry that meaning.
 
 ## Migration and exceptions
@@ -110,3 +118,5 @@ Move the Hook below its owning component, preserving its signature and calls. Ad
 The rule has no options, suggestions, or autofix; `--fix` does not move or delete source files. Use a standard ESLint disable comment with a reason for an intentional exception. It composes with [`no-direct-use-effect`](./no-direct-use-effect.md): extract an effect into a named Hook, then colocate the dedicated Hook.
 
 See the [design and engineering decisions](../design/no-single-use-hook-file.md) for the ownership contract and acceptance criteria.
+
+[Rule source](../../lib/rules/no-single-use-hook-file.js)
