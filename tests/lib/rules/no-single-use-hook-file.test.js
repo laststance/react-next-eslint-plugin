@@ -106,6 +106,57 @@ test('analyzes a typed application that imports declared CSS assets', () => {
   assertPlacement(messages, 'useCart', 'CartPanel', 'src/CartPanel.tsx')
 })
 
+// The wildcard is a fallback for both ESM and CommonJS external dependencies.
+for (const importStatement of [
+  "import vendor from 'untyped-vendor'",
+  "declare function require(id: string): any; const vendor = require('untyped-vendor')",
+]) {
+  test(`accepts an untyped external dependency with wildcard paths: ${importStatement}`, () => {
+    // Arrange
+    const app = createApplication(
+      {
+        'src/useCart.ts': cartHook,
+        'src/CartPanel.tsx': importStatement + '; ' + cartPanel,
+        'node_modules/untyped-vendor/package.json':
+          '{"name":"untyped-vendor","main":"index.js"}',
+        'node_modules/untyped-vendor/index.js': 'module.exports = 1',
+      },
+      { compilerOptions: { allowJs: false, paths: { '*': ['./src/*'] } } },
+    )
+    // Act
+    const messages = lintFile(app, 'src/useCart.ts')
+    // Assert
+    assertPlacement(messages, 'useCart', 'CartPanel', 'src/CartPanel.tsx')
+  })
+}
+
+test('ignores syntax errors in verification files without production importers', () => {
+  // Arrange
+  const app = createApplication({
+    'src/useCart.ts': cartHook,
+    'src/CartPanel.tsx': cartPanel,
+    'src/Broken.test.tsx': 'export function Broken( {',
+  })
+  // Act
+  const messages = lintFile(app, 'src/useCart.ts')
+  // Assert
+  assertPlacement(messages, 'useCart', 'CartPanel', 'src/CartPanel.tsx')
+})
+
+test('rejects syntax errors in verification files imported by production', () => {
+  // Arrange
+  const app = createApplication({
+    'src/useCart.ts': cartHook,
+    'src/CartPanel.tsx': "import './Broken.test'; " + cartPanel,
+    'src/Broken.test.tsx': 'export function Broken( {',
+  })
+  // Act / Assert
+  assert.throws(
+    () => lintFile(app, 'src/useCart.ts'),
+    /no-single-use-hook-file cannot analyze unparseable source .*Broken[.]test[.]tsx; fix parser errors before linting/,
+  )
+})
+
 test('counts a generic instantiation alias as the same shared Hook implementation', () => {
   // Arrange
   const app = createApplication({
@@ -1272,7 +1323,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
         new Linter({ cwd: app.directory }).verify(cartHook, configuration, {
           filename: join(app.directory, 'src/useCart.ts'),
         }),
-      /typed|program|project/i,
+      /no-single-use-hook-file requires @typescript-eslint\/parser with a complete typed application project/,
     )
   })
 
@@ -1291,7 +1342,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts', { program }),
-      /config|project|program/i,
+      /no-single-use-hook-file requires one complete application Program with a configured tsconfig[.]json/,
     )
   })
 
@@ -1308,7 +1359,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /source|read|missing|program|project/i,
+      /no-single-use-hook-file cannot analyze missing project source .*Missing[.]tsx[.]/,
     )
   })
 
@@ -1317,13 +1368,13 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     const app = createApplication({
       'src/useCart.ts': cartHook,
       'src/CartPanel.tsx': cartPanel,
-      'src/Broken.tsx': 'export function Broken( {',
+      'src/Broken.tsx': 'import "./Missing"; export function Broken( {',
     })
 
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /pars|source|program|project/i,
+      /no-single-use-hook-file cannot analyze unparseable source .*Broken[.]tsx; fix parser errors before linting/,
     )
   })
 
@@ -1339,7 +1390,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /resolv|source|program|project/i,
+      /no-single-use-hook-file needs complete runtime source for [.]\/Missing imported by .*Other[.]tsx/,
     )
   })
 
@@ -1356,7 +1407,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /declar|source|program|project/i,
+      /no-single-use-hook-file needs complete runtime source for [.]\/runtime imported by .*Other[.]tsx/,
     )
   })
 
@@ -1371,7 +1422,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /package|metadata|manifest|JSON/i,
+      /no-single-use-hook-file cannot read package boundary .*package[.]json[.]/,
     )
   })
 
@@ -1393,7 +1444,7 @@ describe('no-single-use-hook-file: complete compiler snapshots', () => {
     // Act / Assert
     assert.throws(
       () => lintFile(app, 'src/useCart.ts'),
-      /referenc|program|project/i,
+      /no-single-use-hook-file requires one complete application Program with a configured tsconfig[.]json and no project references/,
     )
   })
 
@@ -1709,14 +1760,17 @@ describe('no-single-use-hook-file: consumer integration', function () {
       'const lintOptions = { filename: ' +
         JSON.stringify(join(app.directory, 'src/empty.ts')) +
         ' }',
-      'assert.throws(() => linter.verify("export {}", typedConfiguration, lintOptions), /optional TypeScript 6.0.x peer/)',
+      'assert.throws(() => linter.verify("export {}", typedConfiguration, lintOptions), /no-single-use-hook-file requires the optional TypeScript ~6[.]0[.]3 peer/)',
       // Only dependency rejection uses a version-only package; ownership still receives a real Program.
       'const compilerDirectory = ' +
         JSON.stringify(join(publishedDirectory, 'node_modules/typescript')),
       'mkdirSync(compilerDirectory, { recursive: true })',
       'writeFileSync(compilerDirectory + "/package.json", JSON.stringify({ name: "typescript", version: "5.9.3", main: "index.js" }))',
       'writeFileSync(compilerDirectory + "/index.js", "module.exports = { version: \'5.9.3\' }")',
-      'assert.throws(() => linter.verify("export {}", typedConfiguration, lintOptions), /supports TypeScript 6.0.x/)',
+      'for (const version of ["5.9.3", "6.0.0", "6.0.1", "6.0.2", "6.1.0", "6.0.3-beta.1"]) {',
+      '  packageRequire("typescript").version = version',
+      '  assert.throws(() => linter.verify("export {}", typedConfiguration, lintOptions), /no-single-use-hook-file currently supports TypeScript >=6[.]0[.]3 <6[.]1[.]0/)',
+      '}',
       'process.stdout.write("existing rules work; missing and unsupported peers fail clearly")',
     ].join('\n')
 
