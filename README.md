@@ -805,6 +805,8 @@ This plugin intentionally does not ship a bundled recommended config. Copy the [
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+See the [contributing guide](CONTRIBUTING.md) for setup, rule registration, and validation.
+
 ## License
 
 MIT © [laststance](https://github.com/laststance)
