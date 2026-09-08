@@ -10,6 +10,7 @@ export interface LaststanceRuleModules {
   'no-deopt-use-callback': Rule.RuleModule
   'no-deopt-use-memo': Rule.RuleModule
   'no-direct-use-effect': Rule.RuleModule
+  'no-single-use-hook-file': Rule.RuleModule
   'no-forward-ref': Rule.RuleModule
   'no-context-provider': Rule.RuleModule
   'no-missing-key': Rule.RuleModule

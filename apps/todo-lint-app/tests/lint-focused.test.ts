@@ -1,6 +1,7 @@
-import { Linter } from 'eslint'
+import { ESLint, Linter } from 'eslint'
+import { fileURLToPath } from 'node:url'
 import tseslint from 'typescript-eslint'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 import laststancePlugin from '@laststance/react-next-eslint-plugin'
 import {
   createEslintForCurrentMajor,
@@ -91,5 +92,46 @@ describe('no-react-context TypeScript compatibility', () => {
     expect(messages).toHaveLength(1)
     expect(messages[0]?.ruleId).toBe('laststance/no-react-context')
     expect(messages[0]?.message).toContain('Do not use React.useContext.')
+  })
+})
+
+describe('single-use Hook placement in a typed consumer', () => {
+  test('identifies the owner through the public plugin and accepts a colocated effect Hook', async () => {
+    // Arrange
+    const fixtureDirectory = fileURLToPath(
+      new URL('./fixtures/hook-ownership/', import.meta.url),
+    )
+    const eslint = new ESLint({
+      cwd: fixtureDirectory,
+      overrideConfigFile: true,
+      overrideConfig: [
+        {
+          files: ['**/*.{ts,tsx}'],
+          languageOptions: {
+            parser: tseslint.parser,
+            parserOptions: {
+              project: './tsconfig.json',
+              tsconfigRootDir: fixtureDirectory,
+            },
+          },
+          plugins: { laststance: laststancePlugin },
+          rules: {
+            'laststance/no-single-use-hook-file': 'error',
+            'laststance/no-direct-use-effect': 'error',
+          },
+        },
+      ],
+    })
+
+    // Act
+    const results = await eslint.lintFiles(['*.ts', '*.tsx'])
+
+    // Assert
+    expect(results).toHaveLength(3)
+    const messages = results.flatMap((result) => result.messages)
+    expect(messages).toHaveLength(1)
+    expect(messages[0]?.messageId).toBe('colocateWithComponent')
+    expect(messages[0]?.message).toContain('"CartPanel.tsx"')
+    expect(messages[0]?.severity).toBe(2)
   })
 })

@@ -20,8 +20,9 @@ Thanks for your interest in contributing!
 
 1. Create `lib/rules/my-rule.js` exporting the standard ESLint rule object.
 2. Add tests under `tests/lib/rules/my-rule.test.js` with valid/invalid cases.
-3. Export your rule in `index.js` under the `rules` key.
-4. Ensure `pnpm test` passes.
+3. Export your rule in `index.js` under the `rules` key and register it in {@link LaststanceRuleModules} in `index.d.ts`.
+4. Add its guide under `docs/rules/` and link it from `README.md`.
+5. Run `pnpm validate` for rule tests, declaration checks, lint autofix, and [demo lint integration](docs/demo-playground.md).
 
 ## Commit Style
 

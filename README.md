@@ -129,6 +129,7 @@ Some rules are imported and adapted from https://github.com/jsx-eslint/eslint-pl
 - [`laststance/no-deopt-use-callback`](docs/rules/no-deopt-use-callback.md): Flag meaningless `useCallback` usage with intrinsic elements or inline calls
 - [`laststance/no-deopt-use-memo`](docs/rules/no-deopt-use-memo.md): Flag meaningless `useMemo` usage with intrinsic elements or inline handlers
 - [`laststance/no-direct-use-effect`](docs/rules/no-direct-use-effect.md): Disallow calling `useEffect` directly inside React components; extract to custom hooks
+- [`laststance/no-single-use-hook-file`](docs/rules/no-single-use-hook-file.md): Keep a Hook used by one production component in that component's file (requires a complete typed application project)
 - [`laststance/no-forward-ref`](docs/rules/no-forward-ref.md): Prefer passing `ref` as a prop instead of `forwardRef` (React 19)
 - [`laststance/no-context-provider`](docs/rules/no-context-provider.md): Prefer rendering `<Context>` instead of `<Context.Provider>` (React 19)
 - [`laststance/no-missing-key`](docs/rules/no-missing-key.md): Disallow list items without `key`
@@ -796,9 +797,15 @@ Buttons should have an explicit `type` attribute to avoid implicit submit behavi
 
 This plugin intentionally does not ship a bundled recommended config. Copy the [Full Memoized Setup](#full-memoized-setup) or [React Compiler Setup](#react-compiler-setup) example and opt-in the rules that fit your codebase.
 
+## Design Documents
+
+- [Single-use Hook colocation](docs/design/no-single-use-hook-file.md): Implemented rule to keep component-specific Hooks in their owner's file. See the rule guide for typed setup and adoption.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+See the [contributing guide](CONTRIBUTING.md) for setup, rule registration, and validation.
 
 ## License
 
