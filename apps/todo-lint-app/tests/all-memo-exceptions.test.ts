@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { ESLint } from 'eslint'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -42,7 +42,7 @@ const STORYBOOK_FILEPATH = path.join(
 )
 
 describe('all-memo ignore cases', () => {
-  it('does not report for Next.js layout.tsx', async () => {
+  test('does not report for Next.js layout.tsx', async () => {
     const [result] = await eslint.lintText(SAMPLE_COMPONENT_SOURCE, {
       filePath: LAYOUT_FILEPATH,
     })
@@ -50,7 +50,7 @@ describe('all-memo ignore cases', () => {
     expect(result.messages).toHaveLength(EXPECTED_MESSAGE_COUNT)
   })
 
-  it('does not report for Storybook stories', async () => {
+  test('does not report for Storybook stories', async () => {
     const [result] = await eslint.lintText(SAMPLE_COMPONENT_SOURCE, {
       filePath: STORYBOOK_FILEPATH,
     })

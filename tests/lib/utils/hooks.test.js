@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { describe, it } from 'mocha'
+import { describe, test } from 'mocha'
 import {
   isHookCallee,
   isUseCallbackCallee,
@@ -16,17 +16,17 @@ describe('utils/hooks', () => {
     property: { type: 'Identifier', name: property },
   })
 
-  it('matches direct identifier hooks', () => {
+  test('matches direct identifier hooks', () => {
     assert.equal(isHookCallee({ type: 'Identifier', name: 'useState' }, 'useState'), true)
     assert.equal(isHookCallee({ type: 'Identifier', name: 'notHook' }, 'useState'), false)
   })
 
-  it('matches member expression hooks', () => {
+  test('matches member expression hooks', () => {
     assert.equal(isHookCallee(makeMember('useMemo'), 'useMemo'), true)
     assert.equal(isHookCallee(makeMember('useOther'), 'useMemo'), false)
   })
 
-  it('exposes convenience wrappers', () => {
+  test('exposes convenience wrappers', () => {
     assert.equal(isUseStateCallee({ type: 'Identifier', name: 'useState' }), true)
     assert.equal(isUseCallbackCallee(makeMember('useCallback')), true)
     assert.equal(isUseMemoCallee({ type: 'Identifier', name: 'useMemo' }), true)

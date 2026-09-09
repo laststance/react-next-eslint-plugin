@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { ESLint } from 'eslint'
 import { fileURLToPath } from 'node:url'
 import laststancePlugin from '@laststance/react-next-eslint-plugin'
@@ -43,7 +43,7 @@ const COMPONENT_FILEPATH = `${projectRoot}/src/app/test-component.tsx`
 describe('all-memo --fix', () => {
   const eslint = createFixEslint()
 
-  it('should wrap arrow function components with memo and add import', async () => {
+  test('should wrap arrow function components with memo and add import', async () => {
     const input = [
       'const Arrow = () => {',
       '  return <div>Arrow Component</div>;',
@@ -67,7 +67,7 @@ describe('all-memo --fix', () => {
     expect(result.output).toMatchSnapshot()
   })
 
-  it('should not duplicate memo import when already imported as named', async () => {
+  test('should not duplicate memo import when already imported as named', async () => {
     const input = [
       'import { memo } from "react";',
       '',
@@ -91,7 +91,7 @@ describe('all-memo --fix', () => {
     expect(result.output).toMatchSnapshot()
   })
 
-  it('should use React.memo when React is imported as default', async () => {
+  test('should use React.memo when React is imported as default', async () => {
     const input = [
       'import React from "react";',
       '',
@@ -114,7 +114,7 @@ describe('all-memo --fix', () => {
     expect(result.output).toMatchSnapshot()
   })
 
-  it('should augment existing named react import with memo', async () => {
+  test('should augment existing named react import with memo', async () => {
     const input = [
       'import { useState } from "react";',
       '',
@@ -136,7 +136,7 @@ describe('all-memo --fix', () => {
     expect(result.output).toMatchSnapshot()
   })
 
-  it('should not autofix function declarations (only report)', async () => {
+  test('should not autofix function declarations (only report)', async () => {
     const input = [
       'function MyComponent() {',
       '  return <div>Hello</div>;',
@@ -156,7 +156,7 @@ describe('all-memo --fix', () => {
     expect(result.messages[0].messageId).toBe('notMemoized')
   })
 
-  it('should fix multiple components in a single file', async () => {
+  test('should fix multiple components in a single file', async () => {
     const input = [
       'const First = () => <div>First</div>;',
       'const Second = () => <span>Second</span>;',
@@ -178,7 +178,7 @@ describe('all-memo --fix', () => {
     expect(result.output).toMatchSnapshot()
   })
 
-  it('should skip already memoized components', async () => {
+  test('should skip already memoized components', async () => {
     const input = [
       'import { memo } from "react";',
       '',

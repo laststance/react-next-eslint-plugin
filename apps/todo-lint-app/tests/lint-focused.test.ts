@@ -1,7 +1,7 @@
 import { ESLint, Linter } from 'eslint'
 import { fileURLToPath } from 'node:url'
 import tseslint from 'typescript-eslint'
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import laststancePlugin from '@laststance/react-next-eslint-plugin'
 import {
   createEslintForCurrentMajor,
@@ -40,7 +40,7 @@ const REPRESENTATIVE_RULE_ASSERTIONS = [
 ] as const
 
 describeWhenEslintV10('ESLint focused integration assertions', () => {
-  it('reports representative compatibility rules exactly once in the v10 fixture', async () => {
+  test('reports representative compatibility rules exactly once in the v10 fixture', async () => {
     const eslint = createEslintForCurrentMajor()
     const results = await eslint.lintFiles([V10_COMPAT_FIXTURE_GLOB])
 
@@ -62,7 +62,7 @@ describeWhenEslintV10('ESLint focused integration assertions', () => {
 })
 
 describe('no-react-context TypeScript compatibility', () => {
-  it('reports context APIs accessed through TypeScript import-equals syntax', () => {
+  test('reports context APIs accessed through TypeScript import-equals syntax', () => {
     // Arrange
     const linter = new Linter()
     const code = `

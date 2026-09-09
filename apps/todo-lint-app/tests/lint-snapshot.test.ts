@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import {
   createNormalizedLintOutput,
   lintCurrentTargets,
@@ -7,7 +7,7 @@ import {
 } from './eslint-e2e-helpers'
 
 describe('ESLint integration snapshot', () => {
-  it(SNAPSHOT_TEST_NAME, async () => {
+  test(SNAPSHOT_TEST_NAME, async () => {
     const { eslint, results } = await lintCurrentTargets()
     const normalizedOutput = await createNormalizedLintOutput(eslint, results)
 

@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
-import { describe, it } from 'mocha'
+import { describe, test } from 'mocha'
 import { literalKind } from '../../../lib/utils/literal.js'
 
 describe('utils/literal', () => {
-  it('classifies inline literal expressions', () => {
+  test('classifies inline literal expressions', () => {
     assert.equal(literalKind({ type: 'ObjectExpression' }), 'object')
     assert.equal(literalKind({ type: 'ArrayExpression' }), 'array')
     assert.equal(literalKind({ type: 'ArrowFunctionExpression' }), 'function')
@@ -15,7 +15,7 @@ describe('utils/literal', () => {
     )
   })
 
-  it('returns null for unsupported expressions', () => {
+  test('returns null for unsupported expressions', () => {
     assert.equal(literalKind({ type: 'Identifier', name: 'foo' }), null)
     assert.equal(
       literalKind({ type: 'BinaryExpression', operator: '-' }),
