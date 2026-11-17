@@ -29,3 +29,22 @@ minimumReleaseAgeExclude:
   - '@laststance/redux-storage-middleware'
   - '@laststance/react-next-eslint-plugin'
 verifyStoreIntegrity: true
+
+# Safe Chain rejects 11.0.9 until its minimum package age has elapsed.
+overrides:
+  minimatch@^11.0.0: 11.0.8
+  # Align the entire ESLint TypeScript parser family to the latest age-eligible release.
+  typescript-eslint: 8.72.2
+  '@typescript-eslint/parser': 8.72.2
+  '@typescript-eslint/project-service': 8.72.2
+  '@typescript-eslint/scope-manager': 8.72.2
+  '@typescript-eslint/tsconfig-utils': 8.72.2
+  '@typescript-eslint/types': 8.72.2
+  '@typescript-eslint/typescript-estree': 8.72.2
+  '@typescript-eslint/visitor-keys': 8.72.2
+  # These releases also satisfy the Safe Chain 48-hour download policy.
+  lucide-react: 1.73.0
+  csstype: 3.2.3
+  baseline-browser-mapping: 2.11.37
+  ignore@^7.0.0: 7.0.14
+  rollup@^4.0.0: 4.68.3
