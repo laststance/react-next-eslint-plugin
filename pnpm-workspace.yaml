@@ -33,3 +33,6 @@ verifyStoreIntegrity: true
 # Safe Chain rejects 11.0.9 until its minimum package age has elapsed.
 overrides:
   minimatch@^11.0.0: 11.0.8
+  # Align the entire ESLint TypeScript parser family to the latest age-eligible release.
+  '@typescript-eslint/*': 8.72.2
+  typescript-eslint: 8.72.2
