@@ -46,3 +46,5 @@ overrides:
   lucide-react: 1.73.0
   csstype: 3.2.3
   baseline-browser-mapping: 2.11.37
+  ignore@^7.0.0: 7.0.14
+  rollup@^4.0.0: 4.68.4
