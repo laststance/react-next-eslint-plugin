@@ -29,3 +29,7 @@ minimumReleaseAgeExclude:
   - '@laststance/redux-storage-middleware'
   - '@laststance/react-next-eslint-plugin'
 verifyStoreIntegrity: true
+
+# Safe Chain rejects 11.0.9 until its minimum package age has elapsed.
+overrides:
+  minimatch@^11.0.0: 11.0.8
