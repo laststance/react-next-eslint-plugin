@@ -8,7 +8,7 @@ onlyBuiltDependencies:
 
 
 # Supply-chain security (migrated from .npmrc 2026-05-07)
-minimumReleaseAge: 1440
+minimumReleaseAge: 2880
 minimumReleaseAgeExclude:
   - next
   - react
@@ -52,3 +52,11 @@ overrides:
   brace-expansion@^5: 5.0.13
   # Safe Chain rejects 26.6.7 until its minimum package age has elapsed.
   '@types/node': 26.6.6
+  # Safe Chain rejects 19.3.1 until its minimum package age has elapsed.
+  '@types/react': 19.3.0
+  # Safe Chain rejects 11.0.6 until its minimum package age has elapsed.
+  '@octokit/endpoint': 11.0.5
+  # Safe Chain rejects 1.0.30001828 until its minimum package age has elapsed.
+  caniuse-lite: 1.0.30001827
+  # Safe Chain rejects 6.2.5 until its minimum package age has elapsed.
+  tinybench: 6.2.4
