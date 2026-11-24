@@ -49,4 +49,4 @@ overrides:
   ignore@^7.0.0: 7.0.14
   rollup@^4.0.0: 4.68.3
   # Safe Chain rejects 5.1.0 until its minimum package age has elapsed.
-  brace-expansion: 5.0.13
+  brace-expansion@^5: 5.0.13
